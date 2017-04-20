@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha test",
+    "bundle": "webpack -w"
   },
   "author": "",
   "license": "ISC",
