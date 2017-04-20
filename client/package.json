@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "bundle": "webpack -w",
     "test": "mocha test"
   },
   "author": "",
