@@ -1,4 +1,4 @@
-##To get started##
+##To get started
 
 ```git pull```
 
