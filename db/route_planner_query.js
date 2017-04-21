@@ -43,9 +43,20 @@ RoutesQuery.prototype = {
         var collection = db.collection("routes");
         collection.remove({_id: ObjectID(routeID)});
         collection.find().toArray(function(err, docs){
-          onQueryFinished(docs)
+          onQueryFinished(docs);
         })
         
+      }
+    })
+  },
+  update: function(routeID, payload, onQueryFinished){
+    MongoClient.connect(this.url, function(err, db){
+      if(db){
+        var collection = db.collection("routes");
+        collection.updateOne({_id: ObjectID(routeID)}, {$set: payload}, function(err, docs){
+          onQueryFinished(docs);
+        });
+
       }
     })
   }  

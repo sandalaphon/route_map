@@ -45,6 +45,11 @@ routePlannerRouter.delete('/:id', function(req, res){
 
 
 //UPDATE
+routePlannerRouter.put('/:id', function(req, res ){
+  routePlannerQuery.update(req.params.id, req.body, function(docs){
+    res.json(docs)
+  })
+})
 
 
 module.exports = routePlannerRouter;
