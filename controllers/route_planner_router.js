@@ -18,10 +18,6 @@ routePlannerRouter.get('/', function(req, res){
 routePlannerRouter.get('/:id', function(req, res){
   routePlannerQuery.find( req.params.id, function(doc){
     res.json(doc);
-    
-
-
-
   })
 })
 
@@ -39,6 +35,12 @@ routePlannerRouter.post('/', function(req, res){
 
 
 //DELETE
+routePlannerRouter.delete('/:id', function(req, res){
+  routePlannerQuery.delete(req.params.id, function(docs){
+    res.json(docs)
+
+  })
+})
 
 
 

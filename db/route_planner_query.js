@@ -36,6 +36,18 @@ RoutesQuery.prototype = {
         })
       }
     })  
+  },
+  delete: function(routeID, onQueryFinished){
+    MongoClient.connect(this.url, function(err, db){
+      if(db){
+        var collection = db.collection("routes");
+        collection.remove({_id: ObjectID(routeID)});
+        collection.find().toArray(function(err, docs){
+          onQueryFinished(docs)
+        })
+        
+      }
+    })
   }  
 
 }
