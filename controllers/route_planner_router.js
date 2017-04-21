@@ -15,6 +15,15 @@ routePlannerRouter.get('/', function(req, res){
 })
 
 //SHOW
+routePlannerRouter.get('/:id', function(req, res){
+  routePlannerQuery.find( req.params.id, function(doc){
+    res.json(doc);
+    
+
+
+
+  })
+})
 
 
 

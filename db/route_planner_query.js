@@ -1,4 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID;
 
 var RoutesQuery = function(){
   this.url = "mongodb://localhost:27017/route_planner";
@@ -24,9 +25,18 @@ RoutesQuery.prototype = {
           onQueryFinished(docs);
         })
       }
-
     })
-  }
+  },
+  find: function(routeID, onQueryFinished){
+    MongoClient.connect(this.url, function(err, db){
+      if(db){
+        var collection = db.collection("routes");
+        collection.find({_id: ObjectID(routeID)}).toArray(function(err, docs){
+          onQueryFinished(docs)
+        })
+      }
+    })  
+  }  
 
 }
 
