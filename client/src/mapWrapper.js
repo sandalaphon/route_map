@@ -24,6 +24,16 @@ MapWrapper.prototype ={
       this.addMarker({lat: latitude, lng: longitude});
       console.log(latitude, longitude)
     }.bind(this));
+  },
+
+  drawRoute:function(directionsResult){
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+
+    directionsService.route(directionsResult)
+    directionsDisplay.setMap(this.googleMap);
+    // directionsDisplay.setDirections(directionsResult)
+    
   }
 }
 
