@@ -29,11 +29,13 @@ MapWrapper.prototype ={
   drawRoute:function(directionsResult){
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
-
-    directionsService.route(directionsResult)
     directionsDisplay.setMap(this.googleMap);
-    // directionsDisplay.setDirections(directionsResult)
-    
+
+    directionsService.route(directionsResult, function(res, status){
+      if(status== 'OK'){
+        directionsDisplay.setDirections(res)
+      }
+    })
   }
 }
 
