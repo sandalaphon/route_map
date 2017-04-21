@@ -6,6 +6,30 @@ var MapWrapper = function(container, coords, zoom){
 }
 
 MapWrapper.prototype ={
+
+  addDraggableMarker: function(coords){
+    var draggableMarker = new google.maps.Marker({
+      position: coords,
+      map: this.googleMap,
+      draggable: true, //draggable
+      animation: google.maps.Animation.DROP
+    });
+    //Update latLng after drag
+    //display coords in infowindow after drag
+    google.maps.event.addListener(draggableMarker, 'dragend', function(evt){
+      // contentString for InfoWindow
+      var contentString = 'Marker dropped: Current Lat: ' + evt.latLng.lat().toFixed(3) + ' Current Lng: ' + evt.latLng.lng().toFixed(3)
+      //Make InfoWindow and open
+      var infoWindow = new google.maps.InfoWindow({
+        content: contentString
+      })
+      infoWindow.open(this.googleMap,draggableMarker);
+   
+    });
+
+    return draggableMarker;
+  },
+
   addMarker: function(coords){
     var marker = new google.maps.Marker({
       position: coords,
@@ -39,11 +63,11 @@ MapWrapper.prototype ={
         directionsDisplay.setDirections(res)
         this.computeTotalDistance(directionsDisplay.getDirections());
         this.computeEstimatedTime(directionsDisplay.getDirections());
-        directionsDisplay.addListener('directions_changed', function() {
-          // directionsDisplay.setDirections(res)
-                  this.computeTotalDistance(directionsDisplay.getDirections());
+        // directionsDisplay.addListener('directions_changed', function() {
+        //   // directionsDisplay.setDirections(res)
+        //           this.computeTotalDistance(directionsDisplay.getDirections());
 
-                });
+        //         });
       }
     }.bind(this)) 
   },

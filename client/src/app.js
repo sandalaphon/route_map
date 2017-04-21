@@ -11,20 +11,14 @@ var app = function(){
   var end = {lat: 56, lng: -3.2}
   mainMap.addClickEvent();
   
-   var directions = new Route(start, end, "BICYCLING")
-   var route1 = directions.directions()
-   console.log(route1)
-
-   console.log(directions.origin)
-
-  
-  // var directions = {
-  //   origin: {lat: 56, lng: -3.2},
-  //   destination: {lat: 52, lng: -3},
-  //   travelMode: "BICYCLING"
-  // }
-  
+  var directions = new Route(start, end, "BICYCLING")
+  var route1 = directions.directions()
   mainMap.drawRoute(route1)
+  var button = document.getElementById('waypoint')
+  button.addEventListener('click', function(){
+      alert("WayPoint needed!")
+      mainMap.addDraggableMarker(end)
+    })
 }
 
 window.onload = app;
