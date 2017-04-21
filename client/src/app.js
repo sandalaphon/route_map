@@ -16,8 +16,7 @@ var app = function(){
   mainMap.drawRoute(route1)
   var button = document.getElementById('waypoint')
   button.addEventListener('click', function(){
-      alert("WayPoint needed!")
-      mainMap.addDraggableMarker(end)
+      mainMap.addDraggableMarker(mainMap.googleMap.getCenter())//coords entered ought to be center of map
     })
 }
 
