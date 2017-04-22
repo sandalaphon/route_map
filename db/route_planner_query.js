@@ -1,12 +1,13 @@
-var MongoClient = require('mongodb').MongoClient;
-var ObjectID = require('mongodb').ObjectID;
+var MongoClient = require('mongodb').MongoClient
+var ObjectID = require('mongodb').ObjectID
 
-var RoutesQuery = function(collectionName){
-  this.url = "mongodb://localhost:27017/route_planner";
+var RoutesQuery = function (collectionName) {
+  this.url = 'mongodb://localhost:27017/route_planner'
   this.collection = collectionName
-};
+}
 
 RoutesQuery.prototype = {
+
   all: function(onQueryFinished){
     MongoClient.connect(this.url,function(err, db){
       if(db){
@@ -17,6 +18,7 @@ RoutesQuery.prototype = {
       }
     }.bind(this))
   },
+
   add: function(routeToAdd, onQueryFinished){
     MongoClient.connect(this.url, function(err, db){
       if(db){
@@ -28,6 +30,7 @@ RoutesQuery.prototype = {
       }
     }.bind(this))
   },
+
   find: function(routeID, onQueryFinished){
     MongoClient.connect(this.url, function(err, db){
       if(db){
@@ -36,8 +39,9 @@ RoutesQuery.prototype = {
           onQueryFinished(docs)
         })
       }
-    }.bind(this))  
+    }.bind(this))
   },
+
   delete: function(routeID, onQueryFinished){
     MongoClient.connect(this.url, function(err, db){
       if(db){
@@ -49,6 +53,7 @@ RoutesQuery.prototype = {
       }
     }.bind(this))
   },
+
   update: function(routeID, payload, onQueryFinished){
     MongoClient.connect(this.url, function(err, db){
       if(db){
@@ -58,8 +63,8 @@ RoutesQuery.prototype = {
         });
       }
     }.bind(this))
-  }  
+  }
 
 }
 
-module.exports = RoutesQuery;
+module.exports = RoutesQuery
