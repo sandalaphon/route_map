@@ -16,6 +16,7 @@ var app = function(){
   var containerDiv = document.querySelector("#main-map");
   var mainMap = new MapWrapper(containerDiv, center, 5);
   var transportMethod;
+  var routeName;
   
   startButton.addEventListener('click', function(){
     mainMap.addStartClickEvent();

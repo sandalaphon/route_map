@@ -1,4 +1,9 @@
- var Route = function(origin, destination, travelMode){
+ //GOOGLE MAPS OBJECT FACTORY!
+
+ var Route = function(origin, destination, travelMode, name){
+  this.name = name,
+  // this.author = author
+  this.rating = null;
   this.origin = origin,
   this.destination = destination,
   this.waypoints = [],
