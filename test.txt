@@ -1,0 +1,51 @@
+moved from app.js:
+
+var button = document.getElementById('waypoint')
+button.addEventListener('click', function(){
+  var mapCenter = mainMap.googleMap.getCenter()
+    directions.waypoints.push({
+      location: mapCenter,
+      stopover: true
+    })
+    // mainMap.addDraggableMarker(mapCenter)
+    mainMap.drawRoute(directions.directions())
+  })
+
+
+  UGLY draggable marker from mapwrapper:
+
+  addDraggableMarker: function(coords){
+    var draggableMarker = new google.maps.Marker({
+      position: coords,
+      map: this.googleMap,
+      draggable: true, //draggable
+      animation: google.maps.Animation.DROP
+    });
+    // Update latLng after drag
+    // display coords in infowindow after drag
+    google.maps.event.addListener(draggableMarker, 'dragend', function(evt){
+      // contentString for InfoWindow
+      var contentString = 'Marker dropped: Current Lat: ' + evt.latLng.lat().toFixed(3) + ' Current Lng: ' + evt.latLng.lng().toFixed(3)
+      //Make InfoWindow and open
+      var infoWindow = new google.maps.InfoWindow({
+        content: contentString
+      })
+      //include as waypoint
+
+      infoWindow.open(this.googleMap,draggableMarker);
+    
+    var startLatitude = localStorage.getItem("latitude"); //need better names for storage
+
+    var startLongitude = localStorage.getItem("longitude"); //same here
+    var start = {lat:+startLatitude, lng:+startLongitude}
+    var adjustedRoute = new Route(start ,{lat: 56, lng: -3.2}, "BICYCLING")
+    console.log({lat: evt.latLng.lat(),lng: evt.latLng.lng()})
+    adjustedRoute.waypoints.push({
+      location: {lat: evt.latLng.lat(),lng: evt.latLng.lng()},
+      stopover: true
+      })
+    var route2 = adjustedRoute.directions()
+    this.drawRoute(route2)
+    }.bind(this));
+    return draggableMarker;
+  },
