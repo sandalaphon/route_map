@@ -5,7 +5,6 @@ var Route = require('./models/route.js')
 var app = function(){
 
   
-  // var directions;
   localStorage.clear();
   var startButton = document.querySelector("#start")
   var endButton = document.querySelector('#finish')
@@ -14,18 +13,13 @@ var app = function(){
   var containerDiv = document.querySelector("#main-map");
   var mainMap = new MapWrapper(containerDiv, center, 5);
   
-  // var end = {lat: 56, lng: -3.2}
-  
 
   startButton.addEventListener('click', function(){
     mainMap.addStartClickEvent();
-    
-
     })
 
   endButton.addEventListener('click', function(){
     mainMap.addFinishClickEvent();
-    
   })
 
   routeButton.addEventListener('click',
@@ -42,23 +36,8 @@ var app = function(){
       console.log(start, end)
       var directions = new Route(start, end, "BICYCLING")
       var route = directions.directions();
-      // console.log(directions)
-      // console.log(route)
       mainMap.drawRoute(route)
     })
-
-
-
-  
-  
-
-  //  var directions = new Route(start, end, "BICYCLING")
-  //  var route1 = directions.directions()
-  //  console.log(route1)
-
-  //  console.log(directions.origin)
-
-  // mainMap.drawRoute(route1)
 }
 
 window.onload = app;
