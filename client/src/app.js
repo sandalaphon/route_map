@@ -16,7 +16,14 @@ var app = function(){
   mainMap.drawRoute(route1)
   var button = document.getElementById('waypoint')
   button.addEventListener('click', function(){
-      mainMap.addDraggableMarker(mainMap.googleMap.getCenter())//coords entered ought to be center of map
+    var mapCenter = mainMap.googleMap.getCenter()
+    // COMMENTED OUT ADD WAYPOINT (CAN BE INCLUDED INSTEAD OF addDraggableMarker)
+      // directions.waypoints.push({
+      //   location: mapCenter,
+      //   stopover: true
+      // })
+      mainMap.addDraggableMarker(mapCenter)
+      mainMap.drawRoute(directions.directions())
     })
 }
 

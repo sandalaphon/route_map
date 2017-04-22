@@ -25,25 +25,9 @@ MapWrapper.prototype ={
       var infoWindow = new google.maps.InfoWindow({
         content: contentString
       })
-      //include as waypoint
 
       infoWindow.open(this.googleMap,draggableMarker);
-   
     
-
-    
-    var startLatitude = localStorage.getItem("latitude"); //need better names for storage
-
-    var startLongitude = localStorage.getItem("longitude"); //same here
-    var start = {lat:+startLatitude, lng:+startLongitude}
-    var adjustedRoute = new Route(start ,{lat: 56, lng: -3.2}, "BICYCLING")
-    console.log({lat: evt.latLng.lat(),lng: evt.latLng.lng()})
-    adjustedRoute.waypoints.push({
-      location: {lat: evt.latLng.lat(),lng: evt.latLng.lng()},
-      stopover: true
-      })
-    var route2 = adjustedRoute.directions()
-    this.drawRoute(route2)
     }.bind(this));
     return draggableMarker;
   },
@@ -74,6 +58,8 @@ MapWrapper.prototype ={
       draggable: true,
       map: this.googleMap
     });
+  
+
     // directionsDisplay.setMap(this.googleMap);
 
     directionsService.route(directionsResult, function(res, status){
@@ -81,11 +67,11 @@ MapWrapper.prototype ={
         directionsDisplay.setDirections(res)
         this.computeTotalDistance(directionsDisplay.getDirections());
         this.computeEstimatedTime(directionsDisplay.getDirections());
-        // directionsDisplay.addListener('directions_changed', function() {
-        //   // directionsDisplay.setDirections(res)
-        //           this.computeTotalDistance(directionsDisplay.getDirections());
-
-        //         });
+        //Distance and time update with new route
+        directionsDisplay.addListener('directions_changed', function() {
+                  this.computeTotalDistance(directionsDisplay.getDirections());
+                  this.computeEstimatedTime(directionsDisplay.getDirections());
+                }.bind(this));
       }
     }.bind(this)) 
   },

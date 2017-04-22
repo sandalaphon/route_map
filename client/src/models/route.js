@@ -1,10 +1,10 @@
  var Route = function(origin, destination, travelMode){
-  this.origin = origin;
-  this.destination = destination;
-  this.travelMode = travelMode;
-  this.waypoints = [];
-  this.optimizeWaypoints = true;
-  // this.provideRouteAlternatives = true;
+  this.origin = origin,
+  this.destination = destination,
+  this.waypoints = [],
+  this.travelMode = travelMode,
+ 
+  this.optimizeWaypoints = true// this.provideRouteAlternatives = true;
  } 
 
  Route.prototype = {
