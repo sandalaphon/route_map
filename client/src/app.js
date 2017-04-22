@@ -2,14 +2,15 @@ var MapWrapper = require('./mapWrapper.js')
 var Route = require('./models/route.js')
 
 
+
 var app = function(){
   localStorage.clear();
-  var startButton = document.querySelector("#start")
-  var endButton = document.querySelector('#finish')
-  var routeButton = document.querySelector('#route')
-  var cyclingButton = document.querySelector('#cycling')
-  var walkingButton = document.querySelector('#walking') 
-
+  var startButton = document.querySelector("#start");
+  var endButton = document.querySelector('#finish');
+  var routeButton = document.querySelector('#route');
+  var cyclingButton = document.querySelector('#cycling');
+  var walkingButton = document.querySelector('#walking'); 
+  var saveButton = document.querySelector('#save');
 
 
   var center = {lat: 55.953251, lng: -3.188267}
@@ -17,6 +18,7 @@ var app = function(){
   var mainMap = new MapWrapper(containerDiv, center, 5);
   var transportMethod;
   var routeName;
+  var route = null;
   
   startButton.addEventListener('click', function(){
     mainMap.addStartClickEvent();
@@ -47,9 +49,41 @@ var app = function(){
       var end = {lat:+finishLatitude, lng:+finishLongitude}
       console.log(start, end)
       var directions = new Route(start, end, transportMethod)
-      var route = directions.directions();
+      route = directions.directions();
       mainMap.drawRoute(route)
     })
+
+  saveButton.addEventListener('click', function(){
+    if(route){
+      var jsonString = JSON.stringify(route);
+      makePostRequest("http://localhost:3000/api/routes", function()
+        {}, jsonString)
+      
+    }
+  })
+
+  var makeRequest = function(url, callback){
+    var request = new XMLHttpRequest();
+    request.open("GET", url);
+    request.onload = callback;
+    request.send()
+  }
+
+  var makePostRequest = function(url, callback, payload){
+    // post XMLHTTP reauest
+    var request = new XMLHttpRequest();
+    request.open("POST", url);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.onload = callback;
+    request.send(payload);
+  }
+
+ 
+  var requestComplete = function(){
+    if(this.status != 200) return;
+    var jsonString = this.responseText;
+    countries = JSON.parse(jsonString);
+  }
 }
 
 window.onload = app;
