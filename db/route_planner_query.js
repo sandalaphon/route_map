@@ -10,6 +10,7 @@ RoutesQuery.prototype = {
   all: function(onQueryFinished){
     MongoClient.connect(this.url,function(err, db){
       if(db){
+        console.log(this)
         var collection = db.collection(this.collection);
         collection.find().toArray(function(err, docs){
           onQueryFinished(docs);
