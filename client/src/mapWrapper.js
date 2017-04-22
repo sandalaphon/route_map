@@ -7,6 +7,7 @@ var MapWrapper = function (container, coords, zoom) {
     center: coords,
     zoom: zoom
   })
+  this.route = null
 }
 
 MapWrapper.prototype = {
@@ -43,7 +44,7 @@ MapWrapper.prototype = {
   },
 
   addStartClickEvent: function () {
-    console.log('at addStartClickEvent', this)
+    // console.log('at addStartClickEvent', this)
     var startListener = google.maps.event.addListener(this.googleMap, 'click', function (event) {
       var startLatitude = event.latLng.lat()
       var startLongitude = event.latLng.lng()
@@ -60,7 +61,7 @@ MapWrapper.prototype = {
   },
 
   addFinishClickEvent: function () {
-    console.log('at addEndClickEvent', this)
+    // console.log('at addEndClickEvent', this)
     var endListener = google.maps.event.addListener(this.googleMap, 'click', function (event) {
       var finishLatitude = event.latLng.lat()
       var finishLongitude = event.latLng.lng()
@@ -70,7 +71,7 @@ MapWrapper.prototype = {
       if (marker) marker.setMap(null)
       marker = this.addMarker({lat: finishLatitude, lng: finishLongitude})
       this.endmarkers.push(marker)
-      console.log(finishLatitude, finishLongitude, this)
+      // console.log(finishLatitude, finishLongitude, this)
       google.maps.event.removeListener(endListener)
     }.bind(this))
   },
@@ -84,8 +85,16 @@ MapWrapper.prototype = {
     var start = {lat: +startLatitude, lng: +startLongitude}
     var end = {lat: +finishLatitude, lng: +finishLongitude}
     var directions = new Route(start, end, this.transportMethod)
-    var route = directions.directions()
-    this.mainMap.drawRoute(route)
+    this.route = directions.directions()
+    console.log(this.route, this)
+    this.mainMap.drawRoute(this.route)
+  },
+
+  saveRoute: function () {
+    console.log('got here', this.route, this)
+    if (this.route) {
+      Route.save(this.route)   // this.route is not a Route!
+    }
   },
 
   drawRoute: function (directionsResult) {
@@ -99,7 +108,7 @@ MapWrapper.prototype = {
     // directionsDisplay.setMap(this.googleMap);
 
     directionsService.route(directionsResult, function (res, status) {
-      if (status == 'OK') {
+      if (status === 'OK') {
         directionsDisplay.setDirections(res)
         this.computeTotalDistance(directionsDisplay.getDirections())
         this.computeEstimatedTime(directionsDisplay.getDirections())
@@ -113,7 +122,7 @@ MapWrapper.prototype = {
           this.computeEstimatedTime(directionsDisplay.getDirections())
         }.bind(this))
       }
-      console.log(res)
+      // console.log(res)
     }.bind(this))
   },
   // compute total distance and display

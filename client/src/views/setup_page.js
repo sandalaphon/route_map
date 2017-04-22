@@ -17,6 +17,8 @@ var Page = function () {
     containerDiv: containerDiv,
     mainMap: new MapWrapper(containerDiv, {lat: 55.953251, lng: -3.188267}, 5),
     transportMethod: 'BICYCLING'
+  }
+}
 
 Page.prototype = {
 
@@ -30,10 +32,7 @@ Page.prototype = {
       this.map.transportMethod = 'WALKING'
     }.bind(this))
     this.setButtonEvent('click', this.buttons['route'], this.map.mainMap.calculateRoute.bind(this.map))
-  },
-
-  setupMap: function () {
-
+    this.setButtonEvent('click', this.buttons['save'], this.map.mainMap.saveRoute.bind(this.map))
   },
 
   setButtonEvent: function (type, button, callback) {
