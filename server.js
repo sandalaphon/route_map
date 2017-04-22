@@ -2,8 +2,9 @@ var express = require('express')
 var app = express()
 var bodyParser = require('body-parser')
 
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit: '16mb'}));
 app.use(bodyParser.urlencoded({extended: true}))
+
 
 app.use(require('./controllers/index.js'))
 

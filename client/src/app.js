@@ -55,7 +55,9 @@ var app = function(){
 
   saveButton.addEventListener('click', function(){
     if(route){
-      var jsonString = JSON.stringify(route);
+      currentRoute = mainMap.currentRoute
+      console.log(currentRoute)
+      var jsonString = JSON.stringify(currentRoute);
       makePostRequest("http://localhost:3000/api/routes", function()
         {}, jsonString)
       

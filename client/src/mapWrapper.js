@@ -3,6 +3,7 @@ var Route = require('./models/route.js')
 var MapWrapper = function(container, coords, zoom){
   this.startmarkers = []
   this.endmarkers=[]
+  this.currentRoute
   this.googleMap = new google.maps.Map(container, {
     center: coords,
     zoom: zoom
@@ -49,12 +50,14 @@ MapWrapper.prototype ={
       var startLongitude = event.latLng.lng() 
       localStorage.setItem("startLatitude", startLatitude)
       localStorage.setItem("startLongitude", startLongitude)
+      //Remove Marker when dragged
       if (this.startmarkers.length){
       var marker = this.startmarkers.pop()
       marker.setMap(null)
     }
       marker = this.addMarker({lat: startLatitude, lng: startLongitude});
       this.startmarkers.push(marker)
+
       google.maps.event.removeListener(startListener);
 
     }.bind(this));
@@ -66,11 +69,13 @@ MapWrapper.prototype ={
       var finishLongitude = event.latLng.lng() 
       localStorage.setItem("finishLatitude", finishLatitude)
       localStorage.setItem("finishLongitude", finishLongitude)
+      //Remove marker when dragged
       var marker = this.endmarkers.pop()
       if(marker) marker.setMap(null)
       marker = this.addMarker({lat: finishLatitude, lng: finishLongitude});
     this.endmarkers.push(marker)
       console.log(finishLatitude, finishLongitude)
+
       google.maps.event.removeListener(endListener);
     }.bind(this));
   },
@@ -90,11 +95,15 @@ MapWrapper.prototype ={
 
     directionsService.route(directionsResult, function(res, status){
       if(status== 'OK'){
+        
         directionsDisplay.setDirections(res)
+
+        this.currentRoute =directionsDisplay.getDirections()
         this.computeTotalDistance(directionsDisplay.getDirections());
         this.computeEstimatedTime(directionsDisplay.getDirections());
         //Distance and time update with new route
         directionsDisplay.addListener('directions_changed', function() {
+         this.currentRoute =directionsDisplay.getDirections()
           var marker1 = this.startmarkers.pop()
           if(marker1) marker1.setMap(null)
             var marker2 = this.endmarkers.pop()
