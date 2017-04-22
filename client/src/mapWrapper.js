@@ -15,22 +15,36 @@ MapWrapper.prototype ={
     return marker;
   },
 
-  addClickEvent: function(){
-    google.maps.event.addListener(this.googleMap, 'click', function(event){
-      var latitude = event.latLng.lat()
-      var longitude = event.latLng.lng() 
-      localStorage.setItem("latitude", latitude)
-      localStorage.setItem("longitude", longitude)
-      this.addMarker({lat: latitude, lng: longitude});
-      console.log(latitude, longitude)
+  addStartClickEvent: function(){
+      var startListener = google.maps.event.addListener(this.googleMap, 'click', function(event){
+      var startLatitude = event.latLng.lat()
+      var startLongitude = event.latLng.lng() 
+      localStorage.setItem("startLatitude", startLatitude)
+      localStorage.setItem("startLongitude", startLongitude)
+      this.addMarker({lat: startLatitude, lng: startLongitude});
+      google.maps.event.removeListener(startListener);
+
+    }.bind(this));
+  },
+
+  addFinishClickEvent: function(){
+      var endListener = google.maps.event.addListener(this.googleMap, 'click', function(event){
+      var finishLatitude = event.latLng.lat()
+      var finishLongitude = event.latLng.lng() 
+      localStorage.setItem("finishLatitude", finishLatitude)
+      localStorage.setItem("finishLongitude", finishLongitude)
+      this.addMarker({lat: finishLatitude, lng: finishLongitude});
+      console.log(finishLatitude, finishLongitude)
+      google.maps.event.removeListener(endListener);
     }.bind(this));
   },
 
   drawRoute:function(directionsResult){
     var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
-    directionsDisplay.setMap(this.googleMap);
-
+    var directionsDisplay = new google.maps.DirectionsRenderer({
+    draggable: true,
+    map:this.googleMap
+  })
     directionsService.route(directionsResult, function(res, status){
       if(status== 'OK'){
         directionsDisplay.setDirections(res)
