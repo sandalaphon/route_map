@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 var Route = require('../route.js')
 var assert = require('assert')
 
