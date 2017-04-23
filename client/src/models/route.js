@@ -9,6 +9,7 @@ var Route = function (origin, destination, travelMode, name) {
   this.destination = destination,
   this.waypoints = [],
   this.travelMode = travelMode,
+  this.calculatedRoute = {}     // the directions calculated by whatever routing engine is used (google directions)
 
   this.optimizeWaypoints = true// this.provideRouteAlternatives = true;
 }
@@ -24,9 +25,12 @@ Route.prototype = {
     }
   },
 
-  save: function (obj) {
-    var jsonString = JSON.stringify(obj)
-    MakeRequest.makePostRequest('http://localhost:3000/api/routes', function () {}, jsonString)
+  save: function () {
+    var makeRequest = new MakeRequest()
+    var jsonString = JSON.stringify(this)
+    makeRequest.makePostRequest('http://localhost:3000/api/routes', function () {
+      return 'saved'
+    }, jsonString)
   }
 }
 

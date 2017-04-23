@@ -86,15 +86,16 @@ MapWrapper.prototype = {
     var start = {lat: +startLatitude, lng: +startLongitude}
     var end = {lat: +finishLatitude, lng: +finishLongitude}
     var directions = new Route(start, end, this.transportMethod)
-    this.route = directions.directions()
+    this.route = directions
+    this.route.calculatedRoute = directions.directions()
     console.log(this.route, this)
-    this.mainMap.drawRoute(this.route)
+    this.mainMap.drawRoute(this.route.calculatedRoute)
   },
 
   saveRoute: function () {
     console.log('got here', this.route, this)
     if (this.route) {
-      Route.save(this.route)   // this.route is not a Route!
+      this.route.save()   // this.route is now a Route!
     }
   },
 
