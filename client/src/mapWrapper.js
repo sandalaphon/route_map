@@ -45,7 +45,6 @@ MapWrapper.prototype = {
   },
 
   addStartClickEvent: function () {
-    // console.log('at addStartClickEvent', this)
     var startListener = google.maps.event.addListener(this.googleMap, 'click', function (event) {
       var startLatitude = event.latLng.lat()
       var startLongitude = event.latLng.lng()
@@ -62,7 +61,6 @@ MapWrapper.prototype = {
   },
 
   addFinishClickEvent: function () {
-    // console.log('at addEndClickEvent', this)
     var endListener = google.maps.event.addListener(this.googleMap, 'click', function (event) {
       var finishLatitude = event.latLng.lat()
       var finishLongitude = event.latLng.lng()
@@ -72,7 +70,6 @@ MapWrapper.prototype = {
       if (marker) marker.setMap(null)
       marker = this.addMarker({lat: finishLatitude, lng: finishLongitude})
       this.endmarkers.push(marker)
-      // console.log(finishLatitude, finishLongitude, this)
       google.maps.event.removeListener(endListener)
     }.bind(this))
   },
@@ -88,12 +85,10 @@ MapWrapper.prototype = {
     var directions = new Route(start, end, this.transportMethod)
     this.route = directions
     this.route.calculatedRoute = directions.directions()
-    console.log(this.route, this)
     this.mainMap.drawRoute(this.route.calculatedRoute)
   },
 
   saveRoute: function () {
-    console.log('enter saveRoute:this.route.calculatedRoute = ', this.route.calculatedRoute, 'this.mainMap.currentRoute = ', this.mainMap.currentRoute, 'this = ', this)
     if (this.route) {
       this.route.calculatedRoute = this.mainMap.currentRoute
       this.route.save()   // this.route is now a Route!
@@ -124,10 +119,8 @@ MapWrapper.prototype = {
           if (marker2) marker2.setMap(null)
           this.computeTotalDistance(directionsDisplay.getDirections())
           this.computeEstimatedTime(directionsDisplay.getDirections())
-          console.log('in drawRoute: this.currentRoute = ', this.currentRoute, 'this = ', this)
         }.bind(this))
       }
-      // console.log(res)
     }.bind(this))
   },
   // compute total distance and display
