@@ -58,6 +58,10 @@ Sidebar.prototype = {
     else if (sidebar.style.display === 'none'){
       sidebar.style.display = 'inline-block';  
     }
+  },
+
+  deleteRoute: function(){
+    
   }
 }
 
