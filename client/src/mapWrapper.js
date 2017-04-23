@@ -110,6 +110,7 @@ MapWrapper.prototype = {
       if(status== 'OK'){
         directionsDisplay.setDirections(res)
         this.currentRoute =directionsDisplay.getDirections()
+        console.log(this.currentRoute)
         this.computeTotalDistance(directionsDisplay.getDirections());
         this.computeEstimatedTime(directionsDisplay.getDirections());
         //Distance and time update with new route

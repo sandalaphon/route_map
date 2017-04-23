@@ -34,8 +34,6 @@ Page.prototype = {
       this.map.transportMethod = 'WALKING'
     }.bind(this))
     this.setButtonEvent('click', this.buttons['route'], this.map.mainMap.calculateRoute.bind(this.map))
-    //
-
     this.setButtonEvent('click', this.buttons['save'], function(){
     var routeName = document.querySelector('#routeName').value 
     var currentRoute = this.map.mainMap.currentRoute
@@ -44,7 +42,7 @@ Page.prototype = {
       this.map.mainMap.saveRoute.bind(this.map)
       }
       var googleResponse = this.map.mainMap.currentRoute.request      //save if route is named and defined
-      
+      console.log(this.map.mainMap,currentRoute)
       console.log("this.map.mainMap.currentRoute.request", this.map.mainMap.currentRoute.request)
       
       if((googleResponse)&&(routeName)){
@@ -67,7 +65,6 @@ Page.prototype = {
 
   setButtonEvent: function (type, button, callback) {
     button.addEventListener(type, callback)
-    // console.log(type, button, callback)
   },
   
   viewRoute: function(routeName){
@@ -83,18 +80,13 @@ Page.prototype = {
       var directionsServiceObj = JSON.parse(jsonString);
       console.log("FROM DB: ")
       console.log(directionsServiceObj[0].googleResponse)
-      // mainMap.renderToScreen(directionsServiceObj[0].routeObject)
-      console.log(this)
-      console.log(request)
+
       this.map.mainMap.drawRoute(directionsServiceObj[0].googleResponse)
     }.bind(this)
-    console.log("get here??", this)
     request.send();
 
   }
 
 }
-
-
 
 module.exports = Page

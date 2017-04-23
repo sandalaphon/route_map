@@ -34,16 +34,24 @@ RoutesQuery.prototype = {
   find: function(routeID, onQueryFinished){
     MongoClient.connect(this.url, function(err, db){
       if(db){
+        var regex = /[0-9a-f]{24}/g;
         var collection = db.collection(this.collection);
-        if(routeID.length===24){
+        // if 24 character hex
+        if(regex.test(routeID))
+//           
+        {
         collection.find({_id: ObjectID(routeID)}).toArray(function(err, docs){
           onQueryFinished(docs)
         })
-      }else{
+        //else try name
+      }else
+      {
         collection.find({name: routeID}).toArray(function(err, docs){
           onQueryFinished(docs)
+
         })
       }
+     
       }
     }.bind(this))
   },
