@@ -13,6 +13,14 @@ routePlannerRouter.get('/', function (req, res) {
 // SHOW
 routePlannerRouter.get('/:id', function (req, res) {
   routesQuery.find(req.params.id, function (doc) {
+    console.log(doc)
+    res.json(doc)
+  })
+})
+
+// SHOW/byname
+routePlannerRouter.get('/name/:id', function (req, res) {
+  routesQuery.findRouteByName(req.params.id, function (doc) {
     res.json(doc)
   })
 })

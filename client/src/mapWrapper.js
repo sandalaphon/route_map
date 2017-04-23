@@ -97,7 +97,7 @@ MapWrapper.prototype ={
       if(status== 'OK'){
         
         directionsDisplay.setDirections(res)
-
+        console.log(res)
         this.currentRoute =directionsDisplay.getDirections()
         this.computeTotalDistance(directionsDisplay.getDirections());
         this.computeEstimatedTime(directionsDisplay.getDirections());
@@ -137,7 +137,19 @@ MapWrapper.prototype ={
            var hours = (totalMinutes-remainderMinutes)/60
 
            document.getElementById('time').innerHTML = hours + ' hours '+ remainderMinutes +' minutes and ' + remainderSeconds + ' seconds';
-         }
+         },
+
+       renderToScreen: function(routeObject){
+        console.log(routeObject)
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer({
+          draggable: true,
+          map: this.googleMap
+        });
+        directionsService.route()
+        directionsDisplay.setMap(this.googleMap)
+        directionsDisplay.setDirections(routeObject)
+       }
 }
 
 module.exports = MapWrapper;

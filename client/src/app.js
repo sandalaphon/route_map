@@ -1,5 +1,6 @@
 var MapWrapper = require('./mapWrapper.js')
 var Route = require('./models/route.js')
+var mainMap;
 
 
 
@@ -11,18 +12,19 @@ var app = function(){
   var cyclingButton = document.querySelector('#cycling');
   var walkingButton = document.querySelector('#walking'); 
   var saveButton = document.querySelector('#save');
+  var savedRouteButton = document.querySelector('#savedRoute')
 
 
   var center = {lat: 55.953251, lng: -3.188267}
   var containerDiv = document.querySelector("#main-map");
-  var mainMap = new MapWrapper(containerDiv, center, 5);
+   mainMap = new MapWrapper(containerDiv, center, 5);
   var transportMethod;
   var routeName;
   var route = null;
   
   startButton.addEventListener('click', function(){
     mainMap.addStartClickEvent();
-    })
+  })
 
   endButton.addEventListener('click', function(){
     mainMap.addFinishClickEvent();
@@ -35,8 +37,6 @@ var app = function(){
   walkingButton.addEventListener('click', function(){
     transportMethod = "WALKING";
   })
-
-
 
   routeButton.addEventListener('click',
     function(){
@@ -54,14 +54,29 @@ var app = function(){
     })
 
   saveButton.addEventListener('click', function(){
-    if(route){
-      currentRoute = mainMap.currentRoute
-      console.log(currentRoute)
-      var jsonString = JSON.stringify(currentRoute);
-      makePostRequest("http://localhost:3000/api/routes", function()
-        {}, jsonString)
-      
+    var routeName = document.querySelector('#routeName').value
+    console.log(routeName)
+    if(!routeName){
+      alert("Please enter a route Name")
+      //we will need a guard to check routename not already used
     }
+    if((route) && routeName){
+      console.log(routeName)
+      currentRoute = mainMap.currentRoute
+      objectToSave = {
+        "routeName" : routeName,
+        "routeObject" : currentRoute
+      }
+      console.log(currentRoute)
+      var jsonString = JSON.stringify(objectToSave);
+      makePostRequest("http://localhost:3000/api/routes", function()
+        {}, jsonString)      
+    }
+  })
+
+  savedRouteButton.addEventListener('click', function(){
+    var routeName = document.querySelector('#savedRouteName').value
+    viewRoute(routeName)
   })
 
   var makeRequest = function(url, callback){
@@ -80,12 +95,32 @@ var app = function(){
     request.send(payload);
   }
 
- 
+
   var requestComplete = function(){
     if(this.status != 200) return;
     var jsonString = this.responseText;
     countries = JSON.parse(jsonString);
   }
+
+  var viewRoute  = function(routeName){
+    var request = new XMLHttpRequest();
+    var url = "http://localhost:3000/api/routes/name/" + routeName
+    request.open("GET", url);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.onload = function(){
+      if(this.status!== 200) {
+        alert("Not Found")
+        return}
+        var jsonString = this.responseText;
+      var directionsServiceObj = JSON.parse(jsonString);
+      console.log("FROM DB: ")
+      console.log(directionsServiceObj[0].routeObject)
+      // mainMap.renderToScreen(directionsServiceObj[0].routeObject)
+      mainMap.drawRoute(directionsServiceObj[0].routeObject.request)
+    }
+    request.send();
+  }
 }
 
-window.onload = app;
+  window.onload = app;
+
