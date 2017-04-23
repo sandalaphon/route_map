@@ -1,5 +1,5 @@
 var Sidebar = function(){
-  this.sidebar = document.querySelector('#sidebar');
+  this.sidebarHTMLObject = document.querySelector('#sidebar');
   sidebarHidden = false;
 }
 
@@ -52,18 +52,12 @@ Sidebar.prototype = {
 
   revealWishlist: function(){
     var sidebar = document.querySelector('#sidebar');    
-    // console.log(sidebar.style.display)
-    // sidebar.style.display = 'inline-block'
-    // console.log(sidebar.style.display)
     if (sidebar.style.display === 'inline-block'){
       sidebar.style.display = 'none';  
     }
-
     else if (sidebar.style.display === 'none'){
       sidebar.style.display = 'inline-block';  
     }
-
-    
   }
 }
 

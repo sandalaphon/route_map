@@ -21,7 +21,7 @@ var app = function () {
 
   var sidebar = new Sidebar()
   sidebar.populateList(makeRequest)
-  sidebar.sidebar.style.display = 'none';
+  sidebar.sidebarHTMLObject.style.display = 'none';
 
   var wishlistRevealButton = document.querySelector('#wishlist-button');
   wishlistRevealButton.addEventListener('click', sidebar.revealWishlist);
