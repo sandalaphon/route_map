@@ -21,9 +21,7 @@
   height: 700px;
   border: 1px black solid;
   float: left;
-  display: inline;
+  display: inline-block;
 }
 
-#doneButton {
-   
-}
+#doneButton {}

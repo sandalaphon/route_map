@@ -1,5 +1,6 @@
 var Sidebar = function(){
-  this.sidebar = document.querySelector('#sidebar');
+  this.sidebarHTMLObject = document.querySelector('#sidebar');
+  sidebarHidden = false;
 }
 
 Sidebar.prototype = {
@@ -14,6 +15,14 @@ Sidebar.prototype = {
       parsedList.forEach(function(element){
         var newLi = document.createElement('li');
         newLi.innerText = element.route + " " + element.travelMode;
+
+        var newBr = document.createElement('br');
+        newLi.appendChild(newBr)
+
+        var newATag = document.createElement('a');
+        newATag.href = "#";
+        newATag.text = "Map Link Here";
+        newLi.appendChild(newATag);
 
         var buttonsDiv = document.createElement('div')
         var divP = document.createElement('p')
@@ -34,8 +43,21 @@ Sidebar.prototype = {
         newLi.appendChild(doneButton);
         newLi.appendChild(deleteButton);
         wishlistUL.appendChild(newLi);
+
+        var listBr = document.createElement('br')
+        wishlistUL.appendChild(listBr)
       })
     })
+  },
+
+  revealWishlist: function(){
+    var sidebar = document.querySelector('#sidebar');    
+    if (sidebar.style.display === 'inline-block'){
+      sidebar.style.display = 'none';  
+    }
+    else if (sidebar.style.display === 'none'){
+      sidebar.style.display = 'inline-block';  
+    }
   }
 }
 
