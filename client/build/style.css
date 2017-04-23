@@ -17,6 +17,7 @@
 }
 
 #sidebar {
+  z-index: 1;
   width: 250px;
   height: 700px;
   border: 1px black solid;
@@ -24,6 +25,4 @@
   display: inline;
 }
 
-#doneButton {
-   
-}
+#doneButton {}

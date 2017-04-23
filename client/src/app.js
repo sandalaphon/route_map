@@ -19,6 +19,8 @@ var app = function () {
 
   var sidebar = new Sidebar()
   sidebar.populateList(makeRequest)
+  var wishlistRevealButton = document.querySelector('#wishlist-button');
+  wishlistRevealButton.onlick = sidebar.revealWishlist;
 }
 
 window.onload = app
