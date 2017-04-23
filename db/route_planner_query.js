@@ -11,7 +11,7 @@ RoutesQuery.prototype = {
   all: function(onQueryFinished){
     MongoClient.connect(this.url,function(err, db){
       if(db){
-        var collection = db.collection("routes");
+        var collection = db.collection(this.collection);
         collection.find().toArray(function(err, docs){
           onQueryFinished(docs);
         })
@@ -22,7 +22,7 @@ RoutesQuery.prototype = {
   add: function(routeToAdd, onQueryFinished){
     MongoClient.connect(this.url, function(err, db){
       if(db){
-        var collection = db.collection("routes");
+        var collection = db.collection(this.collection);
         collection.insert(routeToAdd);
         collection.find().toArray(function(err,docs){
           onQueryFinished(docs);
@@ -34,7 +34,7 @@ RoutesQuery.prototype = {
   find: function(routeID, onQueryFinished){
     MongoClient.connect(this.url, function(err, db){
       if(db){
-        var collection = db.collection("routes");
+        var collection = db.collection(this.collection);
         collection.find({_id: ObjectID(routeID)}).toArray(function(err, docs){
           onQueryFinished(docs)
         })
@@ -58,7 +58,7 @@ RoutesQuery.prototype = {
   delete: function(routeID, onQueryFinished){
     MongoClient.connect(this.url, function(err, db){
       if(db){
-        var collection = db.collection("routes");
+        var collection = db.collection(this.collection);
         collection.remove({_id: ObjectID(routeID)});
         collection.find().toArray(function(err, docs){
           onQueryFinished(docs);
@@ -70,7 +70,7 @@ RoutesQuery.prototype = {
   update: function(routeID, payload, onQueryFinished){
     MongoClient.connect(this.url, function(err, db){
       if(db){
-        var collection = db.collection("routes");
+        var collection = db.collection(this.collection);
         collection.updateOne({_id: ObjectID(routeID)}, {$set: payload}, function(err, docs){
           onQueryFinished(docs);
         });
