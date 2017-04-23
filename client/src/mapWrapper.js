@@ -3,7 +3,7 @@ var Route = require('./models/route.js')
 var MapWrapper = function (container, coords, zoom) {
   this.startmarkers = []
   this.endmarkers = []
-  this.currentRoute
+  this.currentRoute = null
   this.googleMap = new google.maps.Map(container, {
     center: coords,
     zoom: zoom
@@ -93,8 +93,9 @@ MapWrapper.prototype = {
   },
 
   saveRoute: function () {
-    console.log('got here', this.route, this)
+    console.log('enter saveRoute:this.route.calculatedRoute = ', this.route.calculatedRoute, 'this.mainMap.currentRoute = ', this.mainMap.currentRoute, 'this = ', this)
     if (this.route) {
+      this.route.calculatedRoute = this.mainMap.currentRoute
       this.route.save()   // this.route is now a Route!
     }
   },
@@ -123,6 +124,7 @@ MapWrapper.prototype = {
           if (marker2) marker2.setMap(null)
           this.computeTotalDistance(directionsDisplay.getDirections())
           this.computeEstimatedTime(directionsDisplay.getDirections())
+          console.log('in drawRoute: this.currentRoute = ', this.currentRoute, 'this = ', this)
         }.bind(this))
       }
       // console.log(res)
