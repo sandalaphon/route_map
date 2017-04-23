@@ -11,7 +11,8 @@ var Page = function () {
     cycling: document.querySelector('#cycling'),
     walking: document.querySelector('#walking'),
     save: document.querySelector('#save'),
-    viewsavedRouteButton: document.querySelector('#savedRoute')
+    viewsavedRouteButton: document.querySelector('#savedRoute'),
+    animationButton: document.querySelector('#animate')
   }
   var containerDiv = document.querySelector('#main-map')
   this.map = {
@@ -63,6 +64,11 @@ Page.prototype = {
     var routeName = document.querySelector('#savedRouteName').value
     this.viewRoute(routeName)
   }.bind(this))// we have no idea
+
+      this.setButtonEvent('click', this.buttons['animationButton'], function(){
+      this.map.mainMap.animateRoute()
+      
+    }.bind(this))
     
   },
 
