@@ -18,6 +18,7 @@ var Page = function () {
     mainMap: new MapWrapper(containerDiv, {lat: 55.953251, lng: -3.188267}, 5),
     transportMethod: 'BICYCLING'
   }
+
 }
 
 Page.prototype = {
@@ -39,6 +40,7 @@ Page.prototype = {
     button.addEventListener(type, callback)
     // console.log(type, button, callback)
   }
+
 }
 
 module.exports = Page
