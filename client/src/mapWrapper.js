@@ -150,13 +150,26 @@ MapWrapper.prototype = {
 
 
   animateRoute: function(){
+    console.log("currentRoute", this.currentRoute.request.travelMode)
     this.autoRefresh(this.googleMap, this.currentRoute.routes[0].overview_path)
     
   },
    
 
    autoRefresh: function (map, pathCoords) {
-      var marker=new google.maps.Marker({map:this.googleMap, icon:"http://maps.google.com/mapfiles/ms/micons/blue.png"});
+      var marker;
+      if(this.currentRoute.request.travelMode==="BICYCLING"){
+        marker=new google.maps.Marker({
+        map:this.googleMap,
+        optimized:false, // <-- required for animated gif
+          animation: google.maps.Animation.DROP,
+         icon:"http://www.animatedimages.org/data/media/237/animated-bicycle-image-0001.gif"})
+      }else{marker = new google.maps.Marker({
+        map:this.googleMap,
+        optimized:false, // <-- required for animated gif
+          animation: google.maps.Animation.DROP,
+         icon:"http://www.animatedimages.org/data/media/1635/animated-walking-image-0066.gif"})
+      };
       
        var route = new google.maps.Polyline({
           path: [],
@@ -176,17 +189,17 @@ MapWrapper.prototype = {
               console.log(coords);
               console.log("this",this);
               this.moveMarker(this.googleMap, marker, coords);
-          }.bind(this), 200 * i, pathCoords[i]);
+          }.bind(this), 100 * i, pathCoords[i]);
       }
   },
 
     moveMarker: function (map, marker, latlng) {
       marker.setPosition(latlng);
-      // map.panTo(latlng);
+      map.panTo(latlng);
   }
   
 
-  // autoRefresh(this.googleMap, t)
+  
   
  }
 
