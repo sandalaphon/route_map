@@ -19,7 +19,6 @@ Sidebar.prototype = {
         doneButton.id = "doneButton"
         doneButton.innerText = "Done"
         doneButton.onclick = function(){
-          console.log(newLi)
           newLi.style.textDecoration = 'line-through';
         }
 
