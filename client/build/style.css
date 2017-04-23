@@ -27,12 +27,11 @@
 
 #sidebar {
   position: absolute;
-  width: 250px;
+  width: 25%;
   height: 100%;
   float: left;
   display: none;
   z-index: 1;
-  transition: 0.5s;
   border-right: 1px black solid;
   background-color: white;
 }

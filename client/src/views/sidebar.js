@@ -1,3 +1,5 @@
+var MapWrapper = require('../mapWrapper.js')
+
 var Sidebar = function(){
   this.sidebarHTMLObject = document.querySelector('#sidebar');
   sidebarHidden = false;
@@ -38,6 +40,10 @@ Sidebar.prototype = {
           var deleteButton = document.createElement('button');
           deleteButton.id = "deleteButton"
           deleteButton.innerText = "Delete"
+          deleteButton.addEventListener('click', function(){
+            var map = document.querySelector('#main-map')
+            console.log(map.innerText)
+          })
 
         newLi.appendChild(divP)
         newLi.appendChild(doneButton);
@@ -60,9 +66,6 @@ Sidebar.prototype = {
     }
   },
 
-  deleteRoute: function(){
-    
-  }
 }
 
 module.exports = Sidebar;
