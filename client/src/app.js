@@ -17,10 +17,14 @@ var app = function () {
     request.send()
   }
 
+  // SIDEBAR
+
   var sidebar = new Sidebar()
   sidebar.populateList(makeRequest)
+  sidebar.sidebar.style.display = 'none';
+
   var wishlistRevealButton = document.querySelector('#wishlist-button');
-  wishlistRevealButton.onlick = sidebar.revealWishlist;
+  wishlistRevealButton.addEventListener('click', sidebar.revealWishlist);
 }
 
 window.onload = app

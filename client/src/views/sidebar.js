@@ -51,10 +51,19 @@ Sidebar.prototype = {
   },
 
   revealWishlist: function(){
-    if (this.sidebarHidden == false){
-      this.sidebar.style.width = 0;
-      console.log(this.sidebar.style.display)
+    var sidebar = document.querySelector('#sidebar');    
+    // console.log(sidebar.style.display)
+    // sidebar.style.display = 'inline-block'
+    // console.log(sidebar.style.display)
+    if (sidebar.style.display === 'inline-block'){
+      sidebar.style.display = 'none';  
     }
+
+    else if (sidebar.style.display === 'none'){
+      sidebar.style.display = 'inline-block';  
+    }
+
+    
   }
 }
 
