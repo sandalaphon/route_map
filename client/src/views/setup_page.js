@@ -90,7 +90,6 @@ Page.prototype = {
       var directionsServiceObj = JSON.parse(jsonString);
       console.log("FROM DB: ")
       console.log(directionsServiceObj[0].googleResponse)
-      // mainMap.renderToScreen(directionsServiceObj[0].routeObject)
       console.log(this)
       console.log(request)
       this.map.mainMap.drawRoute(directionsServiceObj[0].googleResponse)

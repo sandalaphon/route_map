@@ -195,7 +195,7 @@ MapWrapper.prototype = {
 
     moveMarker: function (map, marker, latlng) {
       marker.setPosition(latlng);
-      map.panTo(latlng);
+      // map.panTo(latlng);
   }
   
 

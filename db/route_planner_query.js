@@ -68,7 +68,7 @@ RoutesQuery.prototype = {
           })
         }
       }
-    })
+    }.bind(this))
   },
 
   // findRouteByName: function(name, onQueryFinished){
