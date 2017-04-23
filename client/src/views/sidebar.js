@@ -14,6 +14,16 @@ Sidebar.prototype = {
       parsedList.forEach(function(element){
         var newLi = document.createElement('li');
         newLi.innerText = element.route + " " + element.travelMode;
+
+        var doneButton = document.createElement('button');
+        doneButton.id = "doneButton"
+        doneButton.innerText = "Done"
+        doneButton.onclick = function(){
+          console.log(newLi)
+          newLi.style.textDecoration = 'line-through';
+        }
+
+        newLi.appendChild(doneButton);
         wishlistUL.appendChild(newLi);
       })
     })
