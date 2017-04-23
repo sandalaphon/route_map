@@ -28,16 +28,16 @@ Sidebar.prototype = {
         var divP = document.createElement('p')
         buttonsDiv.appendChild(divP)
 
-        var doneButton = document.createElement('button');
-        doneButton.id = "doneButton"
-        doneButton.innerText = "Done"
-        doneButton.onclick = function(){
-          newLi.style.textDecoration = 'line-through';
-        }
+          var doneButton = document.createElement('button');
+          doneButton.id = "doneButton"
+          doneButton.innerText = "Done"
+          doneButton.onclick = function(){
+            newLi.style.textDecoration = 'line-through';
+          }
 
-        var deleteButton = document.createElement('button');
-        deleteButton.id = "deleteButton"
-        deleteButton.innerText = "Delete"
+          var deleteButton = document.createElement('button');
+          deleteButton.id = "deleteButton"
+          deleteButton.innerText = "Delete"
 
         newLi.appendChild(divP)
         newLi.appendChild(doneButton);
