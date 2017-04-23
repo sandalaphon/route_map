@@ -2,6 +2,7 @@ var Route = require('./models/route.js')
 
 var MapWrapper = function (container, coords, zoom) {
   this.startmarkers = []
+
   this.endmarkers = []
   this.currentRoute = null
   this.googleMap = new google.maps.Map(container, {
@@ -103,16 +104,15 @@ MapWrapper.prototype = {
       map: this.googleMap
     })
 
-    // directionsDisplay.setMap(this.googleMap);
-    directionsService.route(directionsResult, function (res, status) {
-      if (status === 'OK') {
-        this.currentRoute = directionsDisplay.getDirections()
+    directionsService.route(directionsResult, function(res, status){
+      if(status== 'OK'){
         directionsDisplay.setDirections(res)
-        this.computeTotalDistance(directionsDisplay.getDirections())
-        this.computeEstimatedTime(directionsDisplay.getDirections())
-        // Distance and time update with new route
-        directionsDisplay.addListener('directions_changed', function () {
-          this.currentRoute = directionsDisplay.getDirections()
+        this.currentRoute =directionsDisplay.getDirections()
+        this.computeTotalDistance(directionsDisplay.getDirections());
+        this.computeEstimatedTime(directionsDisplay.getDirections());
+        //Distance and time update with new route
+        directionsDisplay.addListener('directions_changed', function() {
+         this.currentRoute = directionsDisplay.getDirections()
           var marker1 = this.startmarkers.pop()
           if (marker1) marker1.setMap(null)
           var marker2 = this.endmarkers.pop()
@@ -123,6 +123,7 @@ MapWrapper.prototype = {
       }
     }.bind(this))
   },
+  
   // compute total distance and display
   computeTotalDistance: function (result) {
     var total = 0
@@ -143,10 +144,10 @@ MapWrapper.prototype = {
     var remainderSeconds = totalSeconds % 60
     var totalMinutes = (totalSeconds - remainderSeconds) / 60
     var remainderMinutes = totalMinutes % 60
-    var hours = (totalMinutes - remainderMinutes) / 60
-
+    var hours = (totalMinutes - remainderMinutes) / 60   
     document.getElementById('time').innerHTML = hours + ' hours ' + remainderMinutes + ' minutes and ' + remainderSeconds + ' seconds'
   }
+
 }
 
 module.exports = MapWrapper

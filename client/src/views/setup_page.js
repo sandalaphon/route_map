@@ -1,4 +1,5 @@
 var MapWrapper = require('../mapWrapper.js')
+var Route = require('../models/route.js')
 
 var Page = function () {
   this.page = document
@@ -9,7 +10,8 @@ var Page = function () {
     route: document.querySelector('#route'),
     cycling: document.querySelector('#cycling'),
     walking: document.querySelector('#walking'),
-    save: document.querySelector('#save')
+    save: document.querySelector('#save'),
+    savedRouteButton: document.querySelector('#savedRoute')
   }
   var containerDiv = document.querySelector('#main-map')
   this.map = {
@@ -33,7 +35,35 @@ Page.prototype = {
       this.map.transportMethod = 'WALKING'
     }.bind(this))
     this.setButtonEvent('click', this.buttons['route'], this.map.mainMap.calculateRoute.bind(this.map))
-    this.setButtonEvent('click', this.buttons['save'], this.map.mainMap.saveRoute.bind(this.map))
+    //
+
+    this.setButtonEvent('click', this.buttons['save'], function(){
+    var routeName = document.querySelector('#routeName').value 
+    var currentRoute = this.map.mainMap.currentRoute
+    if(!routeName){
+      alert("Please enter a route Name");
+      this.map.mainMap.saveRoute.bind(this.map)
+      }
+      var googleResponse = this.map.mainMap.currentRoute.request      //save if route is named and defined
+      
+      console.log("this.map.mainMap.currentRoute.request", this.map.mainMap.currentRoute.request)
+      
+      if((googleResponse)&&(routeName)){
+        // create Route and then save it
+        var routeToSave = new Route ("not needed", "not needed", "not needed")
+        routeToSave.addName(routeName)
+        routeToSave.addGoogleResponse(googleResponse)
+        console.log(routeToSave)
+        routeToSave.save()
+      }
+      }.bind(this))
+
+    //test
+  //   this.setButtonEvent('click', this.buttons['savedRoute'], function(){
+  //   var routeName = document.querySelector('#savedRouteName').value
+  //   viewRoute(routeName)
+  // }.bind(this))// we have no idea
+    //
   },
 
   setButtonEvent: function (type, button, callback) {
@@ -43,4 +73,24 @@ Page.prototype = {
 
 }
 
+var viewRoute  = function(routeName){
+  var request = new XMLHttpRequest();
+  var url = "http://localhost:3000/api/routes/name/" + routeName
+  request.open("GET", url);
+  request.setRequestHeader("Content-Type", "application/json");
+  request.onload = function(){
+    if(this.status!== 200) {
+      alert("Not Found")
+      return}
+      var jsonString = this.responseText;
+    var directionsServiceObj = JSON.parse(jsonString);
+    console.log("FROM DB: ")
+    console.log(directionsServiceObj[0].routeObject)
+    // mainMap.renderToScreen(directionsServiceObj[0].routeObject)
+    this.map.mainMap.drawRoute(directionsServiceObj[0].routeObject.request)
+  }
+  request.send();
+}
+
 module.exports = Page
+
