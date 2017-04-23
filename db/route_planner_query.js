@@ -35,9 +35,15 @@ RoutesQuery.prototype = {
     MongoClient.connect(this.url, function(err, db){
       if(db){
         var collection = db.collection(this.collection);
+        if(routeID.length===24){
         collection.find({_id: ObjectID(routeID)}).toArray(function(err, docs){
           onQueryFinished(docs)
         })
+      }else{
+        collection.find({name: routeID}).toArray(function(err, docs){
+          onQueryFinished(docs)
+        })
+      }
       }
     }.bind(this))
   },
@@ -46,7 +52,7 @@ RoutesQuery.prototype = {
     MongoClient.connect(this.url, function(err,db){
       if(db){
         var collection = db.collection('routes');
-        collection.find({routeName: name}).toArray(function(err, docs){
+        collection.find({name: name}).toArray(function(err, docs){
           console.log(docs)
           onQueryFinished(docs)
         })
