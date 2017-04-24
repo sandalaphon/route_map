@@ -4,6 +4,7 @@ var Route = require('../models/route.js')
 var Page = function () {
   this.page = document
   this.route = null
+
   this.buttons = {
     start: document.querySelector('#start'),
     end: document.querySelector('#finish'),
@@ -11,7 +12,8 @@ var Page = function () {
     cycling: document.querySelector('#cycling'),
     walking: document.querySelector('#walking'),
     save: document.querySelector('#save'),
-    savedRouteButton: document.querySelector('#savedRoute')
+    viewsavedRouteButton: document.querySelector('#savedRoute'),
+    animationButton: document.querySelector('#animate')
   }
   var containerDiv = document.querySelector('#main-map')
   this.map = {
@@ -49,52 +51,104 @@ Page.prototype = {
       this.map.mainMap.saveRoute.bind(this.map)
       }
       var googleResponse = this.map.mainMap.currentRoute.request      //save if route is named and defined
-      
-      console.log("this.map.mainMap.currentRoute.request", this.map.mainMap.currentRoute.request)
-      
-      if((googleResponse)&&(routeName)){
-        // create Route and then save it
-        var routeToSave = new Route ("not needed", "not needed", "not needed")
-        routeToSave.addName(routeName)
-        routeToSave.addGoogleResponse(googleResponse)
-        console.log(routeToSave)
-        routeToSave.save()
-      }
+      console.log("GGGGG", this.map.mainMap.currentRoute.geocoded_waypoints[0].place_id)
+      console.log("GGGGG", this.map.mainMap.currentRoute)
+      var originAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[0].place_id
+      var destinationAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[this.map.mainMap.currentRoute.geocoded_waypoints.length-1].place_id
+    
+      this.getAddressFromGeoCode(destinationAddressId, function(streetName){
+        var destinationAddress = streetName;
+
+        this.getAddressFromGeoCode(originAddressId, function(streetName){
+
+          var routeToSave = new Route(streetName, destinationAddress, "not needed")
+          routeToSave.addName(routeName)
+          routeToSave.addGoogleResponse(googleResponse)
+          console.log(routeToSave)
+          routeToSave.save()
+        });
+
+      }.bind(this))
+
+      // if( (googleResponse) && (routeName) ){
+      //   // create Route and then save it
+      //   var routeToSave = new Route(this.originAddress, this.destinationAddress, "not needed")
+      //   routeToSave.addName(routeName)
+      //   routeToSave.addGoogleResponse(googleResponse)
+      //   console.log(routeToSave)
+      //   routeToSave.save()
+      // }
       }.bind(this))
 
     //test
-  //   this.setButtonEvent('click', this.buttons['savedRoute'], function(){
-  //   var routeName = document.querySelector('#savedRouteName').value
-  //   viewRoute(routeName)
-  // }.bind(this))// we have no idea
-    //
+    this.setButtonEvent('click', this.buttons['viewsavedRouteButton'], function(){
+    var routeName = document.querySelector('#savedRouteName').value
+    this.viewRoute(routeName)
+  }.bind(this))// we have no idea
+
+      this.setButtonEvent('click', this.buttons['animationButton'], function(){
+      this.map.mainMap.animateRoute()
+      
+    }.bind(this))
+    
   },
+
+
+      getAddressFromGeoCode: function(addressId, callback){
+          var geoCoder = new google.maps.Geocoder;
+           geoCoder.geocode({'placeId': addressId}, function(results, status){
+            console.log("we got here and this is: ", this)
+           if(status==="OK"){
+           if(results[0]){
+              // this.getCountryFromGeoCode(results)
+             
+             var streetName =results[0].formatted_address
+             console.log(streetName)
+             console.log("STREET NAME!!", streetName)
+             console.log("results", results)
+           } else {
+               window.alert('No results found');
+             }
+           } else {
+             window.alert('Geocoder failed due to: ' + status + "\nDont click in the sea!");
+         }
+         console.log("streetName",streetName)
+        callback(streetName);
+
+       }.bind(this))
+           
+   },
 
   setButtonEvent: function (type, button, callback) {
     button.addEventListener(type, callback)
     // console.log(type, button, callback)
+  },
+  
+  viewRoute: function(routeName){
+    var request = new XMLHttpRequest();
+    var url = "http://localhost:3000/api/routes/"+routeName
+    request.open("GET", url);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.onload = function(){
+      if(request.status!== 200) {
+        alert("Not Found")
+        return}
+        var jsonString = request.responseText;
+      var directionsServiceObj = JSON.parse(jsonString);
+      console.log("FROM DB: ")
+      console.log(directionsServiceObj[0].googleResponse)
+      console.log(this)
+      console.log(request)
+      this.map.mainMap.drawRoute(directionsServiceObj[0].googleResponse)
+    }.bind(this)
+    console.log("get here??", this)
+    request.send();
+
   }
 
 }
 
-var viewRoute  = function(routeName){
-  var request = new XMLHttpRequest();
-  var url = "http://localhost:3000/api/routes/name/" + routeName
-  request.open("GET", url);
-  request.setRequestHeader("Content-Type", "application/json");
-  request.onload = function(){
-    if(this.status!== 200) {
-      alert("Not Found")
-      return}
-      var jsonString = this.responseText;
-    var directionsServiceObj = JSON.parse(jsonString);
-    console.log("FROM DB: ")
-    console.log(directionsServiceObj[0].routeObject)
-    // mainMap.renderToScreen(directionsServiceObj[0].routeObject)
-    this.map.mainMap.drawRoute(directionsServiceObj[0].routeObject.request)
-  }
-  request.send();
-}
+
 
 module.exports = Page
 
