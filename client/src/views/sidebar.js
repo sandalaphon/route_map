@@ -1,6 +1,9 @@
-var Sidebar = function(){
+var MapWrapper = require('../mapWrapper.js')
+
+var Sidebar = function(passedPage){
   this.sidebarHTMLObject = document.querySelector('#sidebar');
   sidebarHidden = false;
+  this.page = passedPage;
 }
 
 Sidebar.prototype = {
@@ -9,15 +12,18 @@ Sidebar.prototype = {
     var wishlistUL = document.querySelector('#wishlist')
     console.log(wishlistUL)
     
+    var sidebarScope = this;
+
     var returnedList = getAllRoutes('http://localhost:3000/api/routes', function(){
       
       var parsedList = JSON.parse(this.response);
       parsedList.forEach(function(element){
         var newLi = document.createElement('li');
 
-        // console.log("ELEMENT",element)
-        newLi.innerText = "Name of Route:\n" + element.name + " \n" + element.googleResponse.travelMode;
 
+        console.log("ELEMENT",element)
+        newLi.innerText = "Name: " + element.name + " \nStart: " + element.origin + "\nFinish: "+element.destination
+        console.log("ELEMENT!!!!!!!!!!!!!!!!!!!", element)
         var newBr = document.createElement('br');
         newLi.appendChild(newBr)
 
@@ -55,7 +61,22 @@ Sidebar.prototype = {
             newLi.style.display = 'none';
           })
 
+          var displayRoute = document.createElement('button');
+          displayRoute.id = 'sidebarDisplayRouteButton'
+          displayRoute.innerText = "Display Route"
+          displayRoute.value = element._id
+
+          var listScope = this;
+
+          displayRoute.addEventListener('click', function(){
+
+            var mainMap = sidebarScope.page.map.mainMap;
+            mainMap.drawRoute(element.googleResponse)
+            
+          })
+
         newLi.appendChild(divP)
+        newLi.appendChild(displayRoute);
         newLi.appendChild(doneButton);
         newLi.appendChild(deleteButton);
         wishlistUL.appendChild(newLi);
@@ -74,7 +95,8 @@ Sidebar.prototype = {
     else if (sidebar.style.display === 'none'){
       sidebar.style.display = 'inline-block';  
     }
-  }
+  },
+
 }
 
 module.exports = Sidebar;

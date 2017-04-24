@@ -108,7 +108,9 @@ MapWrapper.prototype = {
       console.log(res)
       if(status == 'OK'){
         directionsDisplay.setDirections(res)
+
         this.currentRoute = directionsDisplay.getDirections()
+
         this.computeTotalDistance(directionsDisplay.getDirections());
         this.computeEstimatedTime(directionsDisplay.getDirections());
         //Distance and time update with new route
@@ -247,11 +249,10 @@ placesService: function(searchCenterCoords, radius, type){
       infowindow.open(this.googleMap, marker);
     });
   }
-
-  
   
 }
 
 
 
 module.exports = MapWrapper
+
