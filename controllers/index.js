@@ -2,7 +2,9 @@ var express = require('express')
 var router = express.Router()
 var path = require('path')
 
-router.use('/api/suggestedroutes', require('./wishlist_router.js'))
+
+router.use('/api/suggested_routes', require('./suggested_routes.js'))
+
 
 router.use('/api/routes', require('./route_planner_router.js'))
 

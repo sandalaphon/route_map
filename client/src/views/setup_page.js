@@ -7,6 +7,7 @@ var weatherView = new WeatherView
 var Page = function () {
   this.page = document
   this.route = null
+
   this.buttons = {
     start: document.querySelector('#start'),
     end: document.querySelector('#finish'),
@@ -14,6 +15,7 @@ var Page = function () {
     cycling: document.querySelector('#cycling'),
     walking: document.querySelector('#walking'),
     save: document.querySelector('#save'),
+    findAmenity: document.querySelector('#findAmenity'),
     viewsavedRouteButton: document.querySelector('#savedRoute'),
     animationButton: document.querySelector('#animate'),
     forecast: document.querySelector('#forecast')
@@ -26,6 +28,10 @@ var Page = function () {
     transportMethod: 'BICYCLING'
   }
 
+  sessionStorage.setItem('saved-map', this.map.mainMap);
+  sessionStorage.setItem('saved-map2', "hello");
+
+  console.log(this.map.mainMap)
 }
 
 Page.prototype = {
@@ -38,6 +44,18 @@ Page.prototype = {
     }.bind(this))
     this.setButtonEvent('click', this.buttons['walking'], function () {
       this.map.transportMethod = 'WALKING'
+    }.bind(this))
+    this.setButtonEvent('click', this.buttons['findAmenity'], function(){
+      var finLat = localStorage.getItem('finishLatitude')
+      var finLng = localStorage.getItem('finishLongitude')
+      console.log(finLat)
+
+      var coords = {lat: +finLat, lng: +finLng}
+      this.map.mainMap.googleMap.setZoom(10),
+      this.map.mainMap.googleMap.setCenter(coords)
+      console.log("coords",coords)
+      var radius = 10000 //change cycling or walking
+      this.map.mainMap.placesService(coords, radius, "restaurant")
     }.bind(this))
     this.setButtonEvent('click', this.buttons['route'], this.map.mainMap.calculateRoute.bind(this.map))
 
@@ -61,17 +79,33 @@ Page.prototype = {
       this.map.mainMap.saveRoute.bind(this.map)
       }
       var googleResponse = this.map.mainMap.currentRoute.request      //save if route is named and defined
-      
-      console.log("this.map.mainMap.currentRoute.request", this.map.mainMap.currentRoute.request)
-      
-      if((googleResponse)&&(routeName)){
-        // create Route and then save it
-        var routeToSave = new Route ("not needed", "not needed", "not needed")
-        routeToSave.addName(routeName)
-        routeToSave.addGoogleResponse(googleResponse)
-        console.log(routeToSave)
-        routeToSave.save()
-      }
+      console.log("GGGGG", this.map.mainMap.currentRoute.geocoded_waypoints[0].place_id)
+      console.log("GGGGG", this.map.mainMap.currentRoute)
+      var originAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[0].place_id
+      var destinationAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[this.map.mainMap.currentRoute.geocoded_waypoints.length-1].place_id
+    
+      this.getAddressFromGeoCode(destinationAddressId, function(streetName){
+        var destinationAddress = streetName;
+
+        this.getAddressFromGeoCode(originAddressId, function(streetName){
+
+          var routeToSave = new Route(streetName, destinationAddress, "not needed")
+          routeToSave.addName(routeName)
+          routeToSave.addGoogleResponse(googleResponse)
+          console.log(routeToSave)
+          routeToSave.save()
+        });
+
+      }.bind(this))
+
+      // if( (googleResponse) && (routeName) ){
+      //   // create Route and then save it
+      //   var routeToSave = new Route(this.originAddress, this.destinationAddress, "not needed")
+      //   routeToSave.addName(routeName)
+      //   routeToSave.addGoogleResponse(googleResponse)
+      //   console.log(routeToSave)
+      //   routeToSave.save()
+      // }
       }.bind(this))
 
     //test
@@ -86,6 +120,32 @@ Page.prototype = {
     }.bind(this))
     
   },
+
+
+      getAddressFromGeoCode: function(addressId, callback){
+          var geoCoder = new google.maps.Geocoder;
+           geoCoder.geocode({'placeId': addressId}, function(results, status){
+            console.log("we got here and this is: ", this)
+           if(status==="OK"){
+           if(results[0]){
+              // this.getCountryFromGeoCode(results)
+             
+             var streetName =results[0].formatted_address
+             console.log(streetName)
+             console.log("STREET NAME!!", streetName)
+             console.log("results", results)
+           } else {
+               window.alert('No results found');
+             }
+           } else {
+             window.alert('Geocoder failed due to: ' + status + "\nDont click in the sea!");
+         }
+         console.log("streetName",streetName)
+        callback(streetName);
+
+       }.bind(this))
+           
+   },
 
   setButtonEvent: function (type, button, callback) {
     button.addEventListener(type, callback)

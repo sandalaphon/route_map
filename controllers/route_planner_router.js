@@ -1,7 +1,7 @@
 var express = require('express')
 var routePlannerRouter = express.Router()
 var RoutesQuery = require('../db/route_planner_query.js')  // TODO - rationalise name of file to match object constructor
-var routesQuery = new RoutesQuery('routes')
+var routesQuery = new RoutesQuery('routes', 'route_planner')
 
 // INDEX
 routePlannerRouter.get('/', function (req, res) {
