@@ -68,15 +68,8 @@ Sidebar.prototype = {
           displayRoute.innerText = "Display Route"
           displayRoute.addEventListener('click', function(){
 
-            var mainMap = sidebarScope.page.map.mainMap;
-
-            
-            var finishLatitude = element.googleResponse.destination
-            console.log("here", element.googleResponse.destination)
-            var finishLongitude = element.googleResponse.destination[lng]
-            localStorage.setItem('finishLatitude', finishLatitude)
-            localStorage.setItem('finishLongitude', finishLongitude)
-            mainMap.drawRoute(element.googleResponse)
+          var mainMap = sidebarScope.page.map.mainMap;
+          mainMap.drawRoute(element.googleResponse)
             
           })
 
