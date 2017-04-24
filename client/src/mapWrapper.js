@@ -107,6 +107,7 @@ MapWrapper.prototype = {
     directionsService.route(directionsResult, function(res, status){
       if(status== 'OK'){
         directionsDisplay.setDirections(res)
+        console.log(res)
         this.currentRoute =directionsDisplay.getDirections()
         this.computeTotalDistance(directionsDisplay.getDirections());
         this.computeEstimatedTime(directionsDisplay.getDirections());
