@@ -48,12 +48,9 @@ Page.prototype = {
     this.setButtonEvent('click', this.buttons['findAmenity'], function(){
       var finLat = localStorage.getItem('finishLatitude')
       var finLng = localStorage.getItem('finishLongitude')
-      console.log(finLat)
-
       var coords = {lat: +finLat, lng: +finLng}
       this.map.mainMap.googleMap.setZoom(10),
       this.map.mainMap.googleMap.setCenter(coords)
-      console.log("coords",coords)
       var radius = 10000 //change cycling or walking
       this.map.mainMap.placesService(coords, radius, "restaurant")
     }.bind(this))
@@ -79,8 +76,6 @@ Page.prototype = {
       this.map.mainMap.saveRoute.bind(this.map)
       }
       var googleResponse = this.map.mainMap.currentRoute.request      //save if route is named and defined
-      console.log("GGGGG", this.map.mainMap.currentRoute.geocoded_waypoints[0].place_id)
-      console.log("GGGGG", this.map.mainMap.currentRoute)
       var originAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[0].place_id
       var destinationAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[this.map.mainMap.currentRoute.geocoded_waypoints.length-1].place_id
     
