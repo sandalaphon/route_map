@@ -1,6 +1,7 @@
-var SuggestionList = function () {
+var SuggestionList = function (passedPage) {
   this.sidebarHTMLObject = document.querySelector('#suggested-routes')
-  suggestionListHidden = false
+  suggestionListHidden = false;
+  this.page = passedPage;
 }
 
 SuggestionList.prototype = {
@@ -8,6 +9,8 @@ SuggestionList.prototype = {
   populateList: function (getAllRoutes) {
     var suggestedlistUL = document.querySelector('#suggested-list')
     console.log('in Suggestion List', suggestedlistUL)
+
+    var suggestionsListScope = this;
 
     var returnedList = getAllRoutes('http://localhost:3000/api/suggested_routes', function () {
       var parsedList = JSON.parse(this.response)
@@ -37,7 +40,20 @@ SuggestionList.prototype = {
           newLi.style.textDecoration = 'line-through'
         }
 
+        var displayRoute = document.createElement('button');
+        displayRoute.id = 'suggestionsDisplayRouteButton'
+        displayRoute.innerText = "Display Route"
+
+        // var listScope = this;
+
+        displayRoute.addEventListener('click', function(){
+          console.log(suggestionsListScope)
+          var mainMap = suggestionsListScope.page.map.mainMap;
+          mainMap.drawRoute(element.googleResponse)
+        })
+
         newLi.appendChild(divP)
+        newLi.appendChild(displayRoute)
         newLi.appendChild(doneButton)
         suggestedlistUL.appendChild(newLi)
 

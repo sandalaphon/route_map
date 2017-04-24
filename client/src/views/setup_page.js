@@ -23,10 +23,10 @@ var Page = function () {
     transportMethod: 'BICYCLING'
   }
 
-  sessionStorage.setItem('saved-map', this.map.mainMap);
-  sessionStorage.setItem('saved-map2', "hello");
+  // sessionStorage.setItem('saved-map', this.map.mainMap);
+  // sessionStorage.setItem('saved-map2', "hello");
 
-  console.log(this.map.mainMap)
+  // console.log(this.map.mainMap)
 }
 
 Page.prototype = {
@@ -51,8 +51,6 @@ Page.prototype = {
       this.map.mainMap.saveRoute.bind(this.map)
       }
       var googleResponse = this.map.mainMap.currentRoute.request      //save if route is named and defined
-      console.log("GGGGG", this.map.mainMap.currentRoute.geocoded_waypoints[0].place_id)
-      console.log("GGGGG", this.map.mainMap.currentRoute)
       var originAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[0].place_id
       var destinationAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[this.map.mainMap.currentRoute.geocoded_waypoints.length-1].place_id
     
@@ -66,6 +64,7 @@ Page.prototype = {
           routeToSave.addGoogleResponse(googleResponse)
           console.log(routeToSave)
           routeToSave.save()
+          
         });
 
       }.bind(this))

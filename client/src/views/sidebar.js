@@ -10,7 +10,6 @@ Sidebar.prototype = {
 
   populateList: function(getAllRoutes){
     var wishlistUL = document.querySelector('#wishlist')
-    console.log(wishlistUL)
     
     var sidebarScope = this;
 
@@ -67,9 +66,6 @@ Sidebar.prototype = {
           var displayRoute = document.createElement('button');
           displayRoute.id = 'sidebarDisplayRouteButton'
           displayRoute.innerText = "Display Route"
-          displayRoute.value = element._id
-
-          var listScope = this;
 
           displayRoute.addEventListener('click', function(){
 

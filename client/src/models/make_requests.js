@@ -3,6 +3,15 @@ var MakeRequest = function () {
 
 MakeRequest.prototype = {
 
+
+  makeGetRequest: function (url, callback) {
+    var request = new XMLHttpRequest()
+    request.open('GET', url)
+    request.onload = callback
+    console.log(request)
+    request.send()
+  },
+
   makePostRequest: function (url, callback, payload) {
     // post XMLHTTP reauest
     console.log('XMLHttpRequest...')
