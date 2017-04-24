@@ -2,7 +2,7 @@ var MapWrapper = require('../mapWrapper.js')
 
 var Sidebar = function(passedPage){
   this.sidebarHTMLObject = document.querySelector('#sidebar');
-  sidebarHidden = false;
+  this.sidebarHidden = true;
   this.page = passedPage;
 }
 
@@ -11,6 +11,10 @@ Sidebar.prototype = {
   populateList: function(getAllRoutes){
     var wishlistUL = document.querySelector('#wishlist')
     
+    while (wishlistUL.hasChildNodes()) {
+        wishlistUL.removeChild(wishlistUL.lastChild);
+    }
+
     var sidebarScope = this;
 
     var returnedList = getAllRoutes('http://localhost:3000/api/routes', function(){
@@ -23,9 +27,9 @@ Sidebar.prototype = {
         // console.log(element.googleResponse)
 
 
-        console.log("ELEMENT",element)
+        // console.log("ELEMENT",element)
         newLi.innerText = "Name: " + element.name + " \nStart: " + element.origin + "\nFinish: "+element.destination
-        console.log("ELEMENT!!!!!!!!!!!!!!!!!!!", element)
+        // console.log("ELEMENT!!!!!!!!!!!!!!!!!!!", element)
         var newBr = document.createElement('br');
         newLi.appendChild(newBr)
 
@@ -89,11 +93,16 @@ Sidebar.prototype = {
   revealWishlist: function(){
     var sidebar = document.querySelector('#sidebar');    
     if (sidebar.style.display === 'inline-block'){
-      sidebar.style.display = 'none';  
+      sidebar.style.display = 'none';
+      this.sidebarHidden = true  
     }
     else if (sidebar.style.display === 'none'){
       sidebar.style.display = 'inline-block';  
+      this.sidebarHidden = false
+
     }
+    console.log(' hidden? ', this.sidebarHidden)
+    console.log(' style = ', sidebar.style.display)
   },
 
 }

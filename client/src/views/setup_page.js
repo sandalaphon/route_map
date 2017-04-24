@@ -1,10 +1,12 @@
 var MapWrapper = require('../mapWrapper.js')
 var Route = require('../models/route.js')
+// var Sidebar = require('./sidebar.js')
+var MakeRequest = require('../models/make_requests.js')
+var SuggestionList = require('./suggested_list.js')
 
 var Page = function () {
   this.page = document
   this.route = null
-
   this.buttons = {
     start: document.querySelector('#start'),
     end: document.querySelector('#finish'),
@@ -31,7 +33,33 @@ var Page = function () {
 
 Page.prototype = {
 
-  setupButtons: function () {
+  setupSideBars: function (sidebar) {
+    var makeRequest = new MakeRequest();
+      // var sidebar = new Sidebar(this)
+      console.log(sidebar)
+
+      sidebar.populateList(makeRequest.makeGetRequest)
+      console.log(' before populate, ' , sidebar.sidebarHidden)
+      if (sidebar.sidebarHidden) {
+        sidebar.sidebarHTMLObject.style.display = 'none'
+      }
+      else {
+        sidebar.sidebarHTMLObject.style.diplay = 'inline-block'
+      }
+
+      var suggestionList = new SuggestionList(this)
+      suggestionList.populateList(makeRequest.makeGetRequest)
+      suggestionList.sidebarHTMLObject.style.display = 'none'
+
+      var wishlistRevealButton = document.querySelector('#wishlist-button')
+      wishlistRevealButton.addEventListener('click', sidebar.revealWishlist)
+
+      var suggestionListRevealButton = document.querySelector('#suggested')
+      suggestionListRevealButton.addEventListener('click', suggestionList.revealList)
+  },
+
+  setupButtons: function (sidebar) {
+    this.sidebar = sidebar
     this.setButtonEvent('click', this.buttons['start'], this.map.mainMap.addStartClickEvent.bind(this.map.mainMap))
     this.setButtonEvent('click', this.buttons['end'], this.map.mainMap.addFinishClickEvent.bind(this.map.mainMap))
     this.setButtonEvent('click', this.buttons['cycling'], function () {
@@ -64,8 +92,11 @@ Page.prototype = {
           routeToSave.addGoogleResponse(googleResponse)
           console.log(routeToSave)
           routeToSave.save()
-          
-        });
+          console.log(this)
+          console.log('about to setup sidebars')     
+          this.setupSideBars(this.sidebar) 
+          console.log('just setup sidebars')     
+        }.bind(this));
 
       }.bind(this))
 
@@ -144,6 +175,7 @@ Page.prototype = {
     request.send();
 
   }
+
 
 }
 
