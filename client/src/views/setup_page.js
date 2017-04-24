@@ -21,6 +21,7 @@ var Page = function () {
     animationButton: document.querySelector('#animate'),
     forecast: document.querySelector('#forecast')
   }
+  // ensure containerDiv defined before used in setup of this.map
   var containerDiv = document.querySelector('#main-map')
   this.map = {
     center: {lat: 55.953251, lng: -3.188267},
@@ -54,7 +55,6 @@ Page.prototype = {
   },
 
   findAmenity: function () {
-    console.log(this)
     var finLat = localStorage.getItem('finishLatitude')
     var finLng = localStorage.getItem('finishLongitude')
     var coords = {lat: +finLat, lng: +finLng}
@@ -70,13 +70,12 @@ Page.prototype = {
     var url = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&APPID=f66376ebcb0af19199eb5e28d449aaf9'
     var forecast = new Forecast(url).getData(function (weather) {
       weatherView.render(weather)
-      console.log(weather)
     }) // forecastfunction)
   },
 
   saveDisplayedRoute: function () {
     var routeName = document.querySelector('#routeName').value
-    var currentRoute = this.map.mainMap.currentRoute
+    // var currentRoute = this.map.mainMap.currentRoute
     if (!routeName) {
       alert('Please enter a route Name')
       this.map.mainMap.saveRoute.bind(this.map)
@@ -130,51 +129,37 @@ Page.prototype = {
   getAddressFromGeoCode: function (addressId, callback) {
     var geoCoder = new google.maps.Geocoder()
     geoCoder.geocode({'placeId': addressId}, function (results, status) {
-      console.log('we got here and this is: ', this)
       if (status === 'OK') {
         if (results[0]) {
               // this.getCountryFromGeoCode(results)
 
           var streetName = results[0].formatted_address
-          console.log(streetName)
-          console.log('STREET NAME!!', streetName)
-          console.log('results', results)
         } else {
           window.alert('No results found')
         }
       } else {
         window.alert('Geocoder failed due to: ' + status + '\nDont click in the sea!')
       }
-      console.log('streetName', streetName)
       callback(streetName)
-    }.bind(this))
+    })
   },
 
   setButtonEvent: function (type, button, callback) {
     button.addEventListener(type, callback)
-    // console.log(type, button, callback)
   },
 
   viewRoute: function (routeName) {
-    var request = new XMLHttpRequest()
     var url = 'http://localhost:3000/api/routes/' + routeName
-    request.open('GET', url)
-    request.setRequestHeader('Content-Type', 'application/json')
-    request.onload = function () {
+    var makeRequest = new MakeRequest()
+    makeRequest.makeGetRequest(url, function (request) {
       if (request.status !== 200) {
         alert('Not Found')
         return
       }
       var jsonString = request.responseText
       var directionsServiceObj = JSON.parse(jsonString)
-      console.log('FROM DB: ')
-      console.log(directionsServiceObj[0].googleResponse)
-      console.log(this)
-      console.log(request)
       this.map.mainMap.drawRoute(directionsServiceObj[0].googleResponse)
-    }.bind(this)
-    console.log('get here??', this)
-    request.send()
+    }.bind(this))
   }
 
 }
