@@ -11,6 +11,7 @@ var app = function () {
 
   var page = new Page()
   var sidebar = new Sidebar(page)
+  
 
   page.setupButtons(sidebar)
 

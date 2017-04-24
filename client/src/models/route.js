@@ -11,6 +11,7 @@ var Route = function (origin, destination, travelMode) {
   this.travelMode = travelMode
   this.calculatedRoute = {}     // the directions calculated by whatever routing engine is used (google directions)  // think we can lose this
   this.googleResponse = null
+
   this.optimizeWaypoints = true  // this.provideRouteAlternatives = true;
 }
 

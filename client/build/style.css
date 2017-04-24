@@ -43,16 +43,15 @@
 #suggested-routes {
   /*clear: right;*/
   position: absolute;
-  left: 80%;
-  width: 20%;
-  height: 700px;
+  left: 75%;
+  width: 25%;
+  height: 100%;
   float: right;
-  display: inline;
+  display: none;
   z-index: 1;
-  transition: 0.5s;
   border-left: 1px black solid;
   background-color: white;
-  overflow:auto;
+  overflow: auto;
 }
 
 

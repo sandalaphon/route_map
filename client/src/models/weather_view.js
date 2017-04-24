@@ -1,4 +1,5 @@
 var LineChart = require("./line_chart.js")
+var ColumnChart = require("./column_chart")
 
 var WeatherView = function(detailsElement){
   this.detailsElement = detailsElement
@@ -10,14 +11,13 @@ WeatherView.prototype = {
     var chartContainer1 = document.querySelector("#temperature-display");
     var chartContainer2 = document.querySelector("#windspeed-display");
     var chartContainer3 = document.querySelector("#cloudcover-display")
-    // var latitude = + localStorage.getItem("latitude");
-    // var longitude = + localStorage.getItem("longitude");
+    var chartContainer4 = document.querySelector("#rainfall-display")
     var chartTitleTemp = "Temperature"
     var chartTitleWindspeed = "Wind Speeds"
     var chartTitleCloudCover = "Cloud Cover"
+    var chartTitleRainfall = "Rainfall"
     var temperatures = [];
     var times = [];
-    var weatherIconId = [];
     var cloudCover = [];
     var windSpeed = [];
     var windDirection = [];
@@ -39,18 +39,22 @@ WeatherView.prototype = {
     var temperatureSeries = [];
     var windSpeedSeries = [];
     var cloudCoverSeries = [];
+    var rainfallSeries = [];
 
     for(var i = 0; i < times.length; i++){
       temperatureSeries.push([ times[i], + temperatures[i]]);
       windSpeedSeries.push([ times[i], + windSpeed[i]]);
       cloudCoverSeries.push([ times[i], + cloudCover[i]]);
+      rainfallSeries.push([times[i], +rainfall[i]]);
     };
     
     //Temperatures not appearing on the graph...
-  
-    new LineChart(chartContainer1, chartTitleTemp, temperatureSeries, times)
-    new LineChart(chartContainer2, chartTitleWindspeed, windSpeedSeries, times)
-    new LineChart(chartContainer3, chartTitleCloudCover, cloudCoverSeries, times)
+    console.log(temperatureSeries)
+    new LineChart(chartContainer1, chartTitleTemp, temperatureSeries, times, "Celsius")
+    new LineChart(chartContainer2, chartTitleWindspeed, windSpeedSeries, times, "mph")
+    new LineChart(chartContainer3, chartTitleCloudCover, cloudCoverSeries, times, "%")
+    new ColumnChart(chartTitleRainfall, rainfallSeries, times, "mm")
+    // new LineChart(chartContainer4, chartTitleRainfall, rainfallSeries, times)
 
 
     

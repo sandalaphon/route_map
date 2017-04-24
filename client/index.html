@@ -3,8 +3,11 @@
 <head>
 
   <title>Route Planner</title>
+  
   <link rel="stylesheet" type="text/css" href="style.css">
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCSDO8jpfOiO7nJ3wjAoFsER6BXyN8QWo"></script>
+<!--   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCSDO8jpfOiO7nJ3wjAoFsER6BXyN8QWo"></script> -->
+  <script src ="http://code.highcharts.com/highcharts.js"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCSDO8jpfOiO7nJ3wjAoFsER6BXyN8QWo&libraries=places"></script>
   <script src="bundle.js"></script>
   </head>
   
@@ -12,6 +15,7 @@
 
 
   <section id="sidebar">
+
     <h2>Wishlist</h2>
     <div id="wishlist-container">
       <ul id="wishlist"></ul>
@@ -22,33 +26,40 @@
 
   <div id = "main-screen">
     <h1>Route Planner</h1>
-    <div id="main-map"></div>
-    <button id="suggested">Show Suggested Routes</button>
-    <button id="start">Start</button>
-    <button id="finish">Finish</button>
-    <button id="route">Route</button>
-    <button id="walking">Walking</button>
-    <button id="cycling">Cycling</button>
-    <input type="text" id="routeName">
-    <button id="save">Save Route</button>
-    <button id="wishlist-button">Show Wishlist</button>
-    <input type="text" id="savedRouteName">
-    <button id="savedRoute">View a saved Route</button>
-    <button id="animate">Animate</button>
+  <div id="main-map"></div>
+  <button id="start">Start</button>
+  <button id="finish">Finish</button>
+  <button id="route">Route</button>
+  <button id="walking">Walking</button>
+  <button id="cycling">Cycling</button>
+  <button id="findAmenity">Restaurants</button>
+  <input type="text" id="routeName">
+  <button id="save">Save Route</button>
+  <button id="wishlist-button">Wishlist</button>
+  <button id="suggested">Suggested Routes</button>
+  <input type="text" id="savedRouteName">
+  <button id="savedRoute">View a saved Route</button>
+  <button id="animate">Animate</button>
+  <button id="forecast">Weather Forecast</button>
     <p>Total Distance: <span id="total"></span></p>
-    <div>
-      <p>Estimated Journey Time: <span id="time"></span></p>
-    </div>
-  </div>
-  
   <div>
-    <ul id = "routes"></ul>
+    <p>Estimated Journey Time: <span id="time"></span></p>
   </div>
+  <div id="temperature-display"></div>
+  <div id="windspeed-display"></div>
+  <div id= "cloudcover-display"></div>
+  <div id="rainfall-display"></div>
+  <div>
+    <ul id="routes"></ul>
+  </div>
+  </div>
+
     <section id="suggested-routes">
       <h2>Suggested Routes</h2>
       <div id="suggested-list-container">
         <ul id="suggested-list"></ul>
       </div>
     </section>
+  
   </body>
 </html>
