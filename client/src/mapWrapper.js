@@ -122,9 +122,9 @@ MapWrapper.prototype = {
         //Distance and time update with new route
         directionsDisplay.addListener('directions_changed', function() {
          this.currentRoute = directionsDisplay.getDirections()
-         var latitude = this.currentRoute.routes[0].legs[0].steps[0].end_location.lat();
+         var latitude = this.currentRoute.routes[0].legs[0].steps[this.currentRoute.routes[0].legs[0].steps.length - 1].end_location.lat();
          localStorage.setItem('finishLatitude' , latitude)
-         var longitude = this.currentRoute.routes[0].legs[0].steps[0].end_location.lng();
+         var longitude = this.currentRoute.routes[0].legs[0].steps[this.currentRoute.routes[0].legs[0].steps.length-1].end_location.lng();
          localStorage.setItem('finishLongitude' , longitude)
          ////////////////session storage
          var marker1 = this.startmarkers.pop()

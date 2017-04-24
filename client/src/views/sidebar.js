@@ -10,7 +10,6 @@ Sidebar.prototype = {
 
   populateList: function(getAllRoutes){
     var wishlistUL = document.querySelector('#wishlist')
-    console.log(wishlistUL)
     
     var sidebarScope = this;
 
@@ -21,9 +20,8 @@ Sidebar.prototype = {
         var newLi = document.createElement('li');
 
 
-        console.log("ELEMENT",element)
+    
         newLi.innerText = "Name: " + element.name + " \nStart: " + element.origin + "\nFinish: "+element.destination
-        console.log("ELEMENT!!!!!!!!!!!!!!!!!!!", element)
         var newBr = document.createElement('br');
         newLi.appendChild(newBr)
 
@@ -66,11 +64,20 @@ Sidebar.prototype = {
           displayRoute.innerText = "Display Route"
           displayRoute.value = element._id
 
+          
+
           var listScope = this;
 
           displayRoute.addEventListener('click', function(){
 
             var mainMap = sidebarScope.page.map.mainMap;
+
+            
+            var finishLatitude = element.googleResponse.destination
+            console.log("here", element.googleResponse.destination)
+            var finishLongitude = element.googleResponse.destination[lng]
+            localStorage.setItem('finishLatitude', finishLatitude)
+            localStorage.setItem('finishLongitude', finishLongitude)
             mainMap.drawRoute(element.googleResponse)
             
           })

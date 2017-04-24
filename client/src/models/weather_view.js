@@ -49,12 +49,12 @@ WeatherView.prototype = {
     };
     
     //Temperatures not appearing on the graph...
-  
-    new LineChart(chartContainer1, chartTitleTemp, temperatureSeries, times)
-    new LineChart(chartContainer2, chartTitleWindspeed, windSpeedSeries, times)
-    new LineChart(chartContainer3, chartTitleCloudCover, cloudCoverSeries, times)
-    // new ColumnChart(chartTitleRainfall, rainfallSeries, times)
-    new LineChart(chartContainer4, chartTitleRainfall, rainfallSeries, times)
+    console.log(temperatureSeries)
+    new LineChart(chartContainer1, chartTitleTemp, temperatureSeries, times, "Celsius")
+    new LineChart(chartContainer2, chartTitleWindspeed, windSpeedSeries, times, "mph")
+    new LineChart(chartContainer3, chartTitleCloudCover, cloudCoverSeries, times, "%")
+    new ColumnChart(chartTitleRainfall, rainfallSeries, times, "mm")
+    // new LineChart(chartContainer4, chartTitleRainfall, rainfallSeries, times)
 
 
     

@@ -1,4 +1,4 @@
-var ColumnChart = function(title, data, categories) {
+var ColumnChart = function(title, data, categories, units) {
 
   var container = document.querySelector("#rainfall-display")
 
@@ -11,10 +11,23 @@ var ColumnChart = function(title, data, categories) {
       title: { 
         text: title 
       },
-      series: [data],
-          xAxis: { 
-            categories: categories
-          },
+      yAxis: {
+          title: {
+              text: title + " " + units
+
+          }
+      },  
+      xAxis:{
+          categories: categories,
+          title:{
+
+              text: 'time'
+          }
+      },
+      series: [{
+        name: title,
+        data: data}],
+          
     });
 
 };
