@@ -1,5 +1,8 @@
 var MapWrapper = require('../mapWrapper.js')
 var Route = require('../models/route.js')
+var Forecast = require('../models/forecast.js')
+var WeatherView = require('../models/weather_view')
+var weatherView = new WeatherView
 
 var Page = function () {
   this.page = document
@@ -14,7 +17,8 @@ var Page = function () {
     save: document.querySelector('#save'),
     findAmenity: document.querySelector('#findAmenity'),
     viewsavedRouteButton: document.querySelector('#savedRoute'),
-    animationButton: document.querySelector('#animate')
+    animationButton: document.querySelector('#animate'),
+    forecast: document.querySelector('#forecast')
   }
   var containerDiv = document.querySelector('#main-map')
   this.map = {
@@ -54,7 +58,18 @@ Page.prototype = {
       this.map.mainMap.placesService(coords, radius, "restaurant")
     }.bind(this))
     this.setButtonEvent('click', this.buttons['route'], this.map.mainMap.calculateRoute.bind(this.map))
-    //
+
+    //forecast function
+    this.setButtonEvent('click', this.buttons['forecast'], function(){
+    var latitude = localStorage.getItem("finishLatitude");
+    var longitude = localStorage.getItem("finishLongitude");
+    var url = "http://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&APPID=f66376ebcb0af19199eb5e28d449aaf9";
+    var forecast = new Forecast(url).getData(function(weather){
+      weatherView.render(weather);
+      console.log(weather)
+    })
+
+  }) //forecastfunction)
 
     this.setButtonEvent('click', this.buttons['save'], function(){
     var routeName = document.querySelector('#routeName').value 

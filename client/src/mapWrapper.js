@@ -197,7 +197,9 @@ MapWrapper.prototype = {
       this.moveMarker(this.googleMap, marker, coords);
     }.bind(this), 100 * i, pathCoords[i]);
   }
-},
+
+ },
+
 
 moveMarker: function (map, marker, latlng) {
   marker.setPosition(latlng);
@@ -224,8 +226,10 @@ placesService: function(searchCenterCoords, radius, type){
       }
     }
   }.bind(this))
-
     },
+
+
+  
   // see here for types : https://developers.google.com/places/supported_types 
   
 
@@ -251,6 +255,9 @@ placesService: function(searchCenterCoords, radius, type){
   }
   
 }
+
+
+
 
 
 
