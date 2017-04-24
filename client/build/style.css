@@ -11,22 +11,25 @@
 }*/
 
 #main-map{
-  margin: auto;
+  /*margin: auto;*/
   align-content: center;
   height: 400px;
-  width: 800px;
+  width: 98%;
   border: 1px solid black;
-  padding: 15px;
+  /*padding: 15px;*/
 }
 
-#main-sreen {
+#main-screen {
   display: inline-block;
-  float: left;
+  margin-left: 16%;
+  margin-right: 16%;
+  float: right;
+  width: 67%;
 }
 
 #sidebar {
   position: absolute;
-  width: 250px;
+  width: 20%;
   height: 700px;
   float: left;
   display: inline-block;
@@ -35,5 +38,21 @@
   border-right: 1px black solid;
   background-color: white;
 }
+
+#suggested-routes {
+  /*clear: right;*/
+  position: absolute;
+  left: 80%;
+  width: 20%;
+  height: 700px;
+  float: right;
+  display: inline;
+  z-index: 1;
+  transition: 0.5s;
+  border-left: 1px black solid;
+  background-color: white;
+}
+
+
 
 #doneButton {}
