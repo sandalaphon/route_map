@@ -105,9 +105,9 @@ MapWrapper.prototype = {
     })
 
     directionsService.route(directionsResult, function(res, status){
-      if(status== 'OK'){
+      if(status == 'OK'){
         directionsDisplay.setDirections(res)
-        this.currentRoute =directionsDisplay.getDirections()
+        this.currentRoute = directionsDisplay.getDirections()
         this.computeTotalDistance(directionsDisplay.getDirections());
         this.computeEstimatedTime(directionsDisplay.getDirections());
         //Distance and time update with new route
@@ -146,8 +146,63 @@ MapWrapper.prototype = {
     var remainderMinutes = totalMinutes % 60
     var hours = (totalMinutes - remainderMinutes) / 60   
     document.getElementById('time').innerHTML = hours + ' hours ' + remainderMinutes + ' minutes and ' + remainderSeconds + ' seconds'
-  }
+  },
 
-}
+
+  animateRoute: function(){
+    console.log("currentRoute", this.currentRoute.request.travelMode)
+    this.autoRefresh(this.googleMap, this.currentRoute.routes[0].overview_path)
+    
+  },
+   
+
+   autoRefresh: function (map, pathCoords) {
+      var marker;
+      if(this.currentRoute.request.travelMode==="BICYCLING"){
+        marker=new google.maps.Marker({
+        map:this.googleMap,
+        optimized:false, // <-- required for animated gif
+          animation: google.maps.Animation.DROP,
+         icon:"http://www.animatedimages.org/data/media/237/animated-bicycle-image-0001.gif"})
+      }else{marker = new google.maps.Marker({
+        map:this.googleMap,
+        optimized:false, // <-- required for animated gif
+          animation: google.maps.Animation.DROP,
+         icon:"http://www.animatedimages.org/data/media/1635/animated-walking-image-0066.gif"})
+      };
+      
+       var route = new google.maps.Polyline({
+          path: [],
+          geodesic : true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2,
+          editable: false,
+          map:this.googleMap
+      });
+      
+      console.log("here now", this.googleMap)
+
+      for (var i = 0; i < pathCoords.length; i++) {                
+          setTimeout(function(coords) {
+              route.getPath().push(coords);
+              console.log(coords);
+              console.log("this",this);
+              this.moveMarker(this.googleMap, marker, coords);
+          }.bind(this), 100 * i, pathCoords[i]);
+      }
+  },
+
+    moveMarker: function (map, marker, latlng) {
+      marker.setPosition(latlng);
+      // map.panTo(latlng);
+  }
+  
+
+  
+  
+ }
+
+
 
 module.exports = MapWrapper

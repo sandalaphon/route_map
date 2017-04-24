@@ -11,7 +11,8 @@ var Page = function () {
     cycling: document.querySelector('#cycling'),
     walking: document.querySelector('#walking'),
     save: document.querySelector('#save'),
-    savedRouteButton: document.querySelector('#savedRoute')
+    viewsavedRouteButton: document.querySelector('#savedRoute'),
+    animationButton: document.querySelector('#animate')
   }
   var containerDiv = document.querySelector('#main-map')
   this.map = {
@@ -59,38 +60,48 @@ Page.prototype = {
       }.bind(this))
 
     //test
-  //   this.setButtonEvent('click', this.buttons['savedRoute'], function(){
-  //   var routeName = document.querySelector('#savedRouteName').value
-  //   viewRoute(routeName)
-  // }.bind(this))// we have no idea
-    //
+    this.setButtonEvent('click', this.buttons['viewsavedRouteButton'], function(){
+    var routeName = document.querySelector('#savedRouteName').value
+    this.viewRoute(routeName)
+  }.bind(this))// we have no idea
+
+      this.setButtonEvent('click', this.buttons['animationButton'], function(){
+      this.map.mainMap.animateRoute()
+      
+    }.bind(this))
+    
   },
 
   setButtonEvent: function (type, button, callback) {
     button.addEventListener(type, callback)
     // console.log(type, button, callback)
+  },
+  
+  viewRoute: function(routeName){
+    var request = new XMLHttpRequest();
+    var url = "http://localhost:3000/api/routes/"+routeName
+    request.open("GET", url);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.onload = function(){
+      if(request.status!== 200) {
+        alert("Not Found")
+        return}
+        var jsonString = request.responseText;
+      var directionsServiceObj = JSON.parse(jsonString);
+      console.log("FROM DB: ")
+      console.log(directionsServiceObj[0].googleResponse)
+      console.log(this)
+      console.log(request)
+      this.map.mainMap.drawRoute(directionsServiceObj[0].googleResponse)
+    }.bind(this)
+    console.log("get here??", this)
+    request.send();
+
   }
 
 }
 
-var viewRoute  = function(routeName){
-  var request = new XMLHttpRequest();
-  var url = "http://localhost:3000/api/routes/name/" + routeName
-  request.open("GET", url);
-  request.setRequestHeader("Content-Type", "application/json");
-  request.onload = function(){
-    if(this.status!== 200) {
-      alert("Not Found")
-      return}
-      var jsonString = this.responseText;
-    var directionsServiceObj = JSON.parse(jsonString);
-    console.log("FROM DB: ")
-    console.log(directionsServiceObj[0].routeObject)
-    // mainMap.renderToScreen(directionsServiceObj[0].routeObject)
-    this.map.mainMap.drawRoute(directionsServiceObj[0].routeObject.request)
-  }
-  request.send();
-}
+
 
 module.exports = Page
 

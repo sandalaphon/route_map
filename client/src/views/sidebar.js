@@ -14,16 +14,16 @@ Sidebar.prototype = {
       var parsedList = JSON.parse(this.response);
       parsedList.forEach(function(element){
         var newLi = document.createElement('li');
-        newLi.innerText = element.name + " " + element._id;
-        console.log(element.googleResponse)
 
-        // console.log(element.googleResponse.travelMode)
+        console.log("ELEMENT",element)
+        newLi.innerText = "Name of Route:\n" + element.name + " \n" + element.googleResponse.travelMode;
 
         var newBr = document.createElement('br');
         newLi.appendChild(newBr)
 
         var newATag = document.createElement('a');
-        newATag.href = "#";
+        var hrefString = "http://localhost:3000/api/routes/"+element.name
+        newATag.href = hrefString;
         newATag.text = "Map Link Here";
         newLi.appendChild(newATag);
 
