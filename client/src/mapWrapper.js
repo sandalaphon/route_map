@@ -2,8 +2,9 @@ var Route = require('./models/route.js')
 
 var MapWrapper = function (container, coords, zoom) {
   this.startmarkers = []
+
   this.endmarkers = []
-  this.currentRoute
+  this.currentRoute = null
   this.googleMap = new google.maps.Map(container, {
     center: coords,
     zoom: zoom
@@ -45,7 +46,6 @@ MapWrapper.prototype = {
   },
 
   addStartClickEvent: function () {
-    // console.log('at addStartClickEvent', this)
     var startListener = google.maps.event.addListener(this.googleMap, 'click', function (event) {
       var startLatitude = event.latLng.lat()
       var startLongitude = event.latLng.lng()
@@ -62,7 +62,6 @@ MapWrapper.prototype = {
   },
 
   addFinishClickEvent: function () {
-    // console.log('at addEndClickEvent', this)
     var endListener = google.maps.event.addListener(this.googleMap, 'click', function (event) {
       var finishLatitude = event.latLng.lat()
       var finishLongitude = event.latLng.lng()
@@ -72,7 +71,6 @@ MapWrapper.prototype = {
       if (marker) marker.setMap(null)
       marker = this.addMarker({lat: finishLatitude, lng: finishLongitude})
       this.endmarkers.push(marker)
-      // console.log(finishLatitude, finishLongitude, this)
       google.maps.event.removeListener(endListener)
     }.bind(this))
   },
@@ -88,13 +86,12 @@ MapWrapper.prototype = {
     var directions = new Route(start, end, this.transportMethod)
     this.route = directions
     this.route.calculatedRoute = directions.directions()
-    console.log(this.route, this)
     this.mainMap.drawRoute(this.route.calculatedRoute)
   },
 
   saveRoute: function () {
-    console.log('got here', this.route, this)
     if (this.route) {
+      this.route.calculatedRoute = this.mainMap.currentRoute
       this.route.save()   // this.route is now a Route!
     }
   },
@@ -107,16 +104,15 @@ MapWrapper.prototype = {
       map: this.googleMap
     })
 
-    // directionsDisplay.setMap(this.googleMap);
-    directionsService.route(directionsResult, function (res, status) {
-      if (status === 'OK') {
-        this.currentRoute = directionsDisplay.getDirections()
+    directionsService.route(directionsResult, function(res, status){
+      if(status== 'OK'){
         directionsDisplay.setDirections(res)
-        this.computeTotalDistance(directionsDisplay.getDirections())
-        this.computeEstimatedTime(directionsDisplay.getDirections())
-        // Distance and time update with new route
-        directionsDisplay.addListener('directions_changed', function () {
-          this.currentRoute = directionsDisplay.getDirections()
+        this.currentRoute =directionsDisplay.getDirections()
+        this.computeTotalDistance(directionsDisplay.getDirections());
+        this.computeEstimatedTime(directionsDisplay.getDirections());
+        //Distance and time update with new route
+        directionsDisplay.addListener('directions_changed', function() {
+         this.currentRoute = directionsDisplay.getDirections()
           var marker1 = this.startmarkers.pop()
           if (marker1) marker1.setMap(null)
           var marker2 = this.endmarkers.pop()
@@ -125,9 +121,9 @@ MapWrapper.prototype = {
           this.computeEstimatedTime(directionsDisplay.getDirections())
         }.bind(this))
       }
-      // console.log(res)
     }.bind(this))
   },
+  
   // compute total distance and display
   computeTotalDistance: function (result) {
     var total = 0
@@ -148,10 +144,10 @@ MapWrapper.prototype = {
     var remainderSeconds = totalSeconds % 60
     var totalMinutes = (totalSeconds - remainderSeconds) / 60
     var remainderMinutes = totalMinutes % 60
-    var hours = (totalMinutes - remainderMinutes) / 60
-
+    var hours = (totalMinutes - remainderMinutes) / 60   
     document.getElementById('time').innerHTML = hours + ' hours ' + remainderMinutes + ' minutes and ' + remainderSeconds + ' seconds'
   }
+
 }
 
 module.exports = MapWrapper

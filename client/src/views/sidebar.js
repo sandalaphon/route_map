@@ -16,7 +16,10 @@ Sidebar.prototype = {
       var parsedList = JSON.parse(this.response);
       parsedList.forEach(function(element){
         var newLi = document.createElement('li');
-        newLi.innerText = element.route + " " + element.travelMode;
+        newLi.innerText = element.name + " " + element._id;
+        console.log(element.googleResponse)
+
+        // console.log(element.googleResponse.travelMode)
 
         var newBr = document.createElement('br');
         newLi.appendChild(newBr)
@@ -37,12 +40,21 @@ Sidebar.prototype = {
             newLi.style.textDecoration = 'line-through';
           }
 
+          var deleteRouteFromDB = function (routeID) {
+            url = "http://localhost:3000/api/routes/"
+            url += routeID 
+            var request = new XMLHttpRequest()
+            request.open('DELETE', url)
+            // request.onload = callback
+            request.send()
+          }
+
           var deleteButton = document.createElement('button');
           deleteButton.id = "deleteButton"
           deleteButton.innerText = "Delete"
           deleteButton.addEventListener('click', function(){
-            var map = document.querySelector('#main-map')
-            console.log(map.innerText)
+            deleteRouteFromDB(element._id)
+            newLi.style.display = 'none';
           })
 
         newLi.appendChild(divP)

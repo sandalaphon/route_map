@@ -6,48 +6,40 @@
   <link rel="stylesheet" type="text/css" href="style.css">
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCSDO8jpfOiO7nJ3wjAoFsER6BXyN8QWo"></script>
   <script src="bundle.js"></script>
-  
-</head>
+  </head>
   
   <body>
-    
+
   <section id="sidebar">
-  <h2>Wishlist</h2>
-    <div id="wishlist-container">
-      <ul id="wishlist"></ul>
-    </div>
+    <h2>Wishlist</h2>
+      <div id="wishlist-container">
+        <ul id="wishlist"></ul>
+      </div>
 
-  </section>
+    </section>
 
-
-  <section>
-
-  <div id="main-screen">
-    
-    <h1 id="main-title">Route Planner</h1>
-    
-    <div id="main-map"></div>
-    
-    <div id="main-buttons">
-      <button id="start">Start</button>
-      <button id="finish">Finish</button>
-      <button id="waypoints">Waypoints</button>
-      <button id="route">Route</button>
-      <button id="walking">Walking</button>
-      <button id="cycling">Cycling</button>
-      <button id="save">Save Route</button>
-      <button id="wishlist-button">Wishlist</button>
-    </div>
-    
-    <div>
-      <p>Total Distance: <span id="total"></span></p>
-    </div>
-    
-    <div>
-      <p>Estimated Journey Time: <span id="time"></span></p>
-    </div>
-  </div> 
-  </section>
+    <div id = "main-screen">
+    <h1>Route Planner</h1>
+  <div id="main-map"></div>
+  <button id="start">Start</button>
+  <button id="finish">Finish</button>
+  <button id="route">Route</button>
+  <button id="walking">Walking</button>
+  <button id="cycling">Cycling</button>
+  <input type="text" id="routeName">
+  <button id="save">Save Route</button>
+  <button id="wishlist-button">Wishlist</button>
+  <input type="text" id="savedRouteName">
+  <button id="savedRoute">View a saved Route</button>
+    <p>Total Distance: <span id="total"></span></p>
+  </div>
+  <div>
+    <p>Estimated Journey Time: <span id="time"></span></p>
+  </div>
+  <div>
+    <ul id = "routes"></ul>
+  </div>
+  </div>
 
   </body>
 </html>

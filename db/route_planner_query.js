@@ -42,6 +42,19 @@ RoutesQuery.prototype = {
     }.bind(this))
   },
 
+  findRouteByName: function(name, onQueryFinished){
+    MongoClient.connect(this.url, function(err,db){
+      if(db){
+        var collection = db.collection('routes');
+        collection.find({routeName: name}).toArray(function(err, docs){
+          console.log(docs)
+          onQueryFinished(docs)
+        })
+      }
+    }.bind(this))
+  },
+    
+
   delete: function(routeID, onQueryFinished){
     MongoClient.connect(this.url, function(err, db){
       if(db){
