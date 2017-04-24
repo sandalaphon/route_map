@@ -10,37 +10,45 @@
   
   <body>
 
+
   <section id="sidebar">
     <h2>Wishlist</h2>
-      <div id="wishlist-container">
-        <ul id="wishlist"></ul>
-      </div>
+    <div id="wishlist-container">
+      <ul id="wishlist"></ul>
+    </div>
+  </section>
 
-    </section>
 
-    <div id = "main-screen">
+
+  <div id = "main-screen">
     <h1>Route Planner</h1>
-  <div id="main-map"></div>
-  <button id="start">Start</button>
-  <button id="finish">Finish</button>
-  <button id="route">Route</button>
-  <button id="walking">Walking</button>
-  <button id="cycling">Cycling</button>
-  <input type="text" id="routeName">
-  <button id="save">Save Route</button>
-  <button id="wishlist-button">Wishlist</button>
-  <input type="text" id="savedRouteName">
-  <button id="savedRoute">View a saved Route</button>
-  <button id="animate">Animate</button>
+    <div id="main-map"></div>
+    <button id="suggested">Show Suggested Routes</button>
+    <button id="start">Start</button>
+    <button id="finish">Finish</button>
+    <button id="route">Route</button>
+    <button id="walking">Walking</button>
+    <button id="cycling">Cycling</button>
+    <input type="text" id="routeName">
+    <button id="save">Save Route</button>
+    <button id="wishlist-button">Show Wishlist</button>
+    <input type="text" id="savedRouteName">
+    <button id="savedRoute">View a saved Route</button>
+    <button id="animate">Animate</button>
     <p>Total Distance: <span id="total"></span></p>
+    <div>
+      <p>Estimated Journey Time: <span id="time"></span></p>
+    </div>
   </div>
-  <div>
-    <p>Estimated Journey Time: <span id="time"></span></p>
-  </div>
+  
   <div>
     <ul id = "routes"></ul>
   </div>
-  </div>
-
+    <section id="suggested-routes">
+      <h2>Suggested Routes</h2>
+      <div id="suggested-list-container">
+        <ul id="suggested-list"></ul>
+      </div>
+    </section>
   </body>
 </html>

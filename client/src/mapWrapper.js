@@ -172,6 +172,7 @@ MapWrapper.prototype = {
           animation: google.maps.Animation.DROP,
          icon:"http://www.animatedimages.org/data/media/1635/animated-walking-image-0066.gif"})
       };
+
       
        var route = new google.maps.Polyline({
           path: [],
