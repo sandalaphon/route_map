@@ -198,10 +198,6 @@ MapWrapper.prototype = {
       marker.setPosition(latlng);
       // map.panTo(latlng);
   }
-  
-
-  
-  
  }
 
 

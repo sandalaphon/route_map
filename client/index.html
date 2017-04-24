@@ -5,13 +5,14 @@
   <title>Route Planner</title>
   <link rel="stylesheet" type="text/css" href="style.css">
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCSDO8jpfOiO7nJ3wjAoFsER6BXyN8QWo"></script>
+  <script src ="http://code.highcharts.com/highcharts.js"></script>
   <script src="bundle.js"></script>
   </head>
   
   <body>
 
   <section id="sidebar">
-    <h2>Wishlist</h2>
+    <h2>Wishlist</h2> 
       <div id="wishlist-container">
         <ul id="wishlist"></ul>
       </div>
@@ -32,11 +33,15 @@
   <input type="text" id="savedRouteName">
   <button id="savedRoute">View a saved Route</button>
   <button id="animate">Animate</button>
+  <button id="forecast">Weather Forecast</button>
     <p>Total Distance: <span id="total"></span></p>
   </div>
   <div>
     <p>Estimated Journey Time: <span id="time"></span></p>
   </div>
+  <div id="temperature-display"></div>
+  <div id="windspeed-display"></div>
+  <div id= "cloudcover-display"></div>
   <div>
     <ul id = "routes"></ul>
   </div>
