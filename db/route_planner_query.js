@@ -31,35 +31,29 @@ RoutesQuery.prototype = {
     }.bind(this))
   },
 
-  find: function(routeID, onQueryFinished){
-    MongoClient.connect(this.url, function(err, db){
-      if(db){
-        var collection = db.collection(this.collection);
-        if(routeID.length===24){
-        collection.find({_id: ObjectID(routeID)}).toArray(function(err, docs){
-          onQueryFinished(docs)
-        })
-      }else{
-        collection.find({name: routeID}).toArray(function(err, docs){
-          onQueryFinished(docs)
-        })
-      }
-      }
-    }.bind(this))
-  },
+    find: function(routeID, onQueryFinished){
+      MongoClient.connect(this.url, function(err, db){
+        if(db){
+          var regex = /[0-9a-f]{24}/g;
+          var collection = db.collection(this.collection);
+          // if 24 character hex
+          if(regex.test(routeID))
+  //           
+          {
+          collection.find({_id: ObjectID(routeID)}).toArray(function(err, docs){
+            onQueryFinished(docs)
+          })
+          //else try name
+        }else{
+          collection.find({name: routeID}).toArray(function(err, docs){
+            onQueryFinished(docs)
 
-  findRouteByName: function(name, onQueryFinished){
-    MongoClient.connect(this.url, function(err,db){
-      if(db){
-        var collection = db.collection('routes');
-        collection.find({name: name}).toArray(function(err, docs){
-          console.log(docs)
-          onQueryFinished(docs)
-        })
+          })
+        }
       }
     }.bind(this))
   },
-    
+ 
 
   delete: function(routeID, onQueryFinished){
     MongoClient.connect(this.url, function(err, db){
