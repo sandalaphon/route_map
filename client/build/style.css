@@ -37,6 +37,7 @@
   z-index: 1;
   border-right: 1px black solid;
   background-color: white;
+  overflow:auto;
 }
 
 #suggested-routes {
@@ -51,6 +52,7 @@
   transition: 0.5s;
   border-left: 1px black solid;
   background-color: white;
+  overflow:auto;
 }
 
 

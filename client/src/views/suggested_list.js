@@ -1,6 +1,6 @@
 var SuggestionList = function (passedPage) {
   this.sidebarHTMLObject = document.querySelector('#suggested-routes')
-  suggestionListHidden = false;
+  this.suggestionListHidden = true;
   this.page = passedPage;
 }
 
@@ -8,7 +8,10 @@ SuggestionList.prototype = {
 
   populateList: function (getAllRoutes) {
     var suggestedlistUL = document.querySelector('#suggested-list')
-    console.log('in Suggestion List', suggestedlistUL)
+    
+    while (suggestedlistUL.hasChildNodes()) {
+        suggestedlistUL.removeChild(suggestedlistUL.lastChild);
+    }
 
     var suggestionsListScope = this;
 
