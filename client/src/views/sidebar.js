@@ -14,6 +14,7 @@ Sidebar.prototype = {
       var parsedList = JSON.parse(this.response);
       parsedList.forEach(function(element){
         var newLi = document.createElement('li');
+
         console.log("ELEMENT",element)
         newLi.innerText = "Name of Route:\n" + element.name + " \n" + element.googleResponse.travelMode;
 
@@ -37,9 +38,22 @@ Sidebar.prototype = {
             newLi.style.textDecoration = 'line-through';
           }
 
+          var deleteRouteFromDB = function (routeID) {
+            url = "http://localhost:3000/api/routes/"
+            url += routeID 
+            var request = new XMLHttpRequest()
+            request.open('DELETE', url)
+            // request.onload = callback
+            request.send()
+          }
+
           var deleteButton = document.createElement('button');
           deleteButton.id = "deleteButton"
           deleteButton.innerText = "Delete"
+          deleteButton.addEventListener('click', function(){
+            deleteRouteFromDB(element._id)
+            newLi.style.display = 'none';
+          })
 
         newLi.appendChild(divP)
         newLi.appendChild(doneButton);
