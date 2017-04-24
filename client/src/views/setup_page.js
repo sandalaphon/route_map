@@ -74,6 +74,30 @@ Page.prototype = {
     }) // forecastfunction)
   },
 
+  saveDisplayedRoute: function () {
+    var routeName = document.querySelector('#routeName').value
+    var currentRoute = this.map.mainMap.currentRoute
+    if (!routeName) {
+      alert('Please enter a route Name')
+      this.map.mainMap.saveRoute.bind(this.map)
+    }
+    var googleResponse = this.map.mainMap.currentRoute.request      // save if route is named and defined
+    var originAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[0].place_id
+    var destinationAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[this.map.mainMap.currentRoute.geocoded_waypoints.length - 1].place_id
+
+    this.getAddressFromGeoCode(destinationAddressId, function (streetName) {
+      var destinationAddress = streetName
+
+      this.getAddressFromGeoCode(originAddressId, function (streetName) {
+        var routeToSave = new Route(streetName, destinationAddress, 'not needed')
+        routeToSave.addName(routeName)
+        routeToSave.addGoogleResponse(googleResponse)
+        routeToSave.save()
+        this.setupSideBars(this.sidebar)
+      }.bind(this))
+    }.bind(this))
+  },
+
   setupButtons: function (sidebar) {
     this.sidebar = sidebar
     this.setButtonEvent('click', this.buttons['start'], this.map.mainMap.addStartClickEvent.bind(this.map.mainMap))
@@ -89,53 +113,8 @@ Page.prototype = {
 
     // forecast function
     this.setButtonEvent('click', this.buttons['forecast'], this.showForecast)
-    //   //////////////////////////////////////////
-    //   var latitude = localStorage.getItem('finishLatitude')
-    //   var longitude = localStorage.getItem('finishLongitude')
-    //   var url = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&APPID=f66376ebcb0af19199eb5e28d449aaf9'
-    //   var forecast = new Forecast(url).getData(function (weather) {
-    //     weatherView.render(weather)
-    //     console.log(weather)
-    //   })
-    // }) // forecastfunction)
-    /// ////////////////////////////////////////////
 
-    this.setButtonEvent('click', this.buttons['save'], function () {
-      var routeName = document.querySelector('#routeName').value
-      var currentRoute = this.map.mainMap.currentRoute
-      if (!routeName) {
-        alert('Please enter a route Name')
-        this.map.mainMap.saveRoute.bind(this.map)
-      }
-      var googleResponse = this.map.mainMap.currentRoute.request      // save if route is named and defined
-      var originAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[0].place_id
-      var destinationAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[this.map.mainMap.currentRoute.geocoded_waypoints.length - 1].place_id
-
-      this.getAddressFromGeoCode(destinationAddressId, function (streetName) {
-        var destinationAddress = streetName
-
-        this.getAddressFromGeoCode(originAddressId, function (streetName) {
-          var routeToSave = new Route(streetName, destinationAddress, 'not needed')
-          routeToSave.addName(routeName)
-          routeToSave.addGoogleResponse(googleResponse)
-          console.log(routeToSave)
-          routeToSave.save()
-          console.log(this)
-          console.log('about to setup sidebars')
-          this.setupSideBars(this.sidebar)
-          console.log('just setup sidebars')
-        }.bind(this))
-      }.bind(this))
-
-      // if( (googleResponse) && (routeName) ){
-      //   // create Route and then save it
-      //   var routeToSave = new Route(this.originAddress, this.destinationAddress, "not needed")
-      //   routeToSave.addName(routeName)
-      //   routeToSave.addGoogleResponse(googleResponse)
-      //   console.log(routeToSave)
-      //   routeToSave.save()
-      // }
-    }.bind(this))
+    this.setButtonEvent('click', this.buttons['save'], this.saveDisplayedRoute.bind(this))
 
     // test
     this.setButtonEvent('click', this.buttons['viewsavedRouteButton'], function () {
