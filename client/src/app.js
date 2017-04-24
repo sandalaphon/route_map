@@ -23,7 +23,7 @@ var app = function () {
 
   // SIDEBAR
 
-  var sidebar = new Sidebar()
+  var sidebar = new Sidebar(page)
   sidebar.populateList(makeRequest)
   sidebar.sidebarHTMLObject.style.display = 'none';
 

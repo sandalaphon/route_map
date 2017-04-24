@@ -1,8 +1,9 @@
 var MapWrapper = require('../mapWrapper.js')
 
-var Sidebar = function(){
+var Sidebar = function(passedPage){
   this.sidebarHTMLObject = document.querySelector('#sidebar');
   sidebarHidden = false;
+  this.page = passedPage;
 }
 
 Sidebar.prototype = {
@@ -11,13 +12,15 @@ Sidebar.prototype = {
     var wishlistUL = document.querySelector('#wishlist')
     console.log(wishlistUL)
     
+    var sidebarScope = this;
+
     var returnedList = getAllRoutes('http://localhost:3000/api/routes', function(){
       
       var parsedList = JSON.parse(this.response);
       parsedList.forEach(function(element){
         var newLi = document.createElement('li');
         newLi.innerText = element.name + " " + element._id;
-        console.log(element.googleResponse)
+        // console.log(element.googleResponse)
 
         // console.log(element.googleResponse.travelMode)
 
@@ -57,7 +60,23 @@ Sidebar.prototype = {
             newLi.style.display = 'none';
           })
 
+          var displayRoute = document.createElement('button');
+          displayRoute.id = 'sidebarDisplayRouteButton'
+          displayRoute.innerText = "Display Route"
+          displayRoute.value = element._id
+
+          var listScope = this;
+
+          displayRoute.addEventListener('click', function(){
+
+            var mainMap = sidebarScope.page.map.mainMap;
+            console.log(element)
+            mainMap.drawRoute(element.googleResponse)
+            
+          })
+
         newLi.appendChild(divP)
+        newLi.appendChild(displayRoute);
         newLi.appendChild(doneButton);
         newLi.appendChild(deleteButton);
         wishlistUL.appendChild(newLi);

@@ -21,6 +21,10 @@ var Page = function () {
     transportMethod: 'BICYCLING'
   }
 
+  sessionStorage.setItem('saved-map', this.map.mainMap);
+  sessionStorage.setItem('saved-map2', "hello");
+
+  console.log(this.map.mainMap)
 }
 
 Page.prototype = {
