@@ -235,7 +235,7 @@ MapWrapper.prototype = {
 
   createMarker: function (place) {
     var infowindow = new google.maps.InfoWindow()
-    // var placeLoc = place.geometry.location;
+    // var placeLoc = place.geometry.location;  // variable not used
     var icon = {
       url: 'http://icons.iconarchive.com/icons/icons-land/points-of-interest/256/Restaurant-Blue-icon.png',
       scaledSize: new google.maps.Size(20, 20)

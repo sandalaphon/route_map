@@ -53,6 +53,17 @@ Page.prototype = {
     suggestionListRevealButton.addEventListener('click', suggestionList.revealList)
   },
 
+  findAmenity: function () {
+    console.log(this)
+    var finLat = localStorage.getItem('finishLatitude')
+    var finLng = localStorage.getItem('finishLongitude')
+    var coords = {lat: +finLat, lng: +finLng}
+    this.googleMap.setZoom(10)
+    this.googleMap.setCenter(coords)
+    var radius = 10000 // change cycling or walking
+    this.placesService(coords, radius, 'restaurant')
+  },
+
   setupButtons: function (sidebar) {
     this.sidebar = sidebar
     this.setButtonEvent('click', this.buttons['start'], this.map.mainMap.addStartClickEvent.bind(this.map.mainMap))
@@ -63,15 +74,7 @@ Page.prototype = {
     this.setButtonEvent('click', this.buttons['walking'], function () {
       this.map.transportMethod = 'WALKING'
     }.bind(this))
-    this.setButtonEvent('click', this.buttons['findAmenity'], function () {
-      var finLat = localStorage.getItem('finishLatitude')
-      var finLng = localStorage.getItem('finishLongitude')
-      var coords = {lat: +finLat, lng: +finLng}
-      this.map.mainMap.googleMap.setZoom(10)
-      this.map.mainMap.googleMap.setCenter(coords)
-      var radius = 10000 // change cycling or walking
-      this.map.mainMap.placesService(coords, radius, 'restaurant')
-    }.bind(this))
+    this.setButtonEvent('click', this.buttons['findAmenity'], this.findAmenity.bind(this.map.mainMap))
     this.setButtonEvent('click', this.buttons['route'], this.map.mainMap.calculateRoute.bind(this.map))
 
     // forecast function
