@@ -23,13 +23,9 @@ Sidebar.prototype = {
       parsedList.forEach(function(element){
         var newLi = document.createElement('li');
 
-        newLi.innerText = element.name + " " + element._id;
-        // console.log(element.googleResponse)
 
-
-        // console.log("ELEMENT",element)
         newLi.innerText = "Name: " + element.name + " \nStart: " + element.origin + "\nFinish: "+element.destination
-        // console.log("ELEMENT!!!!!!!!!!!!!!!!!!!", element)
+
         var newBr = document.createElement('br');
         newLi.appendChild(newBr)
 
@@ -70,10 +66,16 @@ Sidebar.prototype = {
           var displayRoute = document.createElement('button');
           displayRoute.id = 'sidebarDisplayRouteButton'
           displayRoute.innerText = "Display Route"
-
           displayRoute.addEventListener('click', function(){
 
             var mainMap = sidebarScope.page.map.mainMap;
+
+            
+            var finishLatitude = element.googleResponse.destination
+            console.log("here", element.googleResponse.destination)
+            var finishLongitude = element.googleResponse.destination[lng]
+            localStorage.setItem('finishLatitude', finishLatitude)
+            localStorage.setItem('finishLongitude', finishLongitude)
             mainMap.drawRoute(element.googleResponse)
             
           })
