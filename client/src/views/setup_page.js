@@ -11,6 +11,7 @@ var Page = function () {
     cycling: document.querySelector('#cycling'),
     walking: document.querySelector('#walking'),
     save: document.querySelector('#save'),
+    findAmenity: document.querySelector('#findAmenity'),
     viewsavedRouteButton: document.querySelector('#savedRoute'),
     animationButton: document.querySelector('#animate')
   }
@@ -34,6 +35,18 @@ Page.prototype = {
     }.bind(this))
     this.setButtonEvent('click', this.buttons['walking'], function () {
       this.map.transportMethod = 'WALKING'
+    }.bind(this))
+    this.setButtonEvent('click', this.buttons['findAmenity'], function(){
+      var finLat = localStorage.getItem('finishLatitude')
+      var finLng = localStorage.getItem('finishLongitude')
+      console.log(finLat)
+
+      var coords = {lat: +finLat, lng: +finLng}
+      this.map.mainMap.googleMap.setZoom(10),
+      this.map.mainMap.googleMap.setCenter(coords)
+      console.log("coords",coords)
+      var radius = 10000 //change cycling or walking
+      this.map.mainMap.placesService(coords, radius, "restaurant")
     }.bind(this))
     this.setButtonEvent('click', this.buttons['route'], this.map.mainMap.calculateRoute.bind(this.map))
     //

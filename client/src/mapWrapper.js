@@ -69,7 +69,7 @@ MapWrapper.prototype = {
       localStorage.setItem('finishLongitude', finishLongitude)
       var marker = this.endmarkers.pop()
       if (marker) marker.setMap(null)
-      marker = this.addMarker({lat: finishLatitude, lng: finishLongitude})
+        marker = this.addMarker({lat: finishLatitude, lng: finishLongitude})
       this.endmarkers.push(marker)
       google.maps.event.removeListener(endListener)
     }.bind(this))
@@ -105,6 +105,7 @@ MapWrapper.prototype = {
     })
 
     directionsService.route(directionsResult, function(res, status){
+      console.log(res)
       if(status == 'OK'){
         directionsDisplay.setDirections(res)
         this.currentRoute = directionsDisplay.getDirections()
@@ -113,13 +114,13 @@ MapWrapper.prototype = {
         //Distance and time update with new route
         directionsDisplay.addListener('directions_changed', function() {
          this.currentRoute = directionsDisplay.getDirections()
-          var marker1 = this.startmarkers.pop()
-          if (marker1) marker1.setMap(null)
+         var marker1 = this.startmarkers.pop()
+         if (marker1) marker1.setMap(null)
           var marker2 = this.endmarkers.pop()
-          if (marker2) marker2.setMap(null)
+        if (marker2) marker2.setMap(null)
           this.computeTotalDistance(directionsDisplay.getDirections())
-          this.computeEstimatedTime(directionsDisplay.getDirections())
-        }.bind(this))
+        this.computeEstimatedTime(directionsDisplay.getDirections())
+      }.bind(this))
       }
     }.bind(this))
   },
@@ -154,54 +155,102 @@ MapWrapper.prototype = {
     this.autoRefresh(this.googleMap, this.currentRoute.routes[0].overview_path)
     
   },
-   
 
-   autoRefresh: function (map, pathCoords) {
-      var marker;
-      if(this.currentRoute.request.travelMode==="BICYCLING"){
-        marker=new google.maps.Marker({
+
+  autoRefresh: function (map, pathCoords) {
+    var marker;
+    if(this.currentRoute.request.travelMode==="BICYCLING"){
+      marker=new google.maps.Marker({
         map:this.googleMap,
+        scaledSize: new google.maps.Size(20, 20),
         optimized:false, // <-- required for animated gif
-          animation: google.maps.Animation.DROP,
-         icon:"http://www.animatedimages.org/data/media/237/animated-bicycle-image-0001.gif"})
-      }else{marker = new google.maps.Marker({
-        map:this.googleMap,
+        animation: google.maps.Animation.DROP,
+        icon:"http://www.animatedimages.org/data/media/237/animated-bicycle-image-0001.gif"
+      })
+    }else{marker = new google.maps.Marker({
+      map:this.googleMap,
+      scaledSize: new google.maps.Size(20, 20),
         optimized:false, // <-- required for animated gif
-          animation: google.maps.Animation.DROP,
-         icon:"http://www.animatedimages.org/data/media/1635/animated-walking-image-0066.gif"})
-      };
-      
-       var route = new google.maps.Polyline({
-          path: [],
-          geodesic : true,
-          strokeColor: '#FF0000',
-          strokeOpacity: 1.0,
-          strokeWeight: 2,
-          editable: false,
-          map:this.googleMap
-      });
-      
-      console.log("here now", this.googleMap)
+        animation: google.maps.Animation.DROP,
+        icon:"http://www.animatedimages.org/data/media/1635/animated-walking-image-0066.gif"})
+  };
 
-      for (var i = 0; i < pathCoords.length; i++) {                
-          setTimeout(function(coords) {
-              route.getPath().push(coords);
-              console.log(coords);
-              console.log("this",this);
-              this.moveMarker(this.googleMap, marker, coords);
-          }.bind(this), 100 * i, pathCoords[i]);
-      }
-  },
+  var route = new google.maps.Polyline({
+    path: [],
+    geodesic : true,
+    strokeColor: '#FF0000',
+    strokeOpacity: 1.0,
+    strokeWeight: 2,
+    editable: false,
+    map:this.googleMap
+  });
 
-    moveMarker: function (map, marker, latlng) {
-      marker.setPosition(latlng);
-      // map.panTo(latlng);
+  console.log("here now", this.googleMap)
+
+  for (var i = 0; i < pathCoords.length; i++) {                
+    setTimeout(function(coords) {
+      route.getPath().push(coords);
+      console.log(coords);
+      console.log("this",this);
+      this.moveMarker(this.googleMap, marker, coords);
+    }.bind(this), 100 * i, pathCoords[i]);
   }
+},
+
+moveMarker: function (map, marker, latlng) {
+  marker.setPosition(latlng);
+      // map.panTo(latlng);
+    },
+    ///////////////////////////
+////  places nearby code now  //////
+///////////////////////////////
+placesService: function(searchCenterCoords, radius, type){
+  console.log(this)
+  console.log(this.googleMap.places
+    )
+      var service = new google.maps.places.PlacesService(this.googleMap);//define map
+      service.nearbySearch({
+        location : searchCenterCoords,
+        radius : radius,
+        type : [ type ]
+      }, function(results, status) {
+    console.log("this is....",this)
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      for (var i = 0; i < 8; i++) {
+        // console.log("this is....",this)
+        this.createMarker(results[i]);
+      }
+    }
+  }.bind(this))
+
+    },
+  // see here for types : https://developers.google.com/places/supported_types 
   
+
+  createMarker: function(place) {
+    var infowindow = new google.maps.InfoWindow()
+    var placeLoc = place.geometry.location;
+    var icon = {
+      url: "http://icons.iconarchive.com/icons/icons-land/points-of-interest/256/Restaurant-Blue-icon.png",
+      scaledSize: new google.maps.Size(20, 20)
+    }
+    var marker = new google.maps.Marker({
+      map : this.googleMap,
+      size: new google.maps.Size(4, 4),
+      position : place.geometry.location,
+      icon: icon
+    });
+
+    google.maps.event.addListener(marker, 'click', function() {
+
+      infowindow.setContent(place.name);
+      infowindow.open(this.googleMap, marker);
+    });
+  }
 
   
   
- }
+}
 
 
 

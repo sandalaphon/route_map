@@ -10,6 +10,7 @@ var app = function () {
 
   var page = new Page()
   page.setupButtons()
+  // page.map.mainMap.placesService({lat: 55.953251, lng: -3.188267}, 5500, "restaurant")
 
 
   // TODO - move this to make_requests.js

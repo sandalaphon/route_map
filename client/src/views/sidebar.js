@@ -15,7 +15,7 @@ Sidebar.prototype = {
       parsedList.forEach(function(element){
         var newLi = document.createElement('li');
 
-        console.log("ELEMENT",element)
+        // console.log("ELEMENT",element)
         newLi.innerText = "Name of Route:\n" + element.name + " \n" + element.googleResponse.travelMode;
 
         var newBr = document.createElement('br');
