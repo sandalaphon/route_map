@@ -156,7 +156,7 @@ MapWrapper.prototype = {
    
 
    autoRefresh: function (map, pathCoords) {
-      var marker=new google.maps.Marker({map:this.googleMap, icon:"http://maps.google.com/mapfiles/ms/micons/blue.png"});
+      var marker=new google.maps.Marker({map:this.googleMap, icon:"http://www.animatedimages.org/data/media/237/animated-bicycle-image-0001.gif"});
       
        var route = new google.maps.Polyline({
           path: [],
