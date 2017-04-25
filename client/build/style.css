@@ -50,6 +50,10 @@
   overflow: auto;
 }
 
+#reviews-info {
+  display: none;
+}
+
 /*#newReviewText {
   padding-bottom: 50px;
 }*/

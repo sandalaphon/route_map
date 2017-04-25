@@ -48,7 +48,10 @@ SuggestionList.prototype = {
 
           console.log(element)
 
+          var reviewsDiv = document.querySelector('#reviews-info');
+          reviewsDiv.style.display = 'inline'
           var reviewsHTMLObject = document.querySelector('#review-list');
+
 
           while (reviewsHTMLObject.hasChildNodes()) {
               reviewsHTMLObject.removeChild(reviewsHTMLObject.lastChild);

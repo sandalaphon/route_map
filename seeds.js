@@ -62,8 +62,12 @@ db.routes.insert(
   "reviews": [{
     "name": "Bob Stevens",
     "rating": 4,
-    "reviewText": "Great to get some fresh air, fantastic dogging opportunities along route."
-  }] }
+    "reviewText": "Great to get some fresh air, fantastic dogging opportunities along route."},
+
+    {"name": "Chris Evans",
+    "rating": 3,
+    "reviewText": "This is the best walk ever."}
+    ] }
 )
 
 db.routes.insert(
