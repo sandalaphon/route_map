@@ -153,7 +153,7 @@ MapWrapper.prototype = {
       total += myroute.legs[i].distance.value
     }
     total = total / 1000
-    document.getElementById('total').innerHTML = total + ' km'
+    document.getElementById('total').innerHTML = 'Distance: ' + total + ' km' 
   },
 
   computeEstimatedTime: function (result) {
@@ -166,7 +166,7 @@ MapWrapper.prototype = {
     var totalMinutes = (totalSeconds - remainderSeconds) / 60
     var remainderMinutes = totalMinutes % 60
     var hours = (totalMinutes - remainderMinutes) / 60
-    document.getElementById('time').innerHTML = hours + ' hours ' + remainderMinutes + ' minutes and ' + remainderSeconds + ' seconds'
+    document.getElementById('time').innerHTML = 'Time: ' + hours + ' hours ' + remainderMinutes + ' minutes and ' + remainderSeconds + ' seconds'
   },
 
   animateRoute: function () {

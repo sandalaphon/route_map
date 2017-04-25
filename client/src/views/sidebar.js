@@ -84,12 +84,16 @@ Sidebar.prototype = {
         displayRoute.id = 'sidebarDisplayRouteButton'
         displayRoute.innerText = 'Display Route'
         displayRoute.addEventListener('click', function () {
-          var mainMap = sidebarScope.page.map.mainMap
 
-          var finishLatitude = element.googleResponse.destination
-          var finishLongitude = element.googleResponse.destination['lng']
-          localStorage.setItem('finishLatitude', finishLatitude)
-          localStorage.setItem('finishLongitude', finishLongitude)
+
+
+          // var mainMap = sidebarScope.page.map.mainMap
+          //!BUG! Routes displaying on top of each other, fixed below
+
+          var containerDiv = document.querySelector('#main-map')
+          console.log(element.googleResponse.destination)
+          var mainMap = new MapWrapper(containerDiv, element.googleResponse.destination, 12)
+
           mainMap.drawRoute(element.googleResponse)
         })
 

@@ -62,8 +62,10 @@
   padding: 10px 10px;
   font-size: 16px;
   margin: 16px auto;
+}
 
-
+.menu:hover{
+  background-color: grey;
 }
 
 input{
@@ -92,6 +94,11 @@ body {
   background-attachment: fixed;
   background-position:  center;
   /*https://wallpaperstock.net/world-map-grayscale-wallpapers_34428_1920x1200.jpg*/
+}
+
+p{
+  font-size: 16px;
+
 }
 
 #doneButton {}
