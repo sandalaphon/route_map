@@ -1,6 +1,5 @@
 var GeoLocate = function (map) {
   this.map = map
-  console.log(this.map)
 }
 
 GeoLocate.prototype = {
@@ -12,12 +11,12 @@ GeoLocate.prototype = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         }
-        // var infoWindow = new google.maps.InfoWindow()
-        // infoWindow.setPosition(pos)
-        // infoWindow.setContent('Location found.')
-        // infoWindow.open(this.map)
+        var infoWindow = new google.maps.InfoWindow()
+        infoWindow.setPosition(pos)
+        infoWindow.setContent('Location')
+        infoWindow.open(this.map)
         this.map.setCenter(pos)
-        this.map.setZoom(12)
+        this.map.setZoom(11)
       }.bind(this), function () {
         this.handleLocationError(true, infoWindow, this.map.getCenter())
       }.bind(this))
@@ -25,7 +24,6 @@ GeoLocate.prototype = {
       // Browser doesn't support Geolocation
       this.handleLocationError(false, infoWindow, this.map.getCenter())
     }
-    console.log('at end this = ', this)
   },
 
   handleLocationError: function (browserHasGeolocation, infoWindow, pos) {
