@@ -1,10 +1,6 @@
-// var MapWrapper = require('./mapWrapper.js')
-// var Route = require('./models/route.js')
-// var mainMap
+
 var Page = require('./views/setup_page.js')
 var Sidebar = require('./views/sidebar.js')
-// var SuggestionList = require('./views/suggested_list.js')
-// var MakeRequest = require('./models/make_requests.js')
 
 var app = function () {
   // localStorage.clear()
@@ -16,9 +12,7 @@ var app = function () {
   // ugly way to give sidebar back to Page object as an attribute after sidebar created
   page.setupButtons(sidebar)
 
-  // SIDEBAR
-
-  // console.log(sidebar)
+  // Setup Wishlist SIDEBAR & Suggested Routes Sidebar
   page.setupSideBars(sidebar)
 }
 
