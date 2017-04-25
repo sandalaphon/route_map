@@ -84,4 +84,14 @@ h1{
   justify-content: center;
 
 }
+
+body {
+  background: white url(./background_map.jpg);
+  background-size: cover;
+  background-repeat: repeat-y;
+  background-attachment: fixed;
+  background-position:  center;
+  /*https://wallpaperstock.net/world-map-grayscale-wallpapers_34428_1920x1200.jpg*/
+}
+
 #doneButton {}
