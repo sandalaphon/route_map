@@ -115,12 +115,6 @@ Page.prototype = {
 
     this.setButtonEvent('click', this.buttons['save'], this.saveDisplayedRoute.bind(this))
 
-    // test
-    // // this.setButtonEvent('click', this.buttons['viewsavedRouteButton'], function () {
-    //   var routeName = document.querySelector('#savedRouteName').value
-    //   this.viewRoute(routeName)
-    // }.bind(this))// we have no idea
-
     this.setButtonEvent('click', this.buttons['animationButton'], function () {
       this.map.mainMap.animateRoute()
     }.bind(this))
@@ -147,21 +141,6 @@ Page.prototype = {
   setButtonEvent: function (type, button, callback) {
     button.addEventListener(type, callback)
   }
-
-  // viewRoute: function (routeName) {
-  //   var url = 'http://localhost:3000/api/routes/' + routeName
-  //   var makeRequest = new MakeRequest()
-  //   makeRequest.makeGetRequest(url, function (request) {
-  //     if (request.status !== 200) {
-  //       alert('Not Found')
-  //       return
-  //     }
-  //     var jsonString = request.responseText
-  //     var directionsServiceObj = JSON.parse(jsonString)
-  //     this.map.mainMap.drawRoute(directionsServiceObj[0].googleResponse)
-  //   }.bind(this))
-  // }
-
 }
 
 module.exports = Page
