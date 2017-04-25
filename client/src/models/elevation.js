@@ -40,8 +40,8 @@ getElevation: function(coords, callbackSetVariable){
 
 createArrayOfPathLatLng: function(callback){
   var pathCoords = this.map.currentRoute.routes[0].overview_path
-  var lengthOfRoute = this.map.currentRoute.routes[0].legs[0].distance['text']
-  localStorage.setItem('elevationDistance', lengthOfRoute)
+  // var lengthOfRoute = this.map.currentRoute.routes[0].legs[0].distance['text']
+  // localStorage.setItem('journeyDistance', lengthOfRoute)
   var latLngArray = []
   pathCoords.forEach(function(coords){
     var toPush = {lat: coords.lat(), lng: coords.lng()}
@@ -66,19 +66,21 @@ prepareGraphData: function(){
   var container = document.querySelector('#elevation-display')
   var elevationString = localStorage.getItem('elevationsOfCurrentRoute')
   elevationArray = elevationString.split(',')
-  var distance = localStorage.getItem('elevationDistance')
-  distance = distance.match(/\d/g)
-  distance = distance.join("");
+  var distance = localStorage.getItem('journeyDistance')
+  console.log(distance)
+  // distance = distance.match(/\d/g)
+  // distance = distance.join("");
   var elevationSeries = []
   var distances = []
   var fractionalDist = distance/elevationArray.length
 
   for(var i = 0; i < elevationArray.length-1; i++){
-
-  elevationSeries.push( [   fractionalDist*i,  +elevationArray[i]   ] );
-  distances.push(fractionalDist*i)
+    var distanceSoFar = fractionalDist*(i+1)
+    distanceSoFar = distanceSoFar.toFixed(2)
+  elevationSeries.push( [  distanceSoFar ,  +elevationArray[i]   ] );
+  distances.push(distanceSoFar)
   };
-  new ColumnChart(container, chartTitle, elevationSeries, distances, "meters")
+  new ColumnChart(container, chartTitle, elevationSeries, distances, "meters" , "Kilometers")
   }
 
 }
