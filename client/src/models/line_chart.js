@@ -1,4 +1,4 @@
-var LineChart = function(container, title, temperatures, times){
+var LineChart = function(container, title, temperatures, times, units){
 
     this.chart =  new Highcharts.chart({
 
@@ -11,7 +11,7 @@ var LineChart = function(container, title, temperatures, times){
         },
         yAxis: {
             title: {
-                text: title
+                text: title + " " + units
 
             }
         },  

@@ -39,14 +39,11 @@ getElevation: function(coords, callbackSetVariable){
       }
       callbackSetVariable(result)
     }); 
-  console.log('results still here?', result)
-  
 },
 
 createArrayOfPathLatLng: function(callback){
   var pathCoords = this.map.currentRoute.routes[0].overview_path
   var lengthOfRoute = this.map.currentRoute.routes[0].legs[0].distance['text']
-  console.log("total distance", lengthOfRoute)
   localStorage.setItem('elevationDistance', lengthOfRoute)
   var latLngArray = []
   pathCoords.forEach(function(coords){
@@ -54,7 +51,6 @@ createArrayOfPathLatLng: function(callback){
     latLngArray.push(toPush)
   })
   callback(latLngArray)
-  // console.log(latLngArray);
 },
 
 useLatLngArrayToGetElevation: function(latLngArray){
@@ -89,8 +85,6 @@ for(var i = 0; i < elevationArray.length-1; i++){
   elevationSeries.push( [   fractionalDist*i,  +elevationArray[i]   ] );
   distances.push(fractionalDist*i)
 };
-console.log("elevationSeries", elevationSeries)
-console.log("distances", distances)
 new ColumnChart(container, chartTitle, elevationSeries, distances, "meters")
 }
 

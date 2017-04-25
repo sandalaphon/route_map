@@ -37,6 +37,7 @@
   z-index: 1;
   border-right: 1px black solid;
   background-color: white;
+  overflow:auto;
 }
 
 #suggested-routes {
@@ -44,13 +45,14 @@
   position: absolute;
   left: 80%;
   width: 20%;
-  height: 700px;
+  height: 100%;
   float: right;
   display: inline;
   z-index: 1;
   transition: 0.5s;
   border-left: 1px black solid;
   background-color: white;
+  overflow:auto;
 }
 
 

@@ -1,4 +1,6 @@
+
 var ColumnChart = function(container, title, data, categories, units) {
+
 
      var chart = new Highcharts.Chart({
        chart: {
@@ -18,6 +20,7 @@ var ColumnChart = function(container, title, data, categories, units) {
            categories: categories,
            title:{
 
+
                text: 'time'
            }
        },
@@ -26,6 +29,7 @@ var ColumnChart = function(container, title, data, categories, units) {
          data: data}],
            
      });
+
 
   };
 
