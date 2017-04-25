@@ -55,6 +55,33 @@
   overflow:auto;
 }
 
+.menu{
+  display: inline-block;
+  justify-content: center;
+  border: 3px black;
+  padding: 10px 10px;
+  font-size: 16px;
+  margin: 16px auto;
 
 
+}
+
+input{
+  display: block;
+  margin: auto;
+  font-size: 16px;
+  width: 300px;
+}
+
+#spacing{
+  display:inline-block;
+  height: 10px;
+}
+
+h1{
+  display: inline-block;
+  margin: auto;
+  justify-content: center;
+
+}
 #doneButton {}

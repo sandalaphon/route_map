@@ -26,7 +26,7 @@ var Page = function () {
   this.map = {
     center: {lat: 55.953251, lng: -3.188267},
     containerDiv: containerDiv,
-    mainMap: new MapWrapper(containerDiv, {lat: 55.953251, lng: -3.188267}, 5),
+    mainMap: new MapWrapper(containerDiv, {lat: 56.632, lng: -4.180}, 6),
     transportMethod: 'BICYCLING'
   }
 }
