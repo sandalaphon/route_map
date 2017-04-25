@@ -1,4 +1,5 @@
 var MapWrapper = require('../mapWrapper.js')
+var MakeRequest = require('../models/make_requests.js')
 
 var Sidebar = function (passedPage) {
   this.sidebarHTMLObject = document.querySelector('#sidebar')
@@ -7,6 +8,23 @@ var Sidebar = function (passedPage) {
 }
 
 Sidebar.prototype = {
+
+  setup: function () {
+    // Get data to populate wishlist and set to appear/disappear
+    var makeRequest = new MakeRequest()
+    this.populateList(makeRequest.makeGetRequest)
+    this.hideReveal()
+    var wishlistRevealButton = document.querySelector('#wishlist-button')
+    wishlistRevealButton.addEventListener('click', this.revealWishlist)
+  },
+
+  hideReveal: function () {
+    if (this.sidebarHidden) {
+      this.sidebarHTMLObject.style.display = 'none'
+    } else {
+      this.sidebarHTMLObject.style.diplay = 'inline-block'
+    }
+  },
 
   populateList: function (getAllRoutes) {
     var wishlistUL = document.querySelector('#wishlist')

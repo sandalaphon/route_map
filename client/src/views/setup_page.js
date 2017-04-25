@@ -1,7 +1,7 @@
 var MapWrapper = require('../mapWrapper.js')
 var Route = require('../models/route.js')
-var MakeRequest = require('../models/make_requests.js')
-var SuggestionList = require('./suggested_list.js')
+// var MakeRequest = require('../models/make_requests.js') // moved to sidebar and suggestionlist setup() functions
+// var SuggestionList = require('./suggested_list.js')
 var Forecast = require('../models/forecast.js')
 var WeatherView = require('../models/weather_view')
 var weatherView = new WeatherView()
@@ -33,26 +33,9 @@ var Page = function () {
 
 Page.prototype = {
 
-  setupSideBars: function (sidebar) {
-    var makeRequest = new MakeRequest()
-
-    sidebar.populateList(makeRequest.makeGetRequest)
-    if (sidebar.sidebarHidden) {
-      sidebar.sidebarHTMLObject.style.display = 'none'
-    } else {
-      sidebar.sidebarHTMLObject.style.diplay = 'inline-block'
-    }
-
-    var suggestionList = new SuggestionList(this)
-    suggestionList.populateList(makeRequest.makeGetRequest)
-    suggestionList.sidebarHTMLObject.style.display = 'none'
-
-    var wishlistRevealButton = document.querySelector('#wishlist-button')
-    wishlistRevealButton.addEventListener('click', sidebar.revealWishlist)
-
-    var suggestionListRevealButton = document.querySelector('#suggested')
-    suggestionListRevealButton.addEventListener('click', suggestionList.revealList)
-  },
+  /* setupSideBars: function (sidebar) {
+    // moved function to Sidebar.setup() and SuggestionList.setup()
+  }, */
 
   findAmenity: function () {
     var finLat = localStorage.getItem('finishLatitude')
