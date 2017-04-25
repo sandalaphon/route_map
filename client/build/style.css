@@ -2,14 +2,25 @@
   margin: 0;
 }
 
-#main-title {
-  text-align: center;
-  padding: 10px;
-}
 
 /*#main-buttons {
 
 }*/
+
+#main-screen {
+  text-align: center;
+  display: inline-block;
+  margin-left: 16%;
+  margin-right: 16%;
+  float: right;
+  width: 67%;
+}
+
+#main-title {
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px;
+}
 
 #main-map{
   /*margin: auto;*/
