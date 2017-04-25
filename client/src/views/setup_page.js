@@ -75,7 +75,7 @@ Page.prototype = {
         routeToSave.addName(routeName)
         routeToSave.addGoogleResponse(googleResponse)
         routeToSave.save()
-        this.setupSideBars(this.sidebar)
+        this.sidebar.setup()
       }.bind(this))
     }.bind(this))
   },
@@ -96,56 +96,49 @@ Page.prototype = {
     // forecast function
     this.setButtonEvent('click', this.buttons['forecast'], this.showForecast)
 
+    this.setButtonEvent('click', this.buttons['save'], this.saveDisplayedRoute.bind(this))
 
-this.setButtonEvent('click', this.buttons['save'], this.saveDisplayedRoute.bind(this))
+    this.setButtonEvent('click', this.buttons['animationButton'], function () {
+      this.map.mainMap.animateRoute()
+    }.bind(this))
+  },
 
-this.setButtonEvent('click', this.buttons['animationButton'], function () {
-  this.map.mainMap.animateRoute()
-}.bind(this))
-},
+  getAddressFromGeoCode: function (addressId, callback) {
+    var geoCoder = new google.maps.Geocoder()
+    geoCoder.geocode({'placeId': addressId}, function (results, status) {
+      if (status === 'OK') {
+        if (results[0]) {
+          var streetName = results[0].formatted_address
+        } else {
+          window.alert('No results found')
+        }
+      } else {
+        window.alert('Geocoder failed due to: ' + status + '\nDont click in the sea!')
+      }
+      callback(streetName)
+    })
+  },
 
-getAddressFromGeoCode: function (addressId, callback) {
-  var geoCoder = new google.maps.Geocoder()
-  geoCoder.geocode({'placeId': addressId}, function (results, status) {
-    if (status === 'OK') {
-      if (results[0]) {
-              
-var streetName =results[0].formatted_address
-
-} else {
- window.alert('No results found');
-}
-} else {
- window.alert('Geocoder failed due to: ' + status + "\nDont click in the sea!");
-}
-callback(streetName);
-
-}.bind(this))
-  
-},
-
-
-viewRoute: function(routeName){
-  var request = new XMLHttpRequest();
-  var url = "http://localhost:3000/api/routes/"+routeName
-  request.open("GET", url);
-  request.setRequestHeader("Content-Type", "application/json");
-  request.onload = function(){
-    if(request.status!== 200) {
-      alert("Not Found")
-      return}
-      var jsonString = request.responseText;
-      var directionsServiceObj = JSON.parse(jsonString);
+  viewRoute: function (routeName) {
+    var request = new XMLHttpRequest()
+    var url = 'http://localhost:3000/api/routes/' + routeName
+    request.open('GET', url)
+    request.setRequestHeader('Content-Type', 'application/json')
+    request.onload = function () {
+      if (request.status !== 200) {
+        alert('Not Found')
+        return
+      }
+      var jsonString = request.responseText
+      var directionsServiceObj = JSON.parse(jsonString)
       this.map.mainMap.drawRoute(directionsServiceObj[0].googleResponse)
     }.bind(this)
-    request.send();
+    request.send()
   },
   setButtonEvent: function (type, button, callback) {
     button.addEventListener(type, callback)
   }
 
 }
-
-
 
 module.exports = Page
