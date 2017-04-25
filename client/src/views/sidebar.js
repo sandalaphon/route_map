@@ -51,7 +51,6 @@ Sidebar.prototype = {
           url += routeID
           var request = new XMLHttpRequest()
           request.open('DELETE', url)
-            // request.onload = callback
           request.send()
         }
 
@@ -70,7 +69,6 @@ Sidebar.prototype = {
           var mainMap = sidebarScope.page.map.mainMap
 
           var finishLatitude = element.googleResponse.destination
-          // console.log('here', element.googleResponse.destination)
           var finishLongitude = element.googleResponse.destination['lng']
           localStorage.setItem('finishLatitude', finishLatitude)
           localStorage.setItem('finishLongitude', finishLongitude)

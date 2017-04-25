@@ -27,10 +27,6 @@ getElevation: function(coords, callbackSetVariable){
       if (status === 'OK') {
         // Retrieve the first result
         if (results[0]) {
-          console.log("results", results)
-          result = results
-          console.log('The elevation at this point <br>is ' +
-              results[0].elevation + ' meters.');
         } else {
           alert('No results found');
         }
@@ -54,14 +50,12 @@ createArrayOfPathLatLng: function(callback){
 },
 
 useLatLngArrayToGetElevation: function(latLngArray){
-  console.log("this", this)
     this.getElevation(latLngArray, function(result){
       var arrayOfElevation = []
       result.forEach(function(obj){
         arrayOfElevation.push(obj.elevation)
       })
       localStorage.setItem('elevationsOfCurrentRoute', arrayOfElevation)
-      console.log("localStorage", localStorage.getItem('elevationsOfCurrentRoute'))
       setTimeout(this.prepareGraphData(), 1000);
     }.bind(this))
 }, 
@@ -69,24 +63,22 @@ useLatLngArrayToGetElevation: function(latLngArray){
 prepareGraphData: function(){
   var chartTitle = "Elevation along route"
   var container = document.querySelector('#elevation-display')
-var elevationString = localStorage.getItem('elevationsOfCurrentRoute')
-elevationArray = elevationString.split(',')
-var distance = localStorage.getItem('elevationDistance')
-distance = distance.match(/\d/g)
-distance = distance.join("");
-console.log("distance now", distance)
-var elevationSeries = []
-var distances = []
-var fractionalDist = distance/elevationArray.length
-console.log("elevationArray.length", elevationArray.length)
+  var elevationString = localStorage.getItem('elevationsOfCurrentRoute')
+  elevationArray = elevationString.split(',')
+  var distance = localStorage.getItem('elevationDistance')
+  distance = distance.match(/\d/g)
+  distance = distance.join("");
+  var elevationSeries = []
+  var distances = []
+  var fractionalDist = distance/elevationArray.length
 
-for(var i = 0; i < elevationArray.length-1; i++){
+  for(var i = 0; i < elevationArray.length-1; i++){
 
   elevationSeries.push( [   fractionalDist*i,  +elevationArray[i]   ] );
   distances.push(fractionalDist*i)
-};
-new ColumnChart(container, chartTitle, elevationSeries, distances, "meters")
-}
+  };
+  new ColumnChart(container, chartTitle, elevationSeries, distances, "meters")
+  }
 
 }
 module.exports = Elevation

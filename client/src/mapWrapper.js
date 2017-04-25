@@ -114,7 +114,6 @@ MapWrapper.prototype = {
     })
 
     directionsService.route(directionsResult, function (res, status) {
-      console.log(res)
       if (status == 'OK') {
         directionsDisplay.setDirections(res)
 
@@ -126,7 +125,6 @@ MapWrapper.prototype = {
         /////////////session storage
 
         this.computeTotalDistance(directionsDisplay.getDirections());
-        console.log("get destination coords", directionsDisplay.getDirections())
         this.computeEstimatedTime(directionsDisplay.getDirections());
         //Distance and time update with new route
         directionsDisplay.addListener('directions_changed', function() {
@@ -172,7 +170,6 @@ MapWrapper.prototype = {
   },
 
   animateRoute: function () {
-    console.log('currentRoute', this.currentRoute.request.travelMode)
     this.autoRefresh(this.googleMap, this.currentRoute.routes[0].overview_path)
   },
 
@@ -212,8 +209,6 @@ MapWrapper.prototype = {
     map:this.googleMap
   });
 
-  console.log("here now", this.googleMap)
-
   for (var i = 0; i < pathCoords.length; i++) {                
     setTimeout(function(coords) {
       route.getPath().push(coords);
@@ -221,14 +216,9 @@ MapWrapper.prototype = {
     }.bind(this), 100 * i, pathCoords[i]);
   }
 
-
-    console.log('here now', this.googleMap)
-
     for (var i = 0; i < pathCoords.length; i++) {
       setTimeout(function (coords) {
         route.getPath().push(coords)
-        console.log(coords)
-        console.log('this', this)
         this.moveMarker(this.googleMap, marker, coords)
       }.bind(this), 100 * i, pathCoords[i])
     }

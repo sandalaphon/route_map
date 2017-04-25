@@ -135,7 +135,6 @@ var streetName =results[0].formatted_address
 } else {
  window.alert('Geocoder failed due to: ' + status + "\nDont click in the sea!");
 }
-console.log("streetName",streetName)
 callback(streetName);
 
 }.bind(this))
@@ -156,7 +155,6 @@ viewRoute: function(routeName){
       var directionsServiceObj = JSON.parse(jsonString);
       this.map.mainMap.drawRoute(directionsServiceObj[0].googleResponse)
     }.bind(this)
-    console.log("get here??", this)
     request.send();
   },
   setButtonEvent: function (type, button, callback) {

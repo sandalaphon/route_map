@@ -20,7 +20,6 @@ SuggestionList.prototype = {
       parsedList.forEach(function (element) {
         var newLi = document.createElement('li')
 
-        console.log('ELEMENT', element)
         newLi.innerText = 'Name of Route:\n' + element.name + ' \n' + element.googleResponse.travelMode
 
         var newBr = document.createElement('br')
@@ -46,11 +45,7 @@ SuggestionList.prototype = {
         var displayRoute = document.createElement('button');
         displayRoute.id = 'suggestionsDisplayRouteButton'
         displayRoute.innerText = "Display Route"
-
-        // var listScope = this;
-
         displayRoute.addEventListener('click', function(){
-          console.log(suggestionsListScope)
           var mainMap = suggestionsListScope.page.map.mainMap;
           mainMap.drawRoute(element.googleResponse)
         })

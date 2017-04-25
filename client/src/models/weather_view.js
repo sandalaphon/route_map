@@ -33,9 +33,6 @@ WeatherView.prototype = {
       
     })
     
-    console.log("rainfall", rainfall);
-    
-
     var temperatureSeries = [];
     var windSpeedSeries = [];
     var cloudCoverSeries = [];
@@ -48,18 +45,10 @@ WeatherView.prototype = {
       rainfallSeries.push([times[i], +rainfall[i]]);
     };
     
-    //Temperatures not appearing on the graph...
-
-    console.log(temperatureSeries)
     new LineChart(chartContainer1, chartTitleTemp, temperatureSeries, times, "Celsius")
     new LineChart(chartContainer2, chartTitleWindspeed, windSpeedSeries, times, "mph")
     new LineChart(chartContainer3, chartTitleCloudCover, cloudCoverSeries, times, "%")
     new ColumnChart(chartContainer4,chartTitleRainfall, rainfallSeries, times, "mm")
-
-
-
-
-    
   }
 }
 
