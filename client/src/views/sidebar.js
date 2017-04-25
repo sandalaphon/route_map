@@ -91,12 +91,13 @@ Sidebar.prototype = {
 
 
 
-          // var mainMap = sidebarScope.page.map.mainMap
+          var mainMap = sidebarScope.page.map.mainMap
           //!BUG! Routes displaying on top of each other, fixed below
 
+          //FIX ME TOMORROW!
           var containerDiv = document.querySelector('#main-map')
       
-          var mainMap = new MapWrapper(containerDiv, element.googleResponse.destination, 12)
+          // mainMap = new MapWrapper(containerDiv, element.googleResponse.destination, 12)
 
           mainMap.drawRoute(element.googleResponse)
         })
