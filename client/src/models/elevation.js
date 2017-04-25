@@ -28,6 +28,7 @@ getElevation: function(coords, callbackSetVariable){
       if (status === 'OK') {
         // Retrieve the first result
         if (results[0]) {
+          result = results
         } else {
           alert('No results found');
         }
