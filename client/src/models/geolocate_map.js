@@ -1,30 +1,29 @@
 var GeoLocate = function (map) {
   this.map = map
-  console.log(this)
   console.log(this.map)
 }
 
 GeoLocate.prototype = {
   // Try HTML5 geolocation.  Cribbed from Google example
-  centreMap: function (map) {
+  centreMap: function () {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
         var pos = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         }
-        var infoWindow = new google.maps.InfoWindow()
-        infoWindow.setPosition(pos)
-        infoWindow.setContent('Location found.')
-        infoWindow.open(map)
-        console.log(this)
-        map.setCenter(pos)
-      }, function () {
-        this.handleLocationError(true, infoWindow, map.getCenter())
-      })
+        // var infoWindow = new google.maps.InfoWindow()
+        // infoWindow.setPosition(pos)
+        // infoWindow.setContent('Location found.')
+        // infoWindow.open(this.map)
+        this.map.setCenter(pos)
+        this.map.setZoom(12)
+      }.bind(this), function () {
+        this.handleLocationError(true, infoWindow, this.map.getCenter())
+      }.bind(this))
     } else {
       // Browser doesn't support Geolocation
-      this.handleLocationError(false, infoWindow, map.getCenter())
+      this.handleLocationError(false, infoWindow, this.map.getCenter())
     }
     console.log('at end this = ', this)
   },

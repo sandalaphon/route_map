@@ -14,16 +14,14 @@ var app = function () {
   // Pass page into sidebar to give access to Page objects and methods
   var sidebar = new Sidebar(page)
   var suggestionList = new SuggestionList(page)
-  var geoLocate = new GeoLocate(page.map.mainMap)
+  var geoLocate = new GeoLocate(page.map.mainMap.googleMap)
   sidebar.setup()
   suggestionList.setup()
 
   // ugly way to give sidebar back to Page object as an attribute after sidebar created
   page.setupButtons(sidebar)
-  geoLocate.centreMap(page.map.mainMap.googleMap)
-
-  // Setup Wishlist SIDEBAR & Suggested Routes Sidebar
-  // page.setupSideBars(sidebar)
+  // centre map on geolocation
+  geoLocate.centreMap()
 }
 
 window.onload = app
