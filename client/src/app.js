@@ -10,7 +10,10 @@ var app = function () {
   // localStorage.clear()
 
   var page = new Page()
+  // Pass page into sidebar to give access to Page objects and methods
   var sidebar = new Sidebar(page)
+
+  // ugly way to give sidebar back to Page object as an attribute after sidebar created
   page.setupButtons(sidebar)
 
   // SIDEBAR
