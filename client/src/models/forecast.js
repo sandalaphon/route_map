@@ -11,7 +11,6 @@ Forecast.prototype = {
       if(request.status === 200){
         var jsonString = request.responseText;
         this.weatherDetails = JSON.parse(jsonString);
-        console.log(this.weatherDetails)
         callback(this.weatherDetails)
       }
     }.bind(this);

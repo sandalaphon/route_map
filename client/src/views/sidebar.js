@@ -91,7 +91,7 @@ Sidebar.prototype = {
           //!BUG! Routes displaying on top of each other, fixed below
 
           var containerDiv = document.querySelector('#main-map')
-          console.log(element.googleResponse.destination)
+      
           var mainMap = new MapWrapper(containerDiv, element.googleResponse.destination, 12)
 
           mainMap.drawRoute(element.googleResponse)
