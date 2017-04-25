@@ -61,8 +61,9 @@ Page.prototype = {
     // var currentRoute = this.map.mainMap.currentRoute
     if (!routeName) {
       alert('Please enter a route Name')
-      this.map.mainMap.saveRoute.bind(this.map)
+      return
     }
+    this.map.mainMap.saveRoute.bind(this.map)
     var googleResponse = this.map.mainMap.currentRoute.request      // save if route is named and defined
     var originAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[0].place_id
     var destinationAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[this.map.mainMap.currentRoute.geocoded_waypoints.length - 1].place_id
