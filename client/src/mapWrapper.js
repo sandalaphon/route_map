@@ -45,6 +45,10 @@ MapWrapper.prototype = {
     return marker
   },
 
+  removeDisplayedRoutes: function(){
+
+  },
+
   addStartClickEvent: function () {
     var startListener = google.maps.event.addListener(this.googleMap, 'click', function (event) {
       var startLatitude = event.latLng.lat()
@@ -92,15 +96,12 @@ MapWrapper.prototype = {
       'finishLongitude')
     var start = {lat: +startLatitude, lng: +startLongitude}
     var end = {lat: +finishLatitude, lng: +finishLongitude}
-    var directions = new Route(start, end, this.transportMethod)
-    this.route = directions
-    this.route.calculatedRoute = directions.directions()
-    this.mainMap.drawRoute(this.route.calculatedRoute)
+    this.route = new Route(start, end, this.transportMethod)
+    this.mainMap.drawRoute(this.route.directions())
   },
 
   saveRoute: function () {
     if (this.route) {
-      this.route.calculatedRoute = this.mainMap.currentRoute
       this.route.save()   // this.route is now a Route!
     }
   },
@@ -108,7 +109,6 @@ MapWrapper.prototype = {
   drawRoute: function (directionsResult) {
     var directionsService = new google.maps.DirectionsService()
     var directionsDisplay = new google.maps.DirectionsRenderer({
-      // suppressMarkers: true,
       draggable: true,
       map: this.googleMap
     })
@@ -116,30 +116,29 @@ MapWrapper.prototype = {
     directionsService.route(directionsResult, function (res, status) {
       if (status == 'OK') {
         directionsDisplay.setDirections(res)
-
-        this.currentRoute = directionsDisplay.getDirections()
-        var latitude = this.currentRoute.routes[0].legs[0].steps[this.currentRoute.routes[0].legs[0].steps.length-1].end_location.lat();
-        localStorage.setItem('finishLatitude' , latitude)
-        var longitude = this.currentRoute.routes[0].legs[0].steps[this.currentRoute.routes[0].legs[0].steps.length-1].end_location.lng();
+        this.currentRoute = res
+        var no_steps = res.routes[0].legs[0].steps.length-1
+        var latitude = res.routes[0].legs[0].steps[no_steps].end_location.lat();
+        var longitude = res.routes[0].legs[0].steps[no_steps].end_location.lng();
         localStorage.setItem('finishLongitude' , longitude)
-        /////////////session storage
-
-        this.computeTotalDistance(directionsDisplay.getDirections());
-        this.computeEstimatedTime(directionsDisplay.getDirections());
+        localStorage.setItem('finishLatitude' , latitude)
+        this.computeTotalDistance(res);
+        this.computeEstimatedTime(res);
         //Distance and time update with new route
         directionsDisplay.addListener('directions_changed', function() {
          this.currentRoute = directionsDisplay.getDirections()
-         var latitude = this.currentRoute.routes[0].legs[0].steps[this.currentRoute.routes[0].legs[0].steps.length-1].end_location.lat();
+         no_steps = this.currentRoute.routes[0].legs[0].steps.length-1
+         var latitude = this.currentRoute.routes[0].legs[0].steps[no_steps].end_location.lat();
+         var longitude = this.currentRoute.routes[0].legs[0].steps[no_steps].end_location.lng();
          localStorage.setItem('finishLatitude' , latitude)
-         var longitude = this.currentRoute.routes[0].legs[0].steps[this.currentRoute.routes[0].legs[0].steps.length-1].end_location.lng();
          localStorage.setItem('finishLongitude' , longitude)
-         ////////////////session storage
+         //Marker disappear upon drag
          var marker1 = this.startmarkers.pop()
          if (marker1) marker1.setMap(null)
           var marker2 = this.endmarkers.pop()
           if (marker2) marker2.setMap(null)
-          this.computeTotalDistance(directionsDisplay.getDirections())
-          this.computeEstimatedTime(directionsDisplay.getDirections())
+          this.computeTotalDistance(this.currentRoute)
+          this.computeEstimatedTime(this.currentRoute)
         }.bind(this))
       }
     }.bind(this))

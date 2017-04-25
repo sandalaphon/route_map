@@ -5,6 +5,7 @@ var Sidebar = function (passedPage) {
   this.sidebarHTMLObject = document.querySelector('#sidebar')
   this.sidebarHidden = true
   this.page = passedPage
+  this.map = passedPage.map.mainMap
 }
 
 Sidebar.prototype = {
