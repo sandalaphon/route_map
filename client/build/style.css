@@ -2,14 +2,25 @@
   margin: 0;
 }
 
-#main-title {
-  text-align: center;
-  padding: 10px;
-}
 
 /*#main-buttons {
 
 }*/
+
+#main-screen {
+  text-align: center;
+  display: inline-block;
+  margin-left: 16%;
+  margin-right: 16%;
+  float: right;
+  width: 67%;
+}
+
+#main-title {
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px;
+}
 
 #main-map{
   /*margin: auto;*/
@@ -21,6 +32,7 @@
 }
 
 #main-screen {
+  text-align: center;
   display: inline-block;
   margin-left: 16%;
   margin-right: 16%;
@@ -47,7 +59,7 @@
   width: 20%;
   height: 100%;
   float: right;
-  display: inline;
+  display: none;
   z-index: 1;
   transition: 0.5s;
   border-left: 1px black solid;
@@ -55,6 +67,50 @@
   overflow:auto;
 }
 
+.menu{
+  display: inline-block;
+  justify-content: center;
+  border: 2px solid black;
+  padding: 10px 10px;
+  font-size: 16px;
+  margin: 16px auto;
+}
 
+.menu:hover{
+  background-color: grey;
+}
+
+input{
+  display: block;
+  margin: auto;
+  font-size: 16px;
+  width: 300px;
+}
+
+#spacing{
+  display:inline-block;
+  height: 10px;
+}
+
+h1{
+  display: inline-block;
+  margin: auto;
+  justify-content: center;
+
+}
+
+body {
+  background: white url(./background_map.jpg);
+  background-size: cover;
+  background-repeat: repeat-y;
+  background-attachment: fixed;
+  background-position:  center;
+  /*https://wallpaperstock.net/world-map-grayscale-wallpapers_34428_1920x1200.jpg*/
+}
+
+p{
+  font-size: 16px;
+
+}
 
 #doneButton {}

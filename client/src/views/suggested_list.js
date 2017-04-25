@@ -1,26 +1,44 @@
+var MakeRequest = require('../models/make_requests.js')
+
 var SuggestionList = function (passedPage) {
   this.sidebarHTMLObject = document.querySelector('#suggested-routes')
-  this.suggestionListHidden = true;
-  this.page = passedPage;
+  this.suggestionListHidden = true
+  this.page = passedPage
 }
 
 SuggestionList.prototype = {
 
+  setup: function () {
+    // Get data to populate wishlist and set to appear/disappear
+    var makeRequest = new MakeRequest()
+    this.populateList(makeRequest.makeGetRequest)
+    this.hideReveal()
+    var suggestionListRevealButton = document.querySelector('#suggested')
+    suggestionListRevealButton.addEventListener('click', this.revealList)
+  },
+
+  hideReveal: function () {
+    if (this.suggestionListHidden) {
+      this.sidebarHTMLObject.style.display = 'none'
+    } else {
+      this.sidebarHTMLObject.style.diplay = 'inline-block'
+    }
+  },
+
   populateList: function (getAllRoutes) {
     var suggestedlistUL = document.querySelector('#suggested-list')
-    
+
     while (suggestedlistUL.hasChildNodes()) {
-        suggestedlistUL.removeChild(suggestedlistUL.lastChild);
+      suggestedlistUL.removeChild(suggestedlistUL.lastChild)
     }
 
-    var suggestionsListScope = this;
+    var suggestionsListScope = this
 
     var returnedList = getAllRoutes('http://localhost:3000/api/suggested_routes', function () {
       var parsedList = JSON.parse(this.response)
       parsedList.forEach(function (element) {
         var newLi = document.createElement('li')
 
-        console.log('ELEMENT', element)
         newLi.innerText = 'Name of Route:\n' + element.name + ' \n' + element.googleResponse.travelMode
 
         var newBr = document.createElement('br')
@@ -43,15 +61,14 @@ SuggestionList.prototype = {
           newLi.style.textDecoration = 'line-through'
         }
 
-        var displayRoute = document.createElement('button');
+        var displayRoute = document.createElement('button')
         displayRoute.id = 'suggestionsDisplayRouteButton'
-        displayRoute.innerText = "Display Route"
+        displayRoute.innerText = 'Display Route'
 
         // var listScope = this;
 
-        displayRoute.addEventListener('click', function(){
-          console.log(suggestionsListScope)
-          var mainMap = suggestionsListScope.page.map.mainMap;
+        displayRoute.addEventListener('click', function () {
+          var mainMap = suggestionsListScope.page.map.mainMap
           mainMap.drawRoute(element.googleResponse)
         })
 
@@ -67,11 +84,14 @@ SuggestionList.prototype = {
   },
 
   revealList: function () {
+    console.log('button pressed')
     var suggestionList = document.querySelector('#suggested-routes')
     if (suggestionList.style.display === 'inline-block') {
       suggestionList.style.display = 'none'
+      this.suggestionListHidden = true
     } else if (suggestionList.style.display === 'none') {
       suggestionList.style.display = 'inline-block'
+      this.suggestionListHidden = false
     }
   }
 }
