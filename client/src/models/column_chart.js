@@ -1,5 +1,5 @@
 
-var ColumnChart = function(container, title, data, categories, units) {
+var ColumnChart = function(container, title, data, categories, units, xAxisText) {
 
 
      var chart = new Highcharts.Chart({
@@ -21,7 +21,7 @@ var ColumnChart = function(container, title, data, categories, units) {
            title:{
 
 
-               text: 'time'
+               text: xAxisText
            }
        },
        series: [{
