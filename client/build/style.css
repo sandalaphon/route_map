@@ -47,7 +47,7 @@
   width: 20%;
   height: 100%;
   float: right;
-  display: inline;
+  display: none;
   z-index: 1;
   transition: 0.5s;
   border-left: 1px black solid;
