@@ -11,6 +11,7 @@ var Page = function () {
   this.page = document
   this.route = null
   this.buttons = {
+
     start: document.querySelector('#start'),
     end: document.querySelector('#finish'),
     route: document.querySelector('#route'),
@@ -20,7 +21,9 @@ var Page = function () {
     findAmenity: document.querySelector('#findAmenity'),
     viewsavedRouteButton: document.querySelector('#savedRoute'),
     animationButton: document.querySelector('#animate'),
-    forecast: document.querySelector('#forecast')
+    forecast: document.querySelector('#forecast'),
+    submitReview: document.querySelector('#submitReview')
+
   }
   var containerDiv = document.querySelector('#main-map')
   this.map = {
@@ -84,6 +87,11 @@ Page.prototype = {
     var longitude = localStorage.getItem("finishLongitude");
     var url = "http://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&APPID=f66376ebcb0af19199eb5e28d449aaf9";
     var forecast = new Forecast(url).getData(function(weather){
+      // Enables swapping between reviews and weather divs
+      var reviewsDiv = document.querySelector('#reviews-info');
+      reviewsDiv.style.display = 'none';
+      var weatherDiv = document.querySelector('#weather-info');
+      weatherDiv.style.display = 'initial'
       weatherView.render(weather);
       console.log(weather)
     })
@@ -135,15 +143,13 @@ Page.prototype = {
     this.viewRoute(routeName)
   }.bind(this))// we have no idea
 
-      this.setButtonEvent('click', this.buttons['animationButton'], function(){
-      this.map.mainMap.animateRoute()
-      
-    }.bind(this))
+  this.setButtonEvent('click', this.buttons['animationButton'], function(){
+  this.map.mainMap.animateRoute()  
+  }.bind(this))
     
-  },
+},
 
-
-      getAddressFromGeoCode: function(addressId, callback){
+    getAddressFromGeoCode: function(addressId, callback){
           var geoCoder = new google.maps.Geocoder;
            geoCoder.geocode({'placeId': addressId}, function(results, status){
             console.log("we got here and this is: ", this)

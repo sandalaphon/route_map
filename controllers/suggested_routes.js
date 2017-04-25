@@ -32,11 +32,11 @@ suggestedListRouter.get('/:id', function (req, res) {
 //   })
 // })
 
-// // UPDATE
-// suggestedListRouter.put('/:id', function (req, res) {
-//   suggestedListQuery.update(req.params.id, req.body, function (docs) {
-//     res.json(docs)
-//   })
-// })
+// UPDATE
+suggestedListRouter.put('/:id', function (req, res) {
+  suggestedListQuery.update(req.params.id, req.body, function (docs) {
+    res.json(docs)
+  })
+})
 
 module.exports = suggestedListRouter

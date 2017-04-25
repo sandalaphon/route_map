@@ -19,6 +19,15 @@ MakeRequest.prototype = {
     request.setRequestHeader('Content-Type', 'application/json')
     request.onload = callback
     request.send(payload)
+  },
+
+  makePutRequest: function(url, callback, payload){
+    console.log('XMLHttpRequest...')
+    var request = new XMLHttpRequest()
+    request.open('PUT', url)
+    request.setRequestHeader('Content-Type', 'application/json')
+    request.onload = callback
+    request.send(payload)
   }
 
   // requestComplete: function () {

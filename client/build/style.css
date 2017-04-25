@@ -54,10 +54,12 @@
   display: none;
 }
 
+#review-list {
+  list-style: none;
+}
+
 /*#newReviewText {
   padding-bottom: 50px;
 }*/
-
-
 
 #doneButton {}

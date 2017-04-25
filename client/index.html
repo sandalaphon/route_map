@@ -56,10 +56,13 @@
     </div>
   
     <div id="reviews-info">
-      <p>Reviews</p>
+      <h3>Reviews</h3>
+      <p>Submit Review</p>
       <div id="newReviewDiv">
-        <textarea name="Text1" cols="100" rows="5"></textarea>
+        <textarea id="reviewField" name="ReviewText" cols="100" rows="5"></textarea>
         <br>
+        <span id="reviewUserName">Name: </span><input type="text" id="nameField" />
+        <span>Rating</span><input type="text" id="ratingField" />
         <button id="submitReview">Submit</button>
       </div>
       <ul id="review-list"></ul>
@@ -68,12 +71,12 @@
     </div>
   </div>
 
-    <section id="suggested-routes">
-      <h2>Suggested Routes</h2>
-      <div id="suggested-list-container">
-        <ul id="suggested-list"></ul>
-      </div>
-    </section>
+  <section id="suggested-routes">
+    <h2>Suggested Routes</h2>
+    <div id="suggested-list-container">
+      <ul id="suggested-list"></ul>
+    </div>
+  </section>
   
   </body>
 </html>

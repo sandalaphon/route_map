@@ -1,3 +1,6 @@
+var MakeRequest = require('../models/make_requests.js')
+var Reviews = require('../models/reviews.js')
+
 var SuggestionList = function (passedPage) {
   this.sidebarHTMLObject = document.querySelector('#suggested-routes')
   this.suggestionListHidden = true;
@@ -44,30 +47,15 @@ SuggestionList.prototype = {
           var mainMap = suggestionsListScope.page.map.mainMap;
           mainMap.drawRoute(element.googleResponse)
 
+          // Set the weather for route to disappear if already open
+
+          var weatherDiv = document.querySelector('#weather-info');
+          weatherDiv.style.display = 'none'
+
           // Display reviews for that route
 
-          console.log(element)
-
-          var reviewsDiv = document.querySelector('#reviews-info');
-          reviewsDiv.style.display = 'inline'
-          var reviewsHTMLObject = document.querySelector('#review-list');
-
-
-          while (reviewsHTMLObject.hasChildNodes()) {
-              reviewsHTMLObject.removeChild(reviewsHTMLObject.lastChild);
-          }
-
-          element.reviews.forEach(function(reviewItem){
-            var reviewLi = document.createElement('li');
-            var reviewP = document.createElement('p');
-            reviewLi.innerText = reviewItem.name;
-            reviewP.innerText = reviewItem.reviewText;
-            reviewsHTMLObject.appendChild(reviewLi)
-            reviewsHTMLObject.appendChild(reviewP)  
-          })
-
-          
-
+          var reviews = new Reviews(element);
+          reviews.populateReviews();
 
         })
 
