@@ -1,0 +1,98 @@
+var MapWrapper = require('../mapWrapper.js')
+var ColumnChart = require('./column_chart.js')
+
+var Elevation = function(passedPage){
+ this.page = passedPage
+ this.map = passedPage.map.mainMap
+ this.elevator = new google.maps.ElevationService;
+
+}
+
+Elevation.prototype = {
+
+  setUpButton: function(){
+    var button = document.querySelector('#elevation')
+    button.addEventListener('click', function(){
+      this.createArrayOfPathLatLng(this.useLatLngArrayToGetElevation.bind(this))
+    }.bind(this))
+    //elevation
+
+  },
+
+getElevation: function(coords, callbackSetVariable){
+  var result; 
+  this.elevator.getElevationForLocations({
+      'locations': coords
+    }, function(results, status) {
+      if (status === 'OK') {
+        // Retrieve the first result
+        if (results[0]) {
+          console.log("results", results)
+          result = results
+          console.log('The elevation at this point <br>is ' +
+              results[0].elevation + ' meters.');
+        } else {
+          alert('No results found');
+        }
+      } else {
+        alert('Elevation service failed due to: ' + status);
+      }
+      callbackSetVariable(result)
+    }); 
+  console.log('results still here?', result)
+  
+},
+
+createArrayOfPathLatLng: function(callback){
+  var pathCoords = this.map.currentRoute.routes[0].overview_path
+  var lengthOfRoute = this.map.currentRoute.routes[0].legs[0].distance['text']
+  console.log("total distance", lengthOfRoute)
+  localStorage.setItem('elevationDistance', lengthOfRoute)
+  var latLngArray = []
+  pathCoords.forEach(function(coords){
+    var toPush = {lat: coords.lat(), lng: coords.lng()}
+    latLngArray.push(toPush)
+  })
+  callback(latLngArray)
+  // console.log(latLngArray);
+},
+
+useLatLngArrayToGetElevation: function(latLngArray){
+  console.log("this", this)
+    this.getElevation(latLngArray, function(result){
+      var arrayOfElevation = []
+      result.forEach(function(obj){
+        arrayOfElevation.push(obj.elevation)
+      })
+      localStorage.setItem('elevationsOfCurrentRoute', arrayOfElevation)
+      console.log("localStorage", localStorage.getItem('elevationsOfCurrentRoute'))
+      setTimeout(this.prepareGraphData(), 1000);
+    }.bind(this))
+}, 
+
+prepareGraphData: function(){
+  var chartTitle = "Elevation along route"
+  var container = document.querySelector('#elevation-display')
+var elevationString = localStorage.getItem('elevationsOfCurrentRoute')
+elevationArray = elevationString.split(',')
+var distance = localStorage.getItem('elevationDistance')
+distance = distance.match(/\d/g)
+distance = distance.join("");
+console.log("distance now", distance)
+var elevationSeries = []
+var distances = []
+var fractionalDist = distance/elevationArray.length
+console.log("elevationArray.length", elevationArray.length)
+
+for(var i = 0; i < elevationArray.length-1; i++){
+
+  elevationSeries.push( [   fractionalDist*i,  +elevationArray[i]   ] );
+  distances.push(fractionalDist*i)
+};
+console.log("elevationSeries", elevationSeries)
+console.log("distances", distances)
+new ColumnChart(container, chartTitle, elevationSeries, distances, "meters")
+}
+
+}
+module.exports = Elevation

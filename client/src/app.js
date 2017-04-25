@@ -3,6 +3,7 @@ var Route = require('./models/route.js')
 var mainMap
 var Page = require('./views/setup_page.js')
 var Sidebar = require('./views/sidebar.js')
+var Elevation = require('./models/elevation.js')
 var SuggestionList = require('./views/suggested_list.js')
 
 var app = function () {
@@ -21,6 +22,18 @@ var app = function () {
     request.send()
   }
 
+  //Elevation
+  var elevation = new Elevation(page)
+  // var altitude;
+  // var coordArray =  [{lat: 55.953251, lng: -3.188267}, {lat: 55.953251, lng: -3.288267}]
+  // elevation.getElevation(
+  //  coordArray, 
+  //   function(result){
+  //   altitude=result
+  //   console.log("altitude", altitude)
+  // })
+  elevation.setUpButton()
+
   // SIDEBAR
 
   var sidebar = new Sidebar(page)
@@ -34,8 +47,9 @@ var app = function () {
   var wishlistRevealButton = document.querySelector('#wishlist-button')
   wishlistRevealButton.addEventListener('click', sidebar.revealWishlist)
 
-  var suggestionListRevealButton = document.querySelector('#suggested')
-  suggestionListRevealButton.addEventListener('click', suggestionList.revealList)
+////////commented out to stop error ///////////
+  // var suggestionListRevealButton = document.querySelector('#suggested')
+  // suggestionListRevealButton.addEventListener('click', suggestionList.revealList)
 }
 
 window.onload = app

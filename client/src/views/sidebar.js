@@ -20,10 +20,7 @@ Sidebar.prototype = {
       parsedList.forEach(function(element){
         var newLi = document.createElement('li');
 
-
-        console.log("ELEMENT",element)
         newLi.innerText = "Name: " + element.name + " \nStart: " + element.origin + "\nFinish: "+element.destination
-        console.log("ELEMENT!!!!!!!!!!!!!!!!!!!", element)
         var newBr = document.createElement('br');
         newLi.appendChild(newBr)
 

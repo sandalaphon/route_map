@@ -75,6 +75,15 @@ MapWrapper.prototype = {
     }.bind(this))
   },
 
+  createArrayOfPathLatLng: function(){
+    var pathCoords = this.map.currentRoute.route[0].overview_path
+    var latLngArray = []
+    pathCoords.forEach(function(coords){
+      latLngArray.push(coords)
+    })
+    return latLngArray;
+  },
+
   calculateRoute: function () {
     var startLatitude = localStorage.getItem('startLatitude') // need better names for storage
     var startLongitude = localStorage.getItem('startLongitude') // same here
@@ -110,9 +119,10 @@ MapWrapper.prototype = {
         directionsDisplay.setDirections(res)
 
         this.currentRoute = directionsDisplay.getDirections()
-        var latitude = this.currentRoute.routes[0].legs[0].steps[0].end_location.lat();
+        console.log(directionsDisplay.getDirections())
+        var latitude = this.currentRoute.routes[0].legs[0].steps[this.currentRoute.routes[0].legs[0].steps.length-1].end_location.lat();
         localStorage.setItem('finishLatitude' , latitude)
-        var longitude = this.currentRoute.routes[0].legs[0].steps[0].end_location.lng();
+        var longitude = this.currentRoute.routes[0].legs[0].steps[this.currentRoute.routes[0].legs[0].steps.length-1].end_location.lng();
         localStorage.setItem('finishLongitude' , longitude)
         /////////////session storage
 
@@ -122,9 +132,9 @@ MapWrapper.prototype = {
         //Distance and time update with new route
         directionsDisplay.addListener('directions_changed', function() {
          this.currentRoute = directionsDisplay.getDirections()
-         var latitude = this.currentRoute.routes[0].legs[0].steps[0].end_location.lat();
+         var latitude = this.currentRoute.routes[0].legs[0].steps[this.currentRoute.routes[0].legs[0].steps.length-1].end_location.lat();
          localStorage.setItem('finishLatitude' , latitude)
-         var longitude = this.currentRoute.routes[0].legs[0].steps[0].end_location.lng();
+         var longitude = this.currentRoute.routes[0].legs[0].steps[this.currentRoute.routes[0].legs[0].steps.length-1].end_location.lng();
          localStorage.setItem('finishLongitude' , longitude)
          ////////////////session storage
          var marker1 = this.startmarkers.pop()
@@ -173,19 +183,26 @@ MapWrapper.prototype = {
   autoRefresh: function (map, pathCoords) {
     var marker;
     if(this.currentRoute.request.travelMode==="BICYCLING"){
+      var icon = {
+        url: "http://www.animatedimages.org/data/media/237/animated-bicycle-image-0001.gif",
+        scaledSize: new google.maps.Size(50, 50)
+      }
       marker=new google.maps.Marker({
         map:this.googleMap,
-        scaledSize: new google.maps.Size(20, 20),
         optimized:false, // <-- required for animated gif
         animation: google.maps.Animation.DROP,
-        icon:"http://www.animatedimages.org/data/media/237/animated-bicycle-image-0001.gif"
+        icon:icon
       })
-    }else{marker = new google.maps.Marker({
+    }else{
+      var icon = {
+        url: "http://www.animatedimages.org/data/media/1635/animated-walking-image-0066.gif",
+        scaledSize: new google.maps.Size(50, 50)
+      }
+      marker = new google.maps.Marker({
       map:this.googleMap,
-      scaledSize: new google.maps.Size(20, 20),
         optimized:false, // <-- required for animated gif
         animation: google.maps.Animation.DROP,
-        icon:"http://www.animatedimages.org/data/media/1635/animated-walking-image-0066.gif"})
+        icon: icon})
   };
 
   var route = new google.maps.Polyline({
@@ -203,8 +220,6 @@ MapWrapper.prototype = {
   for (var i = 0; i < pathCoords.length; i++) {                
     setTimeout(function(coords) {
       route.getPath().push(coords);
-      console.log(coords);
-      console.log("this",this);
       this.moveMarker(this.googleMap, marker, coords);
     }.bind(this), 100 * i, pathCoords[i]);
   }
@@ -220,9 +235,7 @@ moveMarker: function (map, marker, latlng) {
 ////  places nearby code now  //////
 ///////////////////////////////
 placesService: function(searchCenterCoords, radius, type){
-  console.log(this)
-  console.log(this.googleMap.places
-    )
+
       var service = new google.maps.places.PlacesService(this.googleMap);//define map
       service.nearbySearch({
         location : searchCenterCoords,
@@ -232,7 +245,6 @@ placesService: function(searchCenterCoords, radius, type){
     console.log("this is....",this)
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       for (var i = 0; i < 8; i++) {
-        // console.log("this is....",this)
         this.createMarker(results[i]);
       }
     }
@@ -246,7 +258,7 @@ placesService: function(searchCenterCoords, radius, type){
 
   createMarker: function(place) {
     var infowindow = new google.maps.InfoWindow()
-    var placeLoc = place.geometry.location;
+    // var placeLoc = place.geometry.location;
     var icon = {
       url: "http://icons.iconarchive.com/icons/icons-land/points-of-interest/256/Restaurant-Blue-icon.png",
       scaledSize: new google.maps.Size(20, 20)

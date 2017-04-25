@@ -53,8 +53,8 @@ WeatherView.prototype = {
     new LineChart(chartContainer1, chartTitleTemp, temperatureSeries, times)
     new LineChart(chartContainer2, chartTitleWindspeed, windSpeedSeries, times)
     new LineChart(chartContainer3, chartTitleCloudCover, cloudCoverSeries, times)
-    // new ColumnChart(chartTitleRainfall, rainfallSeries, times)
-    new LineChart(chartContainer4, chartTitleRainfall, rainfallSeries, times)
+    new ColumnChart(chartContainer4, chartTitleRainfall, rainfallSeries, times)
+    // new LineChart(chartContainer4, chartTitleRainfall, rainfallSeries, times)
 
 
     

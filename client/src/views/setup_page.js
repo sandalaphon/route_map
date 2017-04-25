@@ -55,7 +55,7 @@ Page.prototype = {
       this.map.mainMap.placesService(coords, radius, "restaurant")
     }.bind(this))
     this.setButtonEvent('click', this.buttons['route'], this.map.mainMap.calculateRoute.bind(this.map))
-
+     
     //forecast function
     this.setButtonEvent('click', this.buttons['forecast'], function(){
     var latitude = localStorage.getItem("finishLatitude");
@@ -126,9 +126,7 @@ Page.prototype = {
               // this.getCountryFromGeoCode(results)
              
              var streetName =results[0].formatted_address
-             console.log(streetName)
-             console.log("STREET NAME!!", streetName)
-             console.log("results", results)
+            
            } else {
                window.alert('No results found');
              }
@@ -158,10 +156,6 @@ Page.prototype = {
         return}
         var jsonString = request.responseText;
       var directionsServiceObj = JSON.parse(jsonString);
-      console.log("FROM DB: ")
-      console.log(directionsServiceObj[0].googleResponse)
-      console.log(this)
-      console.log(request)
       this.map.mainMap.drawRoute(directionsServiceObj[0].googleResponse)
     }.bind(this)
     console.log("get here??", this)
