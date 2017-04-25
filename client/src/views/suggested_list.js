@@ -20,17 +20,10 @@ SuggestionList.prototype = {
       parsedList.forEach(function (element) {
         var newLi = document.createElement('li')
 
-        console.log('ELEMENT', element)
         newLi.innerText = 'Name of Route:\n' + element.name + ' \n' + element.googleResponse.travelMode
 
         var newBr = document.createElement('br')
         newLi.appendChild(newBr)
-
-        var newATag = document.createElement('a')
-        var hrefString = 'http://localhost:3000/api/suggested_routes/' + element.name
-        newATag.href = hrefString
-        newATag.text = 'Map Link Here'
-        newLi.appendChild(newATag)
 
         var buttonsDiv = document.createElement('div')
         var divP = document.createElement('p')
@@ -47,12 +40,32 @@ SuggestionList.prototype = {
         displayRoute.id = 'suggestionsDisplayRouteButton'
         displayRoute.innerText = "Display Route"
 
-        // var listScope = this;
-
         displayRoute.addEventListener('click', function(){
-          console.log(suggestionsListScope)
           var mainMap = suggestionsListScope.page.map.mainMap;
           mainMap.drawRoute(element.googleResponse)
+
+          // Display reviews for that route
+
+          console.log(element)
+
+          var reviewsHTMLObject = document.querySelector('#review-list');
+
+          while (reviewsHTMLObject.hasChildNodes()) {
+              reviewsHTMLObject.removeChild(reviewsHTMLObject.lastChild);
+          }
+
+          element.reviews.forEach(function(reviewItem){
+            var reviewLi = document.createElement('li');
+            var reviewP = document.createElement('p');
+            reviewLi.innerText = reviewItem.name;
+            reviewP.innerText = reviewItem.reviewText;
+            reviewsHTMLObject.appendChild(reviewLi)
+            reviewsHTMLObject.appendChild(reviewP)  
+          })
+
+          
+
+
         })
 
         newLi.appendChild(divP)

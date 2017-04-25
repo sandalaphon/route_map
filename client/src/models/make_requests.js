@@ -3,7 +3,6 @@ var MakeRequest = function () {
 
 MakeRequest.prototype = {
 
-
   makeGetRequest: function (url, callback) {
     var request = new XMLHttpRequest()
     request.open('GET', url)

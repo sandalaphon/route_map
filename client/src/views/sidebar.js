@@ -29,12 +29,6 @@ Sidebar.prototype = {
         var newBr = document.createElement('br');
         newLi.appendChild(newBr)
 
-        var newATag = document.createElement('a');
-        var hrefString = "http://localhost:3000/api/routes/"+element.name
-        newATag.href = hrefString;
-        newATag.text = "Map Link Here";
-        newLi.appendChild(newATag);
-
         var buttonsDiv = document.createElement('div')
         var divP = document.createElement('p')
         buttonsDiv.appendChild(divP)
@@ -69,14 +63,7 @@ Sidebar.prototype = {
           displayRoute.addEventListener('click', function(){
 
             var mainMap = sidebarScope.page.map.mainMap;
-            mainMap.drawRoute(element.googleResponse)
-            
-            var finishLatitude = element.googleResponse.destination
-            console.log("here", element.googleResponse.destination)
-            var finishLongitude = element.googleResponse.destination[lng]
-            localStorage.setItem('finishLatitude', finishLatitude)
-            localStorage.setItem('finishLongitude', finishLongitude)
-            mainMap.drawRoute(element.googleResponse)
+            mainMap.drawRoute(element.googleResponse);
 
             
           })

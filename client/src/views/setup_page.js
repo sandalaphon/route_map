@@ -29,18 +29,12 @@ var Page = function () {
     mainMap: new MapWrapper(containerDiv, {lat: 55.953251, lng: -3.188267}, 5),
     transportMethod: 'BICYCLING'
   }
-
-  // sessionStorage.setItem('saved-map', this.map.mainMap);
-  // sessionStorage.setItem('saved-map2', "hello");
-
-  // console.log(this.map.mainMap)
 }
 
 Page.prototype = {
 
   setupSideBars: function (sidebar) {
     var makeRequest = new MakeRequest();
-      // var sidebar = new Sidebar(this)
       console.log(sidebar)
 
       sidebar.populateList(makeRequest.makeGetRequest)

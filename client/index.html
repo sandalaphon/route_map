@@ -13,20 +13,17 @@
   
   <body>
 
-
   <section id="sidebar">
-
     <h2>Wishlist</h2>
     <div id="wishlist-container">
       <ul id="wishlist"></ul>
     </div>
   </section>
 
-
-
   <div id="main-screen">
     <h1>Route Planner</h1>
   <div id="main-map"></div>
+  
   <button id="start">Start</button>
   <button id="finish">Finish</button>
   <button id="route">Route</button>
@@ -45,13 +42,30 @@
   <div>
     <p>Estimated Journey Time: <span id="time"></span></p>
   </div>
-  <div id="temperature-display"></div>
-  <div id="windspeed-display"></div>
-  <div id= "cloudcover-display"></div>
-  <div id="rainfall-display"></div>
-  <div>
-    <ul id="routes"></ul>
-  </div>
+  
+  <div id="routeDetails">
+
+    <div id="weather-info">
+      <div id="temperature-display"></div>
+      <div id="windspeed-display"></div>
+      <div id= "cloudcover-display"></div>
+      <div id="rainfall-display"></div>
+      <div>
+        <ul id="routes"></ul>
+      </div>
+    </div>
+  
+    <div id="reviews-info">
+      <p>Reviews</p>
+      <div id="newReviewDiv">
+        <textarea name="Text1" cols="100" rows="5"></textarea>
+        <br>
+        <button id="submitReview">Submit</button>
+      </div>
+      <ul id="review-list"></ul>
+    </div>
+
+    </div>
   </div>
 
     <section id="suggested-routes">

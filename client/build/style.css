@@ -7,10 +7,6 @@
   padding: 10px;
 }
 
-/*#main-buttons {
-
-}*/
-
 #main-map{
   /*margin: auto;*/
   align-content: center;
@@ -53,6 +49,10 @@
   background-color: white;
   overflow: auto;
 }
+
+/*#newReviewText {
+  padding-bottom: 50px;
+}*/
 
 
 
