@@ -16,7 +16,7 @@ GeoLocate.prototype = {
         infoWindow.setContent('Location')
         infoWindow.open(this.map)
         this.map.setCenter(pos)
-        this.map.setZoom(11)
+        this.map.setZoom(10)
       }.bind(this), function () {
         this.handleLocationError(true, infoWindow, this.map.getCenter())
       }.bind(this))

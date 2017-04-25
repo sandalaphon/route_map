@@ -41,7 +41,7 @@ Sidebar.prototype = {
         var newLi = document.createElement('li')
 
 
-        newLi.innerText = 'Name: ' + element.name + ' \nStart: ' + element.origin + '\nFinish: ' + element.destination
+        newLi.innerText = 'Name: ' + element.name + ' \n\nStart: ' + element.origin + '\n\nFinish: ' + element.destination
 
         var newBr = document.createElement('br')
 
@@ -50,7 +50,7 @@ Sidebar.prototype = {
         var newATag = document.createElement('a')
         var hrefString = 'http://localhost:3000/api/routes/' + element.name
         newATag.href = hrefString
-        newATag.text = 'Map Link Here'
+        newATag.text = 'API Link'
         newLi.appendChild(newATag)
 
         var buttonsDiv = document.createElement('div')
@@ -61,7 +61,11 @@ Sidebar.prototype = {
         doneButton.id = 'doneButton'
         doneButton.innerText = 'Done'
         doneButton.onclick = function () {
-          newLi.style.textDecoration = 'line-through'
+          // newLi.style.textDecoration = 'line-through'
+          if(element.done){
+            element.done = false
+          }
+          else element.done = true
         }
 
         var deleteRouteFromDB = function (routeID) {
