@@ -14,6 +14,7 @@ Elevation.prototype = {
     var button = document.querySelector('#elevation')
     button.addEventListener('click', function(){
       this.createArrayOfPathLatLng(this.useLatLngArrayToGetElevation.bind(this))
+      
     }.bind(this))
     //elevation
 

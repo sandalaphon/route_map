@@ -5,6 +5,7 @@ var Route = function (origin, destination, travelMode) {
   this.name = null
   // this.author = author
   this.rating = null
+  this.done = false
   this.origin = origin
   this.destination = destination
   this.waypoints = []
