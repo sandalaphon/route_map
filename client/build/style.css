@@ -21,6 +21,7 @@
 }
 
 #main-screen {
+  text-align: center;
   display: inline-block;
   margin-left: 16%;
   margin-right: 16%;

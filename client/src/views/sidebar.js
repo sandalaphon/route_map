@@ -50,7 +50,7 @@ Sidebar.prototype = {
         var newATag = document.createElement('a')
         var hrefString = 'http://localhost:3000/api/routes/' + element.name
         newATag.href = hrefString
-        newATag.text = 'Route API Details'
+        newATag.text = 'API Link'
         newLi.appendChild(newATag)
 
         var buttonsDiv = document.createElement('div')
