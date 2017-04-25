@@ -56,6 +56,10 @@ describe('Route', function () {
     assert.strictEqual('CYCLING', route1.travelMode)
   })
 
+  it('Routes start not done', function(){
+    assert.strictEqual(false, route1.done)
+  })
+
   // it('can save', function () {                  // Can't test save as it uses XMLHttpRequest which is browser, not node.
   //   assert.strictEqual('saved', route1.save())
   // })
