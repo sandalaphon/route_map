@@ -41,8 +41,6 @@ getElevation: function(coords, callbackSetVariable){
 
 createArrayOfPathLatLng: function(callback){
   var pathCoords = this.map.currentRoute.routes[0].overview_path
-  // var lengthOfRoute = this.map.currentRoute.routes[0].legs[0].distance['text']
-  // localStorage.setItem('journeyDistance', lengthOfRoute)
   var latLngArray = []
   pathCoords.forEach(function(coords){
     var toPush = {lat: coords.lat(), lng: coords.lng()}
@@ -68,9 +66,7 @@ prepareGraphData: function(){
   var elevationString = localStorage.getItem('elevationsOfCurrentRoute')
   elevationArray = elevationString.split(',')
   var distance = localStorage.getItem('journeyDistance')
-  console.log(distance)
-  // distance = distance.match(/\d/g)
-  // distance = distance.join("");
+
   var elevationSeries = []
   var distances = []
   var fractionalDist = distance/elevationArray.length

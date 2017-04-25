@@ -153,7 +153,6 @@ MapWrapper.prototype = {
       total += myroute.legs[i].distance.value
     }
     localStorage.setItem('journeyDistance', total/1000)
-    console.log(localStorage.getItem('journeyDistance'))
     total = total / 1000
 
     document.getElementById('total').innerHTML = 'Distance: ' + total + ' km' 
