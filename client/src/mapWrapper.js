@@ -10,6 +10,10 @@ var MapWrapper = function (container, coords, zoom) {
     zoom: zoom
   })
   this.route = null
+  this.polyline = null
+  this.directionsDisplay = null
+  this.animationMarker = null
+  this.timeouts = []
 }
 
 MapWrapper.prototype = {
@@ -45,9 +49,6 @@ MapWrapper.prototype = {
     return marker
   },
 
-  removeDisplayedRoutes: function(){
-
-  },
 
   addStartClickEvent: function () {
     var startListener = google.maps.event.addListener(this.googleMap, 'click', function (event) {
@@ -106,16 +107,34 @@ MapWrapper.prototype = {
     }
   },
 
+  clearRoutes: function() {
+    this.directionsDisplay.setMap(null)
+    if(this.polyline){
+    this.polyline.setMap(null)
+  }
+  if(this.animationMarker){
+    this.animationMarker.setMap(null)
+  }
+    var marker1 = this.startmarkers.pop()
+    if (marker1) marker1.setMap(null)
+    var marker2 = this.endmarkers.pop()
+    if (marker2) marker2.setMap(null)
+      for (var i=0; i<this.timeouts.length; i++) {
+        clearTimeout(this.timeouts[i]);
+      }
+
+  },
+
   drawRoute: function (directionsResult) {
     var directionsService = new google.maps.DirectionsService()
-    var directionsDisplay = new google.maps.DirectionsRenderer({
+    this.directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,
       map: this.googleMap
     })
 
     directionsService.route(directionsResult, function (res, status) {
       if (status == 'OK') {
-        directionsDisplay.setDirections(res)
+        this.directionsDisplay.setDirections(res)
         this.currentRoute = res
         var no_steps = res.routes[0].legs[0].steps.length-1
         var latitude = res.routes[0].legs[0].steps[no_steps].end_location.lat();
@@ -125,8 +144,8 @@ MapWrapper.prototype = {
         this.computeTotalDistance(res);
         this.computeEstimatedTime(res);
         //Distance and time update with new route
-        directionsDisplay.addListener('directions_changed', function() {
-         this.currentRoute = directionsDisplay.getDirections()
+        this.directionsDisplay.addListener('directions_changed', function() {
+         this.currentRoute = this.directionsDisplay.getDirections()
          no_steps = this.currentRoute.routes[0].legs[0].steps.length-1
          var latitude = this.currentRoute.routes[0].legs[0].steps[no_steps].end_location.lat();
          var longitude = this.currentRoute.routes[0].legs[0].steps[no_steps].end_location.lng();
@@ -176,13 +195,13 @@ MapWrapper.prototype = {
 
   autoRefresh: function (map, pathCoords) {
 
-    var marker;
+   
     if(this.currentRoute.request.travelMode==="BICYCLING"){
       var icon = {
         url: "http://www.animatedimages.org/data/media/237/animated-bicycle-image-0001.gif",
         scaledSize: new google.maps.Size(50, 50)
       }
-      marker=new google.maps.Marker({
+      this.animationMarker=new google.maps.Marker({
         map:this.googleMap,
         optimized:false, // <-- required for animated gif
         animation: google.maps.Animation.DROP,
@@ -193,14 +212,14 @@ MapWrapper.prototype = {
         url: "http://www.animatedimages.org/data/media/1635/animated-walking-image-0066.gif",
         scaledSize: new google.maps.Size(50, 50)
       }
-      marker = new google.maps.Marker({
+      this.animationMarker = new google.maps.Marker({
       map:this.googleMap,
         optimized:false, // <-- required for animated gif
         animation: google.maps.Animation.DROP,
         icon: icon})
   };
 
-  var route = new google.maps.Polyline({
+  this.polyline = new google.maps.Polyline({
     path: [],
     geodesic : true,
     strokeColor: '#FF0000',
@@ -208,20 +227,13 @@ MapWrapper.prototype = {
     strokeWeight: 2,
     editable: false,
     map:this.googleMap
-  });
-
-  for (var i = 0; i < pathCoords.length; i++) {                
-    setTimeout(function(coords) {
-      route.getPath().push(coords);
-      this.moveMarker(this.googleMap, marker, coords);
-    }.bind(this), 100 * i, pathCoords[i]);
-  }
+  });                
 
     for (var i = 0; i < pathCoords.length; i++) {
-      setTimeout(function (coords) {
-        route.getPath().push(coords)
-        this.moveMarker(this.googleMap, marker, coords)
-      }.bind(this), 100 * i, pathCoords[i])
+        this.timeouts.push(setTimeout(function (coords) {
+        this.polyline.getPath().push(coords)
+        this.moveMarker(this.googleMap, this.animationMarker, coords)
+      }.bind(this), 100 * i, pathCoords[i]))
     }
   },
 

@@ -97,9 +97,9 @@ Sidebar.prototype = {
 
           //FIX ME TOMORROW!
           var containerDiv = document.querySelector('#main-map')
-      
+          
           // mainMap = new MapWrapper(containerDiv, element.googleResponse.destination, 12)
-
+          mainMap.clearRoutes()
           mainMap.drawRoute(element.googleResponse)
         })
 
