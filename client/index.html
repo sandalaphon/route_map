@@ -5,24 +5,42 @@
   <title>Route Planner</title>
   
   <link rel="stylesheet" type="text/css" href="style.css">
-<!--   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCSDO8jpfOiO7nJ3wjAoFsER6BXyN8QWo"></script> -->
   <script src ="http://code.highcharts.com/highcharts.js"></script>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCSDO8jpfOiO7nJ3wjAoFsER6BXyN8QWo&libraries=places"></script>
   <script src="bundle.js"></script>
   </head>
   
-  <body>
+<body>
 
-  <section id="sidebar">
-    <h2>Wishlist</h2>
+<section class="tempBox">
+Display Features
+<button id = "pause">Pause Animation</button>
+<button id = "stopOffFood">Find Restaurant</button>
+
+<canvas id="canvas" width="135" height="135"
+style="background-color:#333">
+</canvas>
+<form >
+  What time will you depart?:
+  <input type="time" id = 'time_depart' >
+</form>
+<button id = "time_button">Set Time</button>
+</section>
+  
+<section id="sidebar">
+
+<h2 class='sidebars-title'>Wishlist<span class='close' id="sidebar-close">&times;</span></h2>
+
+
     <div id="wishlist-container">
       <ul id="wishlist"></ul>
     </div>
-  </section>
+</section>
 
   <div id="main-screen">
-    <h1>Route Planner</h1>
+    <h1 id="main-title">Route Planner</h1>
   <div id="main-map"></div>
+
   
   <button id="start">Start</button>
   <button id="finish">Finish</button>
@@ -37,21 +55,27 @@
   <input type="text" id="savedRouteName">
   <button id="savedRoute">View a saved Route</button>
   <button id="animate">Animate</button>
+  <button class= "menu" id="elevation">Elevation</button>
   <button id="forecast">Weather Forecast</button>
     <p>Total Distance: <span id="total"></span></p>
+
   <div>
-    <p>Estimated Journey Time: <span id="time"></span></p>
+    <p><span id="total"></span></p>
+    <p><span id="time"></span></p>
   </div>
+<!-- <<<<<<< HEAD -->
   
   <div id="routeDetails">
-
     <div id="weather-info">
+      <div id="elevation-display"></div>
       <div id="temperature-display"></div>
       <div id="windspeed-display"></div>
       <div id= "cloudcover-display"></div>
       <div id="rainfall-display"></div>
       <div>
         <ul id="routes"></ul>
+      </div>
+
       </div>
     </div>
   
@@ -68,12 +92,12 @@
     </div>
   </div>
 
-  <section id="suggested-routes">
-    <h2>Suggested Routes</h2>
-    <div id="suggested-list-container">
-      <ul id="suggested-list"></ul>
-    </div>
-  </section>
+      <section id="suggested-routes">
+        <h2 class='sidebars-title'>Suggested Routes<span class='close' id="suggested-close">&times;</span></h2>
+        <div id="suggested-list-container">
+          <ul id="suggested-list"></ul>
+  <!-- >>>>>>> develop -->
+
   
-  </body>
+</body>
 </html>

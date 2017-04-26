@@ -3,31 +3,60 @@ var Reviews = require('../models/reviews.js')
 
 var SuggestionList = function (passedPage, reviews) {
   this.sidebarHTMLObject = document.querySelector('#suggested-routes')
-  this.suggestionListHidden = true;
-  this.page = passedPage;
+  this.suggestionListHidden = true
+  this.page = passedPage
 }
 
 SuggestionList.prototype = {
 
+  setup: function () {
+    // Get data to populate wishlist and set to appear/disappear
+    var makeRequest = new MakeRequest()
+    this.populateList(makeRequest.makeGetRequest)
+    this.hideReveal()
+    var suggestionListRevealButton = document.querySelector('#suggested')
+    suggestionListRevealButton.addEventListener('click', this.revealList)
+  },
+
+  hideReveal: function () {
+    if (this.suggestionListHidden) {
+      this.sidebarHTMLObject.style.display = 'none'
+    } else {
+      this.sidebarHTMLObject.style.diplay = 'inline-block'
+    }
+  },
+
+  addCloseAction: function (htmlElement) {
+    htmlElement.onclick = function () {
+      this.hideReveal()
+    }.bind(this)
+  },
+
   populateList: function (getAllRoutes) {
     var reviews = new Reviews();
     var suggestedlistUL = document.querySelector('#suggested-list')
-    
+
+    this.addCloseAction(document.querySelector('#suggested-close'))  // using span id=sidebar-close
+
     while (suggestedlistUL.hasChildNodes()) {
-        suggestedlistUL.removeChild(suggestedlistUL.lastChild);
+      suggestedlistUL.removeChild(suggestedlistUL.lastChild)
     }
 
-    var suggestionsListScope = this;
+    var suggestionsListScope = this
 
     var returnedList = getAllRoutes('http://localhost:3000/api/suggested_routes', function () {
       var parsedList = JSON.parse(this.response)
       parsedList.forEach(function (element) {
         var newLi = document.createElement('li')
 
-        newLi.innerText = 'Name of Route:\n' + element.name + ' \n' + element.googleResponse.travelMode
+// <<<<<<< HEAD
+//         newLi.innerText = 'Name of Route:\n' + element.name + ' \n' + element.googleResponse.travelMode
 
-        var newBr = document.createElement('br')
-        newLi.appendChild(newBr)
+//         var newBr = document.createElement('br')
+//         newLi.appendChild(newBr)
+// =======
+        newLi.innerHTML = '<p class="route-name">' + element.name + '</p>' + '<p class="travel-mode">' + element.googleResponse.travelMode + '</p>'
+// >>>>>>> develop
 
         var buttonsDiv = document.createElement('div')
         var divP = document.createElement('p')
@@ -40,14 +69,23 @@ SuggestionList.prototype = {
           newLi.style.textDecoration = 'line-through'
         }
 
-        var displayRoute = document.createElement('button');
+        var displayRoute = document.createElement('button')
         displayRoute.id = 'suggestionsDisplayRouteButton'
-        displayRoute.innerText = "Display Route"
+        displayRoute.innerText = 'Display Route'
 
-        // Display reviews for that route
+// <<<<<<< HEAD
+//         // Display reviews for that route
         
-        displayRoute.addEventListener('click', function(){
-          var mainMap = suggestionsListScope.page.map.mainMap;
+//         displayRoute.addEventListener('click', function(){
+//           var mainMap = suggestionsListScope.page.map.mainMap;
+// =======
+//         // var listScope = this;
+
+        displayRoute.addEventListener('click', function () {
+          var mainMap = suggestionsListScope.page.map.mainMap
+          suggestionsListScope.hideReveal()
+          mainMap.clearRoutes()
+// >>>>>>> develop
           mainMap.drawRoute(element.googleResponse)
 
           // Set the weather for route to disappear if already open
@@ -74,8 +112,10 @@ SuggestionList.prototype = {
     var suggestionList = document.querySelector('#suggested-routes')
     if (suggestionList.style.display === 'inline-block') {
       suggestionList.style.display = 'none'
+      this.suggestionListHidden = true
     } else if (suggestionList.style.display === 'none') {
       suggestionList.style.display = 'inline-block'
+      this.suggestionListHidden = false
     }
   }
 }

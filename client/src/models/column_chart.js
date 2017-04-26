@@ -1,35 +1,36 @@
-var ColumnChart = function(title, data, categories, units) {
 
-  var container = document.querySelector("#rainfall-display")
+var ColumnChart = function(container, title, data, categories, units, xAxisText) {
 
 
-    var chart = new Highcharts.Chart({ 
-      chart: {
-        type: 'column',
-        renderTo: container
-      },
-      title: { 
-        text: title 
-      },
-      yAxis: {
-          title: {
-              text: title + " " + units
+     var chart = new Highcharts.Chart({
+       chart: {
+         type: 'column',
+         renderTo: container
+       },
+       title: {
+         text: title
+       },
+       yAxis: {
+           title: {
+               text: title + " " + units
 
-          }
-      },  
-      xAxis:{
-          categories: categories,
-          title:{
+           }
+       },  
+       xAxis:{
+           categories: categories,
+           title:{
 
-              text: 'time'
-          }
-      },
-      series: [{
-        name: title,
-        data: data}],
-          
-    });
 
-};
+               text: xAxisText
+           }
+       },
+       series: [{
+         name: title,
+         data: data}],
+           
+     });
 
-module.exports = ColumnChart
+
+  };
+
+  module.exports = ColumnChart

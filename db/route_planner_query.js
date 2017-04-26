@@ -16,6 +16,7 @@ RoutesQuery.prototype = {
           onQueryFinished(docs)
         })
       }
+      db.close()
     }.bind(this))
   },
 
@@ -28,6 +29,7 @@ RoutesQuery.prototype = {
           onQueryFinished(docs)
         })
       }
+      db.close()
     }.bind(this))
   },
 
@@ -50,6 +52,7 @@ RoutesQuery.prototype = {
           })
         }
       }
+      db.close()
     }.bind(this))
   },
 
@@ -62,6 +65,7 @@ RoutesQuery.prototype = {
           onQueryFinished(docs)
         })
       }
+      db.close()
     }.bind(this))
   },
 
@@ -73,6 +77,7 @@ RoutesQuery.prototype = {
           onQueryFinished(docs)
         })
       }
+      db.close()
     }.bind(this))
   }
 
