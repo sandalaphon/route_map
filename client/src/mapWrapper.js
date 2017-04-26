@@ -105,7 +105,7 @@ MapWrapper.prototype = {
     })
 
     directionsService.route(directionsResult, function(res, status){
-      console.log(res)
+      
       if(status == 'OK'){
         directionsDisplay.setDirections(res)
 
@@ -117,7 +117,7 @@ MapWrapper.prototype = {
         /////////////session storage
 
         this.computeTotalDistance(directionsDisplay.getDirections());
-        console.log("get destination coords", directionsDisplay.getDirections())
+        
         this.computeEstimatedTime(directionsDisplay.getDirections());
         //Distance and time update with new route
         directionsDisplay.addListener('directions_changed', function() {
@@ -164,7 +164,7 @@ MapWrapper.prototype = {
 
 
   animateRoute: function(){
-    console.log("currentRoute", this.currentRoute.request.travelMode)
+    
     this.autoRefresh(this.googleMap, this.currentRoute.routes[0].overview_path)
     
   },

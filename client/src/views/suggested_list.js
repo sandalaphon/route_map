@@ -1,7 +1,7 @@
 var MakeRequest = require('../models/make_requests.js')
 var Reviews = require('../models/reviews.js')
 
-var SuggestionList = function (passedPage) {
+var SuggestionList = function (passedPage, reviews) {
   this.sidebarHTMLObject = document.querySelector('#suggested-routes')
   this.suggestionListHidden = true;
   this.page = passedPage;
@@ -10,6 +10,7 @@ var SuggestionList = function (passedPage) {
 SuggestionList.prototype = {
 
   populateList: function (getAllRoutes) {
+    var reviews = new Reviews();
     var suggestedlistUL = document.querySelector('#suggested-list')
     
     while (suggestedlistUL.hasChildNodes()) {
@@ -43,6 +44,8 @@ SuggestionList.prototype = {
         displayRoute.id = 'suggestionsDisplayRouteButton'
         displayRoute.innerText = "Display Route"
 
+        // Display reviews for that route
+        
         displayRoute.addEventListener('click', function(){
           var mainMap = suggestionsListScope.page.map.mainMap;
           mainMap.drawRoute(element.googleResponse)
@@ -52,11 +55,8 @@ SuggestionList.prototype = {
           var weatherDiv = document.querySelector('#weather-info');
           weatherDiv.style.display = 'none'
 
-          // Display reviews for that route
-
-          var reviews = new Reviews(element);
-          reviews.populateReviews();
-
+          reviews.revealReviewsForCurrentRoute(element)
+          
         })
 
         newLi.appendChild(divP)

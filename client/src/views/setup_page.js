@@ -3,13 +3,16 @@ var Route = require('../models/route.js')
 var MakeRequest = require('../models/make_requests.js')
 var SuggestionList = require('./suggested_list.js')
 var Forecast = require('../models/forecast.js')
+var Reviews = require('../models/reviews.js')
 var WeatherView = require('../models/weather_view')
 var weatherView = new WeatherView
+
 
 
 var Page = function () {
   this.page = document
   this.route = null
+  this.currentReviewDisplayed = null
   this.buttons = {
 
     start: document.querySelector('#start'),
@@ -81,6 +84,8 @@ Page.prototype = {
     }.bind(this))
     this.setButtonEvent('click', this.buttons['route'], this.map.mainMap.calculateRoute.bind(this.map))
 
+    // var reviews = new Reviews();
+
     //forecast function
     this.setButtonEvent('click', this.buttons['forecast'], function(){
     var latitude = localStorage.getItem("finishLatitude");
@@ -127,14 +132,6 @@ Page.prototype = {
 
       }.bind(this))
 
-      // if( (googleResponse) && (routeName) ){
-      //   // create Route and then save it
-      //   var routeToSave = new Route(this.originAddress, this.destinationAddress, "not needed")
-      //   routeToSave.addName(routeName)
-      //   routeToSave.addGoogleResponse(googleResponse)
-      //   console.log(routeToSave)
-      //   routeToSave.save()
-      // }
       }.bind(this))
 
     //test
@@ -198,6 +195,32 @@ Page.prototype = {
     }.bind(this)
     console.log("get here??", this)
     request.send();
+
+  },
+
+  setupReviews: function(){
+    var reviews = new Reviews();
+    reviews.setupReviewsHTML();
+    var request = new XMLHttpRequest();
+    var url = "http://localhost:3000/api/suggested_routes/"
+    request.open("GET", url)
+    request.setRequestHeader("Content-Type", "application/json");
+    request.onload = function(){
+      if(request.status!== 200){
+        console.log('Error')
+        return
+      }
+      var jsonString = request.responseText;
+      var parsedResponse = JSON.parse(jsonString)
+      var allRouteIds = reviews.findAllRouteIDs(parsedResponse)
+      var allReviewsWithIds = reviews.findAllReviewsByGivenId(parsedResponse, allRouteIds);
+
+      console.log(allReviewsWithIds)
+
+      reviews.createHTMLElementsForEachReview(allReviewsWithIds)
+
+    }
+    request.send()
 
   }
 

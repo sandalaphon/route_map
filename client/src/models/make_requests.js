@@ -7,7 +7,6 @@ MakeRequest.prototype = {
     var request = new XMLHttpRequest()
     request.open('GET', url)
     request.onload = callback
-    console.log(request)
     request.send()
   },
 

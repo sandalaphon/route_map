@@ -5,6 +5,7 @@ var Page = require('./views/setup_page.js')
 var Sidebar = require('./views/sidebar.js')
 var SuggestionList = require('./views/suggested_list.js')
 var MakeRequest = require('./models/make_requests.js')
+var Reviews = require('./models/reviews.js')
 
 var app = function () {
   localStorage.clear()
@@ -18,6 +19,10 @@ var app = function () {
 
   console.log(sidebar)
   page.setupSideBars(sidebar)
+
+  // REVIEWS
+
+  page.setupReviews()
 
 }
 
