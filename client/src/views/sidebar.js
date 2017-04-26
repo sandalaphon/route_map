@@ -27,8 +27,16 @@ Sidebar.prototype = {
     }
   },
 
+  addCloseAction: function (htmlElement) {
+    htmlElement.onclick = function () {
+      this.hideReveal()
+    }.bind(this)
+  },
+
   populateList: function (getAllRoutes) {
     var wishlistUL = document.querySelector('#wishlist')
+
+    this.addCloseAction(document.querySelector('#sidebar-close'))  // using span id=sidebar-close
 
     while (wishlistUL.hasChildNodes()) {
       wishlistUL.removeChild(wishlistUL.lastChild)
@@ -41,19 +49,19 @@ Sidebar.prototype = {
       parsedList.forEach(function (element) {
         var newLi = document.createElement('li')
 
-
         newLi.innerText = 'Name: ' + element.name + ' \n\nStart: ' + element.origin + '\n\nFinish: ' + element.destination
 
         var newBr = document.createElement('br')
 
         newLi.appendChild(newBr)
 
+/*  Commented out to remove hyperlink from sidbar as button shows route
         var newATag = document.createElement('a')
         var hrefString = 'http://localhost:3000/api/routes/' + element.name
         newATag.href = hrefString
         newATag.text = 'API Link'
         newLi.appendChild(newATag)
-
+*/
         var buttonsDiv = document.createElement('div')
         var divP = document.createElement('p')
         buttonsDiv.appendChild(divP)
@@ -63,10 +71,9 @@ Sidebar.prototype = {
         doneButton.innerText = 'Done'
         doneButton.onclick = function () {
           // newLi.style.textDecoration = 'line-through'
-          if(element.done){
+          if (element.done) {
             element.done = false
-          }
-          else element.done = true
+          } else element.done = true
         }
 
         var deleteRouteFromDB = function (routeID) {
@@ -89,15 +96,12 @@ Sidebar.prototype = {
         displayRoute.id = 'sidebarDisplayRouteButton'
         displayRoute.innerText = 'Display Route'
         displayRoute.addEventListener('click', function () {
-
-
-
           var mainMap = sidebarScope.page.map.mainMap
-          //!BUG! Routes displaying on top of each other, fixed below
+          //! BUG! Routes displaying on top of each other, fixed below
 
-          //FIX ME TOMORROW!
+          // FIX ME TOMORROW!
           var containerDiv = document.querySelector('#main-map')
-          
+
           // mainMap = new MapWrapper(containerDiv, element.googleResponse.destination, 12)
           mainMap.clearRoutes()
           mainMap.drawRoute(element.googleResponse)
