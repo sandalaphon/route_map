@@ -55,7 +55,7 @@ width:115px;
 #main-title {
   margin: 0 auto;
   text-align: center;
-  padding: 10px;
+  padding: 8px;
 }
 
 #main-map{
@@ -70,7 +70,7 @@ width:115px;
 
 #sidebar {
   position: absolute;
-  width: 25%;
+  width: 30%;
   height: 100%;
   float: left;
   display: none;
@@ -85,14 +85,21 @@ width:115px;
   animation-duration: 0.4s
 }
 
+.start-finish {
+  font-size: 12px;
+}
+.from-to {
+  font-weight: bold;
+}
+
 /* Add Animation */
 @-webkit-keyframes slideInLeft {
-    from {left: -300px; opacity: 0} 
+    from {left: -30%; opacity: 0} 
     to {left: 0; opacity: 1}
 }
 
 @keyframes slideInLeft {
-    from {left: -300px; opacity: 0}
+    from {left: -30%; opacity: 0}
     to {left: 0; opacity: 1}
 }
 
@@ -107,21 +114,42 @@ width:115px;
 }
 
 @-webkit-keyframes slideInRight {
-    from {right: 300px; opacity: 0} 
-    to {right: 0; opacity: 1}
+    from {right: 130%; opacity: 0} 
+    to {right: 0%; opacity: 1}
 }
 
 @keyframes slideInRight {
-    from {right: 300px; opacity: 0}
-    to {right: 0; opacity: 1}
+    from {right: 130%; opacity: 0}
+    to {right: 0%; opacity: 1}
 }
 
+#suggested-list {
+  list-style-type: none;
+  padding-left: 3px;
+  font-size: 14px;
+}
+
+#wishlist {
+  list-style-type: none;
+  padding-left: 3px;
+  font-size: 14px; 
+}
+
+.route-name {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.travel-mode {
+  font-size: 11px;
+  padding-left: 10px;
+}
 
 #suggested-routes {
   /*clear: right;*/
   position: absolute;
-  left: 80%;
-  width: 20%;
+  left: 70%;
+  width: 30%;
   height: 100%;
   float: right;
   display: none;
@@ -161,7 +189,7 @@ width:115px;
 .close {
   color: #aaa;
   float: right;
-  font-size: 28px;
+  font-size: 20px;
   font-weight: bold;
   background: red;
 }
@@ -172,8 +200,11 @@ width:115px;
     cursor: pointer;
 }
 .sidebars-title {
-  font-size: 20px;
+  font-size: 18px;
 }
+
+
+
 
 .menu{
   display: inline-block;
