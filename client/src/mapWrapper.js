@@ -343,8 +343,7 @@ MapWrapper.prototype = {
           this.polyline.getPath().push(coords)
           this.moveMarker(this.googleMap, this.animationMarker, coords)
         }.bind(this), 100 * j, this.animeCoordsArray[j]))
-      }console.log(this)
-      console.log('off')
+      }
     }
   },
 

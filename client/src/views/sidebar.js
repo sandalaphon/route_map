@@ -73,9 +73,12 @@ Sidebar.prototype = {
         doneButton.innerText = 'Done'
         doneButton.onclick = function () {
           // newLi.style.textDecoration = 'line-through'
+          console.log(element.instanceOf())
           if (element.done) {
             element.done = false
           } else element.done = true
+          console.log(element)
+          element.save()
         }
 
         var deleteRouteFromDB = function (routeID) {
