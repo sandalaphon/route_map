@@ -47,7 +47,7 @@ SuggestionList.prototype = {
       parsedList.forEach(function (element) {
         var newLi = document.createElement('li')
 
-        newLi.innerText = 'Name of Route:\n' + element.name + ' \n' + element.googleResponse.travelMode
+        newLi.innerText = 'Name:\n' + element.name + ' \n' + element.googleResponse.travelMode
 
         var newBr = document.createElement('br')
         newLi.appendChild(newBr)

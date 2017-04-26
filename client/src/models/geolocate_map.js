@@ -13,7 +13,7 @@ GeoLocate.prototype = {
         }
         var infoWindow = new google.maps.InfoWindow()
         infoWindow.setPosition(pos)
-        infoWindow.setContent('Location')
+        infoWindow.setContent('Your Location')
         infoWindow.open(this.map)
         this.map.setCenter(pos)
         this.map.setZoom(10)

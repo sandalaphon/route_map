@@ -95,8 +95,8 @@ MapWrapper.prototype = {
   },
 
   calculateRoute: function () {
-    var startLatitude = localStorage.getItem('startLatitude') // need better names for storage
-    var startLongitude = localStorage.getItem('startLongitude') // same here
+    var startLatitude = localStorage.getItem('startLatitude') 
+    var startLongitude = localStorage.getItem('startLongitude') 
     var finishLatitude = localStorage.getItem('finishLatitude')
     var finishLongitude = localStorage.getItem(
       'finishLongitude')
@@ -108,7 +108,7 @@ MapWrapper.prototype = {
 
   saveRoute: function () {
     if (this.route) {
-      this.route.save()   // this.route is now a Route!
+      this.route.save()   
     }
   },
 
@@ -134,7 +134,6 @@ MapWrapper.prototype = {
       }
       if(this.restaurantMarkers.length){
         for(var j = 0; j< this.restaurantMarkers.length; j++){
-          console.log(this.restaurantMarkers[j])
           this.restaurantMarkers[j].setMap(null)
         }
         this.restaurantMarkers =[]
@@ -178,7 +177,7 @@ MapWrapper.prototype = {
     }.bind(this))
   },
 
-  // compute total distance and display
+  
   computeTotalDistance: function (result) {
     var total = 0
     var myroute = result.routes[0]
@@ -207,7 +206,6 @@ MapWrapper.prototype = {
 
   animateRoute: function () {
     this.clock.setAnime(false)
-    console.log(this.clock.animationRunning)
 
     for (var i=0; i<this.timeouts.length; i++) {
       clearTimeout(this.timeouts[i]);
@@ -260,7 +258,6 @@ MapWrapper.prototype = {
     map:this.googleMap
   });                
     var secondsFraction = this.totalSeconds/pathCoords.length
-    console.log("this.totalSeconds", this.totalSeconds)
     for (var i = 0; i < pathCoords.length; i++) {
       this.animeCoordsArray.push(pathCoords[i])
       this.animeTimeSeconds.push(secondsFraction*i)
@@ -316,12 +313,14 @@ MapWrapper.prototype = {
       url: 'http://icons.iconarchive.com/icons/icons-land/points-of-interest/256/Restaurant-Blue-icon.png',
       scaledSize: new google.maps.Size(20, 20)
     }
+
     var marker = new google.maps.Marker({
       map: this.googleMap,
       size: new google.maps.Size(4, 4),
       position: place.geometry.location,
       icon: icon
     })
+
     this.restaurantMarkers.push(marker)
     google.maps.event.addListener(marker, 'click', function () {
       infowindow.setContent(place.name)
@@ -336,23 +335,16 @@ MapWrapper.prototype = {
     clearTimeout(this.timeouts[i])
     } this.animationRunning= false
     this.clock.setAnime(true)
-    console.log("on")
     }else {
    this.animationRunning= true
    this.clock.setAnime(true)
-
-   console.log(this.animeCoordsArray.length)
-     // continue animation
       for(var j = 0; j < this.animeCoordsArray.length; j++ ){
           this.timeouts.push(setTimeout(function (coords) {
           this.polyline.getPath().push(coords)
           this.moveMarker(this.googleMap, this.animationMarker, coords)
         }.bind(this), 100 * j, this.animeCoordsArray[j]))
-
-    }console.log(this)
-    console.log('off')
       }
-  
+    }
   },
 
   updateClock: function(){
@@ -373,14 +365,11 @@ MapWrapper.prototype = {
     
     console.log("minutes", this.clock.minute)
     
-  var ctx = this.clock.ctx
-  var radius = this.clock.radius
+    var ctx = this.clock.ctx
+    var radius = this.clock.radius
 
-  this.clock.drawClock2(ctx, radius)
-
+    this.clock.drawClock2(ctx, radius)
   }
-
-
 }
 
 module.exports = MapWrapper
