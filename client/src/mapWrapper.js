@@ -146,34 +146,7 @@ MapWrapper.prototype = {
       draggable: true,
       map: this.googleMap
     })
-// <<<<<<< HEAD
 
-//     directionsService.route(directionsResult, function(res, status){
-      
-//       if(status == 'OK'){
-//         directionsDisplay.setDirections(res)
-
-//         this.currentRoute = directionsDisplay.getDirections()
-//         var latitude = this.currentRoute.routes[0].legs[0].steps[0].end_location.lat();
-//         localStorage.setItem('finishLatitude' , latitude)
-//         var longitude = this.currentRoute.routes[0].legs[0].steps[0].end_location.lng();
-//         localStorage.setItem('finishLongitude' , longitude)
-//         /////////////session storage
-
-//         this.computeTotalDistance(directionsDisplay.getDirections());
-        
-//         this.computeEstimatedTime(directionsDisplay.getDirections());
-//         //Distance and time update with new route
-//         directionsDisplay.addListener('directions_changed', function() {
-//          this.currentRoute = directionsDisplay.getDirections()
-//          var latitude = this.currentRoute.routes[0].legs[0].steps[this.currentRoute.routes[0].legs[0].steps.length - 1].end_location.lat();
-//          localStorage.setItem('finishLatitude' , latitude)
-//          var longitude = this.currentRoute.routes[0].legs[0].steps[this.currentRoute.routes[0].legs[0].steps.length-1].end_location.lng();
-//          localStorage.setItem('finishLongitude' , longitude)
-//          ////////////////session storage
-//          var marker1 = this.startmarkers.pop()
-//          if (marker1) marker1.setMap(null)
-// =======
     directionsService.route(directionsResult, function (res, status) {
       if (status == 'OK') {
         this.directionsDisplay.setDirections(res)
