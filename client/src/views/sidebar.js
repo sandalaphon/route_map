@@ -51,7 +51,8 @@ Sidebar.prototype = {
 
         // newLi.innerText = 'Name: ' + element.name + ' \n\nStart: ' + element.origin + '\n\nFinish: ' + element.destination
         newLi.innerHTML = '<p class="route-name">' + element.name + '</p>' + '<p class="travel-mode">' + element.googleResponse.travelMode + '</p>'
-
+        
+        
         var startFinish = document.createElement('p')
         startFinish.className = 'start-finish'
         startFinish.innerHTML = '<span class="from-to">From: </span>' + element.origin + '<br>' + '<span class="from-to"> To: </span>' + element.destination
