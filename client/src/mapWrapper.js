@@ -107,9 +107,6 @@ MapWrapper.prototype = {
   },
 
   clearRoutes: function () {
-    console.log(this.directionsDisplay)
-    console.log(this.polyline)
-    console.log(this.animationMarker)
     if (this.directionsDisplay) {
       this.directionsDisplay.setMap(null)
     }
@@ -134,7 +131,6 @@ MapWrapper.prototype = {
       draggable: true,
       map: this.googleMap
     })
-
     directionsService.route(directionsResult, function (res, status) {
       if (status == 'OK') {
         this.directionsDisplay.setDirections(res)
