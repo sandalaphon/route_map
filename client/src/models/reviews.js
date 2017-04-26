@@ -56,9 +56,15 @@ Reviews.prototype = {
       reviewMainDiv.id = routeWithID.id;
       reviewMainDiv.style.display = 'none'
 
+      var headlineSpan = document.createElement('span');
+      headlineSpan.innerText = 'Headline :'
+      reviewMainDiv.appendChild(headlineSpan)
+
       var headlineField = document.createElement('input');
       headlineField.type = 'text';
-      
+      headlineField.id = 'headlineField'
+      headlineField.id += routeWithID.id;
+      reviewMainDiv.appendChild(headlineField)
 
       var textarea = document.createElement('textarea');
       textarea.id = 'reviewField'
@@ -155,17 +161,6 @@ Reviews.prototype = {
 
       mainInfoDiv.appendChild(reviewMainDiv)
     })
-
-    // On setup page, when a review is displayed, put the ID in currently displayed review
-
-
-
-    // when you click "Display Route" it should check to see if there is a route displayed
-
-    // If there is, it gets that div and sets display to none, then sets the current review list to display
-
-    // if there isn't, just set the current review list to display    
-
   },
 
   revealReviewsForCurrentRoute: function(currentSuggestedRoute){
@@ -237,14 +232,17 @@ Reviews.prototype = {
         var reviewRatingCorrectId = "#ratingField";
         reviewRatingCorrectId += reviewsObjectContext.currentDisplayedReviewID;
 
+        var reviewHeadlineCorrectId = "#headlineField";
+        reviewHeadlineCorrectId += reviewsObjectContext.currentDisplayedReviewID;
 
         var submittedReviewText = document.querySelector(reviewTextCorrectId).value
         var submittedReviewName = document.querySelector(reviewNameCorrectId).value
         var submittedReviewRating = document.querySelector(reviewRatingCorrectId).value
+        var submittedReviewHeadline = document.querySelector(reviewHeadlineCorrectId).value
 
         var newReview = {
             "name": submittedReviewName,
-            "headline": "",
+            "headline": submittedReviewHeadline,
             "rating": submittedReviewRating,
             "reviewText": submittedReviewText
         }
