@@ -332,20 +332,15 @@ MapWrapper.prototype = {
         clearTimeout(this.timeouts[i])
       } this.animationRunning = false
       this.clock.setAnime(true)
-      console.log('on')
     } else {
       this.animationRunning = true
       this.clock.setAnime(true)
-
-      console.log(this.animeCoordsArray.length)
      // continue animation
       for (var j = 0; j < this.animeCoordsArray.length; j++) {
         this.timeouts.push(setTimeout(function (coords) {
           this.polyline.getPath().push(coords)
           this.moveMarker(this.googleMap, this.animationMarker, coords)
         }.bind(this), 100 * j, this.animeCoordsArray[j]))
-      }console.log(this)
-      console.log('off')
     }
   },
 
