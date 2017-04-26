@@ -273,10 +273,9 @@ MapWrapper.prototype = {
         this.animationMarker.setMap(null)
       }.bind(this), 100 * pathCoords.length + 1000))
       
-          this.timeouts.push(setTimeout(function (coords) {
-              this.polyline.setMap(null)
-              this.animationMarker.setMap(null)
-            }.bind(this), 100 * pathCoords.length + 1000))
+          
+              
+           
     }
   },
 
@@ -286,7 +285,11 @@ MapWrapper.prototype = {
     this.animeCoordsArray.shift()
     this.animeTimeSeconds.shift()
     this.updateClock()
-
+    //finish anime
+    if(this.animeCoordsArray.length===0){
+      setTimeout(function(){this.polyline.setMap(null)
+      this.animationMarker.setMap(null)}, 1000)
+    }
   },
     /// ////////////////////////
 /// /  places nearby code now  //////
@@ -321,6 +324,7 @@ MapWrapper.prototype = {
       map: this.googleMap,
       size: new google.maps.Size(4, 4),
       position: place.geometry.location,
+      animation: google.maps.Animation.DROP,
       icon: icon
     })
 

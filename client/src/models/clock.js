@@ -1,50 +1,50 @@
 var secondsInterval = null
 
 var Clock = function(){
-this.haveUserTime = true
-this.animationRunning = false
-this.hour = 0
-this.minute = 0
-this.second = 0
+  this.haveUserTime = true
+  this.animationRunning = false
+  this.hour = 0
+  this.minute = 0
+  this.second = 0
 }
 
 
 Clock.prototype = {
 
   createAClock: function() {
-      var canvas = document.getElementById("canvas");
+    var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     var radius = canvas.height / 2;
-      ctx.translate(radius, radius);
+    ctx.translate(radius, radius);
     secondsInterval = setInterval(this.drawClock(ctx, radius), 1000);
 
   },
 
   createAnotherClock: function(){
     clearInterval(secondsInterval)
-      var canvas = document.getElementById("canvas");
+    var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     var radius = canvas.height / 2;
-      ctx.translate(0, 0);
-     this.drawClock2(ctx, radius)
+    ctx.translate(0, 0);
+    this.drawClock2(ctx, radius)
   },
 
-drawClock: function(ctx, radius) {
- return function(){
+  drawClock: function(ctx, radius) {
+   return function(){
   // radius = radius * 0.90
   this.drawFace(ctx, radius);
   this.drawNumbers(ctx, radius);
   this.drawTime(ctx, radius);
 }.bind(this)
-  },
+},
 
-  drawClock2: function(ctx, radius) {
+drawClock2: function(ctx, radius) {
  
-    this.drawFace(ctx, radius);
-    this.drawNumbers(ctx, radius);
-    this.drawTime2(ctx, radius);
+  this.drawFace(ctx, radius);
+  this.drawNumbers(ctx, radius);
+  this.drawTime2(ctx, radius);
 
-    },
+},
 
 setAnime: function(inputBool){
   this.animationRunning = inputBool
@@ -88,33 +88,33 @@ drawNumbers: function(ctx, radius) {
 },
 
 addSeconds: function(seconds, callback){
-   var secondsToAdd = seconds % 60
-   var totalMinutes = (seconds - secondsToAdd) / 60
-   var minutesToAdd = totalMinutes % 60
-   var hoursToAdd = (totalMinutes - minutesToAdd) / 60
-   this.second += secondsToAdd
-   this.minute += minutesToAdd
-   this.hour += hoursToAdd
-   callback
+ var secondsToAdd = seconds % 60
+ var totalMinutes = (seconds - secondsToAdd) / 60
+ var minutesToAdd = totalMinutes % 60
+ var hoursToAdd = (totalMinutes - minutesToAdd) / 60
+ this.second += secondsToAdd
+ this.minute += minutesToAdd
+ this.hour += hoursToAdd
+ callback
 },
 
 drawTime2: function(ctx, radius){
   if(secondsInterval) {
     clearInterval(secondsInterval)}
-  var hour = this.hour
-  var minute = this.minute
-  var second = this.second
-  hour=hour%12;
-  hour=(hour*Math.PI/6)+
-  (minute*Math.PI/(6*60))+
-  (second*Math.PI/(360*60));
-  this.drawHand(ctx, hour, radius*0.5, radius*0.07);
+    var hour = this.hour
+    var minute = this.minute
+    var second = this.second
+    hour=hour%12;
+    hour=(hour*Math.PI/6)+
+    (minute*Math.PI/(6*60))+
+    (second*Math.PI/(360*60));
+    this.drawHand(ctx, hour, radius*0.5, radius*0.07);
   //minute
   minute=(minute*Math.PI/30)+(second*Math.PI/(30*60));
   this.drawHand(ctx, minute, radius*0.8, radius*0.07);
 // set second to zero as it isnt needed
-  second=0
-  this.drawHand(ctx, second, radius*0.9, radius*0.02);
+second=0
+this.drawHand(ctx, second, radius*0.9, radius*0.02);
 
 
 },
@@ -147,9 +147,9 @@ drawTime: function(ctx, radius){
     second=(second*Math.PI/30);
     this.drawHand(ctx, second, radius*0.9, radius*0.02);
 
-},
+  },
 
-drawHand: function(ctx, pos, length, width) {
+  drawHand: function(ctx, pos, length, width) {
     ctx.beginPath();
     ctx.lineWidth = width;
     ctx.lineCap = "round";
@@ -158,7 +158,7 @@ drawHand: function(ctx, pos, length, width) {
     ctx.lineTo(0, -length);
     ctx.stroke();
     ctx.rotate(-pos);
-}
+  }
 
 }
 
