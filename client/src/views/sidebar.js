@@ -120,7 +120,7 @@ Sidebar.prototype = {
 
         var displayRoute = document.createElement('button')
         displayRoute.id = 'sidebarDisplayRouteButton'
-        displayRoute.innerText = 'Display Route'
+        displayRoute.innerText = 'Display This Route'
         displayRoute.addEventListener('click', function () {
           var mainMap = sidebarScope.page.map.mainMap
           //! BUG! Routes displaying on top of each other, fixed below
@@ -139,10 +139,11 @@ Sidebar.prototype = {
         newLi.appendChild(checkbox)
         newLi.appendChild(displayRoute)
         // newLi.appendChild(doneButton)
+        newLi.appendChild(document.createElement('p'))
         newLi.appendChild(deleteButton)
         wishlistUL.appendChild(newLi)
 
-        var listBr = document.createElement('br')
+        var listBr = document.createElement('hr')
         wishlistUL.appendChild(listBr)
       })
     })
