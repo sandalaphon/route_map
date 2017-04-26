@@ -1,16 +1,21 @@
+var secondsInterval = null
 
 var Clock = function(){
   var canvas = document.getElementById("canvas");
-  var ctx = canvas.getContext("2d");
-  var radius = canvas.height / 2;
+this.ctx = canvas.getContext("2d");
+this.radius = canvas.height / 2;
+var ctx = this.ctx
+var radius = this.radius
   ctx.translate(radius/2, radius/2);
-setInterval(this.drawClock(ctx, radius), 1000);
+secondsInterval = setInterval(this.drawClock(ctx, radius), 1000);
 this.haveUserTime = true
 this.animationRunning = false
 this.hour
 this.minute
 this.second
 this.secondsSinceStart
+
+
 }
 
 
@@ -24,6 +29,15 @@ drawClock: function(ctx, radius) {
   this.drawTime(ctx, radius);
 }.bind(this)
   },
+
+  drawClock2: function(ctx, radius) {
+    // radius = radius * 0.90
+    clearInterval(secondsInterval)
+    this.drawFace(ctx, radius);
+    this.drawNumbers(ctx, radius);
+    this.drawTime2(ctx, radius);
+
+    },
 
 setAnime: function(inputBool){
   this.animationRunning = inputBool
@@ -66,6 +80,26 @@ drawNumbers: function(ctx, radius) {
   }
 },
 
+drawTime2: function(ctx, radius){
+
+  var hour = this.hour
+  var minute = this.minute
+  var second = 0
+
+  hour=hour%12;
+  hour=(hour*Math.PI/6)+
+  (minute*Math.PI/(6*60))+
+  (second*Math.PI/(360*60));
+  this.drawHand(ctx, hour, radius*0.5, radius*0.07);
+  //minute
+  minute=(minute*Math.PI/30)+(second*Math.PI/(30*60));
+  this.drawHand(ctx, minute, radius*0.8, radius*0.07);
+  // second
+  second=(second*Math.PI/30);
+  this.drawHand(ctx, second, radius*0.9, radius*0.02);
+
+},
+
 drawTime: function(ctx, radius){
   if(this.haveUserTime){
     var now = new Date();
@@ -77,20 +111,17 @@ drawTime: function(ctx, radius){
     var hour=this.hour
     var minute=this.minute
     var second=0
-
-    console.log("define me",this.secondsSinceStart)
-    console.log("this.animationRunning", this.animationRunning) 
-    if(this.animationRunning){
-    // this.secondsSinceStart
-    var remainderSeconds = this.secondsSinceStart % 60
-    var totalMinutes = (this.secondsSinceStart - remainderSeconds) / 60
-    var remainderMinutes = totalMinutes % 60
-    var journeyhours = (totalMinutes - remainderMinutes) / 60
-    hour += journeyhours
-    minute +=totalMinutes
-    console.log("minute",minute)
-    console.log("hours",journeyhours)
-}
+//     if(this.animationRunning){
+//     // this.secondsSinceStart
+//     var remainderSeconds = this.secondsSinceStart % 60
+//     var totalMinutes = (this.secondsSinceStart - remainderSeconds) / 60
+//     var remainderMinutes = totalMinutes % 60
+//     var journeyhours = (totalMinutes - remainderMinutes) / 60
+//     hour += journeyhours
+//     minute +=totalMinutes
+//     console.log("minute",minute)
+//     console.log("hours",journeyhours)
+// }
 
   }
     //hour

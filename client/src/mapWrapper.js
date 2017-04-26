@@ -208,7 +208,7 @@ MapWrapper.prototype = {
   },
 
   animateRoute: function () {
-    this.clock.setAnime(true)
+    this.clock.setAnime(false)
     console.log(this.clock.animationRunning)
     this.animeCoordsArray = []
     this.animeTimeSeconds =[]
@@ -351,18 +351,18 @@ MapWrapper.prototype = {
    var userhours = +userTime.substring(0,2)
    var  userminutes= +userTime.substring(3)
     userhours += journeyhours
-    userminutes +=totalMinutes
+    userminutes += totalMinutes
     this.clock.hour = userhours
 
     this.clock.minute = userminutes
     this.clock.seconds = 0
     
-    console.log(this.clock.minute)
-    var canvas = document.getElementById("canvas2");
-    var ctx = canvas.getContext("2d");
-    var radius = canvas.height / 2;
-    ctx.translate(radius/2, radius/2);
-    this.clock.drawClock(ctx, radius)
+    console.log("minutes", this.clock.minute)
+    
+  var ctx = this.clock.ctx
+  var radius = this.clock.radius
+
+  this.clock.drawClock2(ctx, radius)
   }
 
 
