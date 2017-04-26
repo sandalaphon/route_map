@@ -115,7 +115,7 @@ MapWrapper.prototype = {
 
   clearRoutes: function() {
     this.animeTimeSeconds=[]
-    this.clock.anime=false
+    this.clock.animationRunning=false
     if(this.directionsDisplay){
     this.directionsDisplay.setMap(null)}
     if(this.polyline){
@@ -208,10 +208,18 @@ MapWrapper.prototype = {
   },
 
   animateRoute: function () {
-    this.clock.setAnime(true)
-    console.log(this.clock.animationRunning)
+    for (var i=0; i<this.timeouts.length; i++) {
+      clearTimeout(this.timeouts[i]);
+    }
+      if(this.polyline){
+      this.polyline.setMap(null)
+    }
+    if(this.animationMarker){
+      this.animationMarker.setMap(null)
+    }
     this.animeCoordsArray = []
     this.animeTimeSeconds =[]
+    this.clock.setAnime(true)
     this.autoRefresh(this.googleMap, this.currentRoute.routes[0].overview_path)
   },
 
@@ -356,7 +364,7 @@ MapWrapper.prototype = {
 
     this.clock.minute = userminutes
     this.clock.seconds = 0
-    
+
     console.log(this.clock.minute)
     var canvas = document.getElementById("canvas2");
     var ctx = canvas.getContext("2d");

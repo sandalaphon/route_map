@@ -11,6 +11,7 @@ this.hour
 this.minute
 this.second
 this.secondsSinceStart
+this.instancesOfClock = []
 }
 
 
