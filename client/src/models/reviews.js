@@ -16,6 +16,8 @@ Reviews.prototype = {
     reviewsDiv.style.display = 'inline'
     reviewList = document.querySelector('#review-list')
     reviewList.style.display = 'inline'
+    reviewsHeadingsDiv = document.querySelector('#review-heading')
+    reviewsHeadingsDiv.style.display = 'inline'
 
     // Get HTML list object
     this.reviewsHTMLObject = document.querySelector('#review-list');
@@ -48,6 +50,7 @@ Reviews.prototype = {
   createHTMLElementsForEachReview: function(allRoutesWithIDs){
 
     var mainInfoDiv = document.querySelector('#reviews-info')
+
     var reviewObjectContext = this;
 
     allRoutesWithIDs.forEach(function(routeWithID){
@@ -56,20 +59,29 @@ Reviews.prototype = {
       reviewMainDiv.id = routeWithID.id;
       reviewMainDiv.style.display = 'none'
 
+      var mainReviewHeading = document.createElement('h3')
+      mainReviewHeading.innerText = "Reviews"
+      reviewMainDiv.appendChild(mainReviewHeading)
+
+      var subReviewHeading = document.createElement('p')
+      subReviewHeading.innerText = 'Submit Your Review:'
+      reviewMainDiv.appendChild(subReviewHeading)
+
       var headlineSpan = document.createElement('span');
-      headlineSpan.innerText = 'Headline :'
+      headlineSpan.innerText = 'Headline:  '
       reviewMainDiv.appendChild(headlineSpan)
 
       var headlineField = document.createElement('input');
       headlineField.type = 'text';
       headlineField.id = 'headlineField'
       headlineField.id += routeWithID.id;
+      headlineField.style.display = 'inline-block'
       reviewMainDiv.appendChild(headlineField)
 
       var textarea = document.createElement('textarea');
       textarea.id = 'reviewField'
       textarea.id += routeWithID.id;
-      console.log(textarea.id)
+      textarea.style.display = 'block'
       textarea.name = 'ReviewText'
       textarea.cols = "100"
       textarea.rows = "5"
@@ -79,7 +91,7 @@ Reviews.prototype = {
       reviewMainDiv.appendChild(lineBreak)
 
       var reviewerNameSpan = document.createElement('span')
-      reviewerNameSpan.innerText = "Name: "
+      reviewerNameSpan.innerText = "Name:  "
       reviewMainDiv.appendChild(reviewerNameSpan)
 
       var reviewNameField = document.createElement('input')
@@ -90,7 +102,7 @@ Reviews.prototype = {
       reviewMainDiv.appendChild(reviewNameField);
 
       var reviewerRating = document.createElement('span')
-      reviewerRating.innerText = "Rating: "
+      reviewerRating.innerText = "Rating:  "
       reviewMainDiv.appendChild(reviewerRating)
 
       var reviewRatingField = document.createElement('input')
@@ -99,15 +111,11 @@ Reviews.prototype = {
       reviewRatingField.id += routeWithID.id
       reviewMainDiv.appendChild(reviewRatingField);
 
-
       var submitButton = document.createElement('button')
       submitButton.id = 'submitReview'
       submitButton.id += routeWithID.id; // assign each button unique id
       submitButton.innerText = "Submit"
-      console.log(submitButton.id)
-      console.log(routeWithID)
-      
-      console.log(reviewObjectContext)
+
       // submitButton.onclick = this.submitReview;
 
 
@@ -188,8 +196,6 @@ Reviews.prototype = {
 
   },
 
-  // Setting up event listeners on buttons before the currentDisplayedReviewID has been assigned - so setting them all up with null?
-
   submitReview: function(){
 
     console.log(this)
@@ -268,22 +274,6 @@ Reviews.prototype = {
       request.send()
         
       })
-          
-
-      // if (reviewsObjectContext.currentDisplayedReviewID){
-
-      //   var currentDisplayedReviewIDmain = reviewsObjectContext.currentDisplayedReviewID;
-
-      //   var routeIDUrl = 'http://localhost:3000/api/suggested_routes/'
-      //   routeIDUrl += currentDisplayedReviewIDmain;
-      //   console.log("URL", routeIDUrl)
-      //   var putRequest = new MakeRequest()
-      //   var jsonString = JSON.stringify(returnedReviewsArray)
-      //   putRequest.makePutRequest(routeIDUrl, function(){
-      //     console.log('This one', currentDisplayedReviewIDmain)
-      //   }, jsonString);
-
-      // }
               
     }
 
