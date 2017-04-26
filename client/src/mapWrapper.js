@@ -287,7 +287,7 @@ MapWrapper.prototype = {
     this.updateClock()
     var latest =this.animeTimeSeconds.shift()
     sessionStorage.setItem("animeCoords", coords)
-    // this.clock.secondsSinceStart = latest
+
 
   },
     /// ////////////////////////
