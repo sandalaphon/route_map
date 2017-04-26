@@ -145,6 +145,25 @@ width:115px;
   padding-left: 10px;
 }
 
+.wishlist-checkbox {
+  width: 20px;
+  float: right;
+}
+.wishlist-checkbox-label {
+  float: right;
+  font-size: 10px;
+}
+
+#sidebarDisplayRouteButton {
+  color: white;
+  background-color: gray;
+}
+
+#deleteButton {
+  color: hotpink;
+  background-color: firebrick: 
+}
+
 #suggested-routes {
   /*clear: right;*/
   position: absolute;
@@ -251,5 +270,3 @@ p{
   font-size: 16px;
 
 }
-
-#doneButton {}

@@ -205,11 +205,11 @@ MapWrapper.prototype = {
 
   animateRoute: function () {
     this.clock.setAnime(false)
-     var userTime = document.querySelector('#time_depart').value
-    var userhours = +userTime.substring(0,2)
-    var  userminutes= +userTime.substring(3)
-     this.clock.hour = userhours
-     this.clock.minute = userminutes
+    var userTime = document.querySelector('#time_depart').value
+    var userhours = +userTime.substring(0, 2)
+    var userminutes = +userTime.substring(3)
+    this.clock.hour = userhours
+    this.clock.minute = userminutes
     for (var i = 0; i < this.timeouts.length; i++) {
       clearTimeout(this.timeouts[i])
     }
@@ -272,10 +272,6 @@ MapWrapper.prototype = {
         this.polyline.setMap(null)
         this.animationMarker.setMap(null)
       }.bind(this), 100 * pathCoords.length + 1000))
-      
-          
-              
-           
     }
   },
 
@@ -285,10 +281,12 @@ MapWrapper.prototype = {
     this.animeCoordsArray.shift()
     this.animeTimeSeconds.shift()
     this.updateClock()
-    //finish anime
-    if(this.animeCoordsArray.length===0){
-      setTimeout(function(){this.polyline.setMap(null)
-      this.animationMarker.setMap(null)}, 1000)
+    // finish anime
+    if (this.animeCoordsArray.length === 0) {
+      setTimeout(function () {
+        this.polyline.setMap(null)
+        this.animationMarker.setMap(null)
+      }, 1000)
     }
   },
     /// ////////////////////////
@@ -335,28 +333,27 @@ MapWrapper.prototype = {
     })
   },
 
-
-  pauseAnimation: function(){
-    if(this.animationRunning){
-      //iterate through array of timeouts and discard them
-    for(var i=0; i<this.timeouts.length; i++){
-    clearTimeout(this.timeouts[i])
-    } this.animationRunning= false
-    this.clock.setAnime(true)
-    }else {
-   this.animationRunning= true
-   this.clock.setAnime(true)
-      for(var j = 0; j < this.animeCoordsArray.length; j++ ){
-          this.timeouts.push(setTimeout(function (coords) {
+  pauseAnimation: function () {
+    if (this.animationRunning) {
+      // iterate through array of timeouts and discard them
+      for (var i = 0; i < this.timeouts.length; i++) {
+        clearTimeout(this.timeouts[i])
+      } this.animationRunning = false
+      this.clock.setAnime(true)
+    } else {
+      this.animationRunning = true
+      this.clock.setAnime(true)
+      for (var j = 0; j < this.animeCoordsArray.length; j++) {
+        this.timeouts.push(setTimeout(function (coords) {
           this.polyline.getPath().push(coords)
           this.moveMarker(this.googleMap, this.animationMarker, coords)
         }.bind(this), 100 * j, this.animeCoordsArray[j]))
-    }
       }
+    }
   },
 
-  updateClock: function(){
-    this.clock.addSeconds( this.animeTimeSeconds[0], this.clock.createAnotherClock())
+  updateClock: function () {
+    this.clock.addSeconds(this.animeTimeSeconds[0], this.clock.createAnotherClock())
   }
 
 }

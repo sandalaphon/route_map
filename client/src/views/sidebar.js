@@ -1,5 +1,6 @@
-var MapWrapper = require('../mapWrapper.js')
+// var MapWrapper = require('../mapWrapper.js')
 var MakeRequest = require('../models/make_requests.js')
+var Route = require('../models/route.js')
 
 var Sidebar = function (passedPage) {
   this.sidebarHTMLObject = document.querySelector('#sidebar')
@@ -49,7 +50,6 @@ Sidebar.prototype = {
       parsedList.forEach(function (element) {
         var newLi = document.createElement('li')
 
-        // newLi.innerText = 'Name: ' + element.name + ' \n\nStart: ' + element.origin + '\n\nFinish: ' + element.destination
         newLi.innerHTML = '<p class="route-name">' + element.name + '</p>' + '<p class="travel-mode">' + element.googleResponse.travelMode + '</p>'
 
         var startFinish = document.createElement('p')
@@ -57,29 +57,50 @@ Sidebar.prototype = {
         startFinish.innerHTML = '<span class="from-to">From: </span>' + element.origin + '<br>' + '<span class="from-to"> To: </span>' + element.destination
         newLi.appendChild(startFinish)
 
-/*  Commented out to remove hyperlink from sidbar as button shows route
-        var newATag = document.createElement('a')
-        var hrefString = 'http://localhost:3000/api/routes/' + element.name
-        newATag.href = hrefString
-        newATag.text = 'API Link'
-        newLi.appendChild(newATag)
-*/
         var buttonsDiv = document.createElement('div')
         var divP = document.createElement('p')
         buttonsDiv.appendChild(divP)
 
-        var doneButton = document.createElement('button')
-        doneButton.id = 'doneButton'
-        doneButton.innerText = 'Done'
-        doneButton.onclick = function () {
+        // TODO delete once checkbox working
+        // var doneButton = document.createElement('button')
+        // doneButton.id = 'doneButton' + element._id
+        // doneButton.innerText = 'Done'
+        var label = document.createElement('label')
+        var checkbox = document.createElement('input')
+        checkbox.type = 'checkbox'
+        checkbox.id = 'checkbox' + element._id
+        checkbox.className = 'wishlist-checkbox'
+        checkbox.value = element._id
+        checkbox.checked = element.done
+        label.for = element._id
+        label.innerText = 'Done? '
+        label.className = 'wishlist-checkbox-label'
+
+        checkbox.addEventListener('change', function () {
+        // doneButton.onclick = function () {
           // newLi.style.textDecoration = 'line-through'
+          var payload = { 'done': false}
           if (element.done) {
             element.done = false
-          } else element.done = true
-        }
+            checkbox.checked = false
+            payload.done = false
+          } else {
+            element.done = true
+            checkbox.checked = true
+            payload.done = true
+          }
+          var makeRequest = new MakeRequest()
+          var putUrl = 'http://localhost:3000/api/routes/' + element._id
+          makeRequest.makePutRequest(putUrl, function (request) {
+            // should update checkbox for element here after confirmation update succeeded... but done above
+            if (request.status !== 200) console.log(request.status)            // get checkbox for ID
+            // set checkbox state to match
+            // finish
+          }, payload)
+        })
 
         var deleteRouteFromDB = function (routeID) {
-          url = 'http://localhost:3000/api/routes/'
+          var url = 'http://localhost:3000/api/routes/'
           url += routeID
           var request = new XMLHttpRequest()
           request.open('DELETE', url)
@@ -88,15 +109,16 @@ Sidebar.prototype = {
 
         var deleteButton = document.createElement('button')
         deleteButton.id = 'deleteButton'
-        deleteButton.innerText = 'Delete'
+        deleteButton.innerText = 'Delete this route'
         deleteButton.addEventListener('click', function () {
           deleteRouteFromDB(element._id)
           newLi.style.display = 'none'
-        })
+          this.page.map.mainMap.clearRoutes()
+        }.bind(sidebarScope))
 
         var displayRoute = document.createElement('button')
         displayRoute.id = 'sidebarDisplayRouteButton'
-        displayRoute.innerText = 'Display Route'
+        displayRoute.innerText = 'Display This Route'
         displayRoute.addEventListener('click', function () {
           var mainMap = sidebarScope.page.map.mainMap
           //! BUG! Routes displaying on top of each other, fixed below
@@ -111,12 +133,15 @@ Sidebar.prototype = {
         })
 
         newLi.appendChild(divP)
+        newLi.appendChild(label)
+        newLi.appendChild(checkbox)
         newLi.appendChild(displayRoute)
-        newLi.appendChild(doneButton)
+        // newLi.appendChild(doneButton)
+        newLi.appendChild(document.createElement('p'))
         newLi.appendChild(deleteButton)
         wishlistUL.appendChild(newLi)
 
-        var listBr = document.createElement('br')
+        var listBr = document.createElement('hr')
         wishlistUL.appendChild(listBr)
       })
     })
