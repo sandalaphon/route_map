@@ -25,8 +25,17 @@ SuggestionList.prototype = {
     }
   },
 
+  addCloseAction: function (htmlElement) {
+    htmlElement.onclick = function () {
+      console.log(this, htmlElement)
+      this.hideReveal()
+    }.bind(this)
+  },
+
   populateList: function (getAllRoutes) {
     var suggestedlistUL = document.querySelector('#suggested-list')
+
+    this.addCloseAction(document.querySelector('#suggested-close'))  // using span id=sidebar-close
 
     while (suggestedlistUL.hasChildNodes()) {
       suggestedlistUL.removeChild(suggestedlistUL.lastChild)
