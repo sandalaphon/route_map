@@ -2,6 +2,7 @@ var MakeRequest = require('./make_requests.js')
 // GOOGLE MAPS OBJECT FACTORY!
 
 var Route = function (origin, destination, travelMode) {
+  this.url = 'http://localhost:3000/api/routes'
   this.name = null
   // this.author = author
   this.rating = null
@@ -38,10 +39,23 @@ Route.prototype = {
   save: function () {
     var makeRequest = new MakeRequest()
     var jsonString = JSON.stringify(this)
-    makeRequest.makePostRequest('http://localhost:3000/api/routes', function () {
+    makeRequest.makePostRequest(this.url, function () {
       return 'saved'
     }, jsonString)
   }
+
+  // getAllRoutes: function (callback) {
+  //   var request = new XMLHttpRequest()
+  //   request.open('GET', this.url)
+  //   request.onload = function () {
+  //     if (request.status !== 200) return
+  //     var jsonString = request.responseText
+  //     var routes = JSON.parse(jsonString)
+  //     callback(routes)
+  //   }
+  //   request.send()
+  // }
+
 }
 
 module.exports = Route
