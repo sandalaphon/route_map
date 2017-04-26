@@ -63,12 +63,18 @@ Reviews.prototype = {
       mainReviewHeading.innerText = "Reviews"
       reviewMainDiv.appendChild(mainReviewHeading)
 
+      var reviewHeadingDivider = document.createElement('br')
+      reviewMainDiv.appendChild(reviewHeadingDivider)
+
       var subReviewHeading = document.createElement('p')
       subReviewHeading.innerText = 'Submit Your Review:'
       reviewMainDiv.appendChild(subReviewHeading)
 
+      var subReviewHeadingDivider = document.createElement('br')
+      reviewMainDiv.appendChild(subReviewHeadingDivider)
+
       var headlineSpan = document.createElement('span');
-      headlineSpan.innerText = 'Headline:  '
+      headlineSpan.innerText = 'Headline:\n'
       reviewMainDiv.appendChild(headlineSpan)
 
       var headlineField = document.createElement('input');
@@ -76,19 +82,27 @@ Reviews.prototype = {
       headlineField.id = 'headlineField'
       headlineField.id += routeWithID.id;
       headlineField.style.display = 'inline-block'
+      headlineField.style.marginLeft = 'auto'
+      headlineField.style.marginRight = 'auto'
       reviewMainDiv.appendChild(headlineField)
+
+      var reviewHeadingP = document.createElement('p');
+      reviewHeadingP.innerText = 'Review:\n'
+      reviewMainDiv.appendChild(reviewHeadingP)
 
       var textarea = document.createElement('textarea');
       textarea.id = 'reviewField'
       textarea.id += routeWithID.id;
       textarea.style.display = 'block'
       textarea.name = 'ReviewText'
-      textarea.cols = "100"
-      textarea.rows = "5"
+      textarea.cols = "47"
+      textarea.rows = "4"
+      textarea.style.marginLeft = 'auto'
+      textarea.style.marginRight = 'auto'
       reviewMainDiv.appendChild(textarea)
 
-      var lineBreak = document.createElement('br')
-      reviewMainDiv.appendChild(lineBreak)
+      // var lineBreak = document.createElement('br')
+      // reviewMainDiv.appendChild(lineBreak)
 
       var reviewerNameSpan = document.createElement('span')
       reviewerNameSpan.innerText = "Name:  "
@@ -116,12 +130,11 @@ Reviews.prototype = {
       submitButton.id += routeWithID.id; // assign each button unique id
       submitButton.innerText = "Submit"
 
-      // submitButton.onclick = this.submitReview;
-
-
       reviewMainDiv.appendChild(submitButton)
 
-
+      var spaceAfterButton = document.createElement('br')
+      reviewMainDiv.appendChild(spaceAfterButton)
+      
       // Rating
 
       routeWithID.reviews.forEach(function(element){

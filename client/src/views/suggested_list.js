@@ -93,6 +93,9 @@ SuggestionList.prototype = {
           var weatherDiv = document.querySelector('#weather-info');
           weatherDiv.style.display = 'none'
 
+          var routeDetailsBackgroundColor = document.querySelector('#routeDetails')
+          routeDetailsBackgroundColor.style.backgroundColor = 'white'
+
           reviews.revealReviewsForCurrentRoute(element)
           
         })
