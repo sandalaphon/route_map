@@ -261,7 +261,8 @@ MapWrapper.prototype = {
     var secondsFraction = this.totalSeconds/pathCoords.length
     for (var i = 0; i < pathCoords.length; i++) {
       this.animeCoordsArray.push(pathCoords[i])
-      this.animeTimeSeconds.push(secondsFraction*i)
+      this.animeTimeSeconds.push(secondsFraction)
+
       this.timeouts.push(setTimeout(function (coords) {
         this.polyline.getPath().push(coords)
         this.moveMarker(this.googleMap, this.animationMarker, coords)
@@ -271,6 +272,11 @@ MapWrapper.prototype = {
         this.polyline.setMap(null)
         this.animationMarker.setMap(null)
       }.bind(this), 100 * pathCoords.length + 1000))
+      
+          this.timeouts.push(setTimeout(function (coords) {
+              this.polyline.setMap(null)
+              this.animationMarker.setMap(null)
+            }.bind(this), 100 * pathCoords.length + 1000))
     }
   },
 
@@ -281,7 +287,7 @@ MapWrapper.prototype = {
     this.updateClock()
     var latest =this.animeTimeSeconds.shift()
     sessionStorage.setItem("animeCoords", coords)
-    this.clock.secondsSinceStart = latest
+    // this.clock.secondsSinceStart = latest
 
   },
     /// ////////////////////////
@@ -332,7 +338,6 @@ placesService: function (searchCenterCoords, radius, type) {
   pauseAnimation: function(){
     if(this.animationRunning){
       //iterate through array of timeouts and discard them
-<<<<<<< HEAD
     for(var i=0; i<this.timeouts.length; i++){
     clearTimeout(this.timeouts[i])
     } this.animationRunning= false
@@ -350,76 +355,15 @@ placesService: function (searchCenterCoords, radius, type) {
   },
 
   updateClock: function(){
-    var remainderSeconds = this.animeTimeSeconds[0] % 60
-    var totalMinutes = (this.animeTimeSeconds[0] - remainderSeconds) / 60
-    var remainderMinutes = totalMinutes % 60
-    var journeyhours = (totalMinutes - remainderMinutes) / 60
+
     var userTime = document.querySelector('#time_depart').value
    var userhours = +userTime.substring(0,2)
    var  userminutes= +userTime.substring(3)
-    userhours += journeyhours
-    userminutes += totalMinutes
     this.clock.hour = userhours
-
     this.clock.minute = userminutes
-    this.clock.seconds = 0
 
-    
-    console.log("minutes", this.clock.minute)
-    
-    var ctx = this.clock.ctx
-    var radius = this.clock.radius
-
-    this.clock.drawClock2(ctx, radius)
+    this.clock.addSeconds( this.animeTimeSeconds[0], this.clock.createAnotherClock())
   }
-=======
-      for(var i=0; i<this.timeouts.length; i++){
-        clearTimeout(this.timeouts[i])
-      } this.animationRunning= false
-      this.clock.setAnime(true)
-      console.log("on")
-    }else {
-     this.animationRunning= true
-     this.clock.setAnime(true)
-
-     console.log(this.animeCoordsArray.length)
-     // continue animation
-     for(var j = 0; j < this.animeCoordsArray.length; j++ ){
-      this.timeouts.push(setTimeout(function (coords) {
-        this.polyline.getPath().push(coords)
-        this.moveMarker(this.googleMap, this.animationMarker, coords)
-      }.bind(this), 100 * j, this.animeCoordsArray[j]))
-
-    }console.log(this)
-    console.log('off')
-  }
-  
-},
-
-updateClock: function(){
-  var remainderSeconds = this.animeTimeSeconds[0] % 60
-  var totalMinutes = (this.animeTimeSeconds[0] - remainderSeconds) / 60
-  var remainderMinutes = totalMinutes % 60
-  var journeyhours = (totalMinutes - remainderMinutes) / 60
-  var userTime = document.querySelector('#time_depart').value
-  var userhours = +userTime.substring(0,2)
-  var  userminutes= +userTime.substring(3)
-  userhours += journeyhours
-  userminutes += totalMinutes
-  this.clock.hour = userhours
-
-  this.clock.minute = userminutes
-  this.clock.seconds = 0
-
-  var ctx = this.clock.ctx
-  var radius = this.clock.radius
-
-  this.clock.drawClock2(ctx, radius)
-
-}
-
-
->>>>>>> 09026afacc9e129b428892708b1fa6cf2f176cfa
 }
 
 module.exports = MapWrapper

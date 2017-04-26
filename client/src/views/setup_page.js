@@ -34,7 +34,7 @@ var Page = function () {
     transportMethod: 'BICYCLING'
   }
   this.clock = new Clock
-  this.clock.drawClock()
+  this.clock.createAClock()
 }
 
 Page.prototype = {
@@ -104,7 +104,7 @@ Page.prototype = {
       var timeInput = document.querySelector('#time_depart').value
       this.clock.hour= +timeInput.substring(0,2)
       this.clock.minute= +timeInput.substring(3)
-     console.log("hello",this.clock.minute)
+ 
       this.clock.haveUserTime= !this.clock.haveUserTime
 
     }.bind(this))

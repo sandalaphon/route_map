@@ -1,24 +1,42 @@
 var secondsInterval = null
 
 var Clock = function(){
-  var canvas = document.getElementById("canvas");
-this.ctx = canvas.getContext("2d");
-this.radius = canvas.height / 2;
-var ctx = this.ctx
-var radius = this.radius
-  ctx.translate(radius/2, radius/2);
-secondsInterval = setInterval(this.drawClock(ctx, radius), 1000);
+//   var canvas = document.getElementById("canvas");
+// this.ctx = canvas.getContext("2d");
+// this.radius = canvas.height / 2;
+// var ctx = this.ctx
+// var radius = this.radius
+//   ctx.translate(radius/2, radius/2);
+// secondsInterval = setInterval(this.drawClock(ctx, radius), 1000);
 this.haveUserTime = true
 this.animationRunning = false
-this.hour
-this.minute
-this.second
+this.hour = 0
+this.minute = 0
+this.second = 0
 this.secondsSinceStart
 
 }
 
 
 Clock.prototype = {
+
+  createAClock: function() {
+      var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    var radius = canvas.height / 2;
+      ctx.translate(radius, radius);
+    secondsInterval = setInterval(this.drawClock(ctx, radius), 1000);
+
+  },
+
+  createAnotherClock: function(){
+    clearInterval(secondsInterval)
+      var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    var radius = canvas.height / 2;
+      ctx.translate(0, 0);
+     this.drawClock2(ctx, radius)
+  },
 
 drawClock: function(ctx, radius) {
  return function(){
@@ -30,8 +48,7 @@ drawClock: function(ctx, radius) {
   },
 
   drawClock2: function(ctx, radius) {
-    // radius = radius * 0.90
-    clearInterval(secondsInterval)
+ 
     this.drawFace(ctx, radius);
     this.drawNumbers(ctx, radius);
     this.drawTime2(ctx, radius);
@@ -79,12 +96,23 @@ drawNumbers: function(ctx, radius) {
   }
 },
 
-drawTime2: function(ctx, radius){
+addSeconds: function(seconds, callback){
+   var secondsToAdd = seconds % 60
+   var totalMinutes = (seconds - secondsToAdd) / 60
+   var minutesToAdd = totalMinutes % 60
+   var hoursToAdd = (totalMinutes - minutesToAdd) / 60
+   this.second += secondsToAdd
+   this.minute += minutesToAdd
+   this.hour += hoursToAdd
+   callback
+},
 
+drawTime2: function(ctx, radius){
+  if(secondsInterval) {
+    clearInterval(secondsInterval)}
   var hour = this.hour
   var minute = this.minute
-  var second = 0
-
+  var second = this.second
   hour=hour%12;
   hour=(hour*Math.PI/6)+
   (minute*Math.PI/(6*60))+
@@ -93,9 +121,10 @@ drawTime2: function(ctx, radius){
   //minute
   minute=(minute*Math.PI/30)+(second*Math.PI/(30*60));
   this.drawHand(ctx, minute, radius*0.8, radius*0.07);
-  // second
-  second=(second*Math.PI/30);
+// set second to zero as it isnt needed
+  second=0
   this.drawHand(ctx, second, radius*0.9, radius*0.02);
+
 
 },
 
@@ -107,20 +136,11 @@ drawTime: function(ctx, radius){
     var second = now.getSeconds();
     
   }else{
+
     var hour=this.hour
     var minute=this.minute
     var second=0
-//     if(this.animationRunning){
-//     // this.secondsSinceStart
-//     var remainderSeconds = this.secondsSinceStart % 60
-//     var totalMinutes = (this.secondsSinceStart - remainderSeconds) / 60
-//     var remainderMinutes = totalMinutes % 60
-//     var journeyhours = (totalMinutes - remainderMinutes) / 60
-//     hour += journeyhours
-//     minute +=totalMinutes
-//     console.log("minute",minute)
-//     console.log("hours",journeyhours)
-// }
+
 
   }
     //hour
@@ -135,6 +155,7 @@ drawTime: function(ctx, radius){
     // second
     second=(second*Math.PI/30);
     this.drawHand(ctx, second, radius*0.9, radius*0.02);
+
 },
 
 drawHand: function(ctx, pos, length, width) {
