@@ -13,7 +13,7 @@ this.animationRunning = false
 this.hour = 0
 this.minute = 0
 this.second = 0
-this.secondsSinceStart
+
 
 }
 

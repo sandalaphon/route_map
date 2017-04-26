@@ -280,6 +280,7 @@ MapWrapper.prototype = {
     marker.setPosition(latlng)
     var coords = {lat: latlng.lat(), lng: latlng.lng()}
     this.animeCoordsArray.shift()
+    this.animeTimeSeconds.shift()
     this.updateClock()
 
   },
