@@ -53,12 +53,13 @@ SuggestionList.prototype = {
         var newBr = document.createElement('br')
         newLi.appendChild(newBr)
 
+/* Commented out to remove hyperlink from sidbar as button shows route
         var newATag = document.createElement('a')
         var hrefString = 'http://localhost:3000/api/suggested_routes/' + element.name
         newATag.href = hrefString
         newATag.text = 'Map Link Here'
         newLi.appendChild(newATag)
-
+*/
         var buttonsDiv = document.createElement('div')
         var divP = document.createElement('p')
         buttonsDiv.appendChild(divP)
@@ -93,7 +94,6 @@ SuggestionList.prototype = {
   },
 
   revealList: function () {
-    console.log('button pressed')
     var suggestionList = document.querySelector('#suggested-routes')
     if (suggestionList.style.display === 'inline-block') {
       suggestionList.style.display = 'none'

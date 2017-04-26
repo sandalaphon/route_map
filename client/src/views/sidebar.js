@@ -56,12 +56,13 @@ Sidebar.prototype = {
 
         newLi.appendChild(newBr)
 
+/*  Commented out to remove hyperlink from sidbar as button shows route
         var newATag = document.createElement('a')
         var hrefString = 'http://localhost:3000/api/routes/' + element.name
         newATag.href = hrefString
         newATag.text = 'API Link'
         newLi.appendChild(newATag)
-
+*/
         var buttonsDiv = document.createElement('div')
         var divP = document.createElement('p')
         buttonsDiv.appendChild(divP)

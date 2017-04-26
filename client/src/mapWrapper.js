@@ -107,7 +107,12 @@ MapWrapper.prototype = {
   },
 
   clearRoutes: function () {
-    this.directionsDisplay.setMap(null)
+    console.log(this.directionsDisplay)
+    console.log(this.polyline)
+    console.log(this.animationMarker)
+    if (this.directionsDisplay) {
+      this.directionsDisplay.setMap(null)
+    }
     if (this.polyline) {
       this.polyline.setMap(null)
     }
