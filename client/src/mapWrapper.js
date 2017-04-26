@@ -332,47 +332,6 @@ placesService: function (searchCenterCoords, radius, type) {
   pauseAnimation: function(){
     if(this.animationRunning){
       //iterate through array of timeouts and discard them
-<<<<<<< HEAD
-    for(var i=0; i<this.timeouts.length; i++){
-    clearTimeout(this.timeouts[i])
-    } this.animationRunning= false
-    this.clock.setAnime(true)
-    }else {
-   this.animationRunning= true
-   this.clock.setAnime(true)
-      for(var j = 0; j < this.animeCoordsArray.length; j++ ){
-          this.timeouts.push(setTimeout(function (coords) {
-          this.polyline.getPath().push(coords)
-          this.moveMarker(this.googleMap, this.animationMarker, coords)
-        }.bind(this), 100 * j, this.animeCoordsArray[j]))
-      }
-    }
-  },
-
-  updateClock: function(){
-    var remainderSeconds = this.animeTimeSeconds[0] % 60
-    var totalMinutes = (this.animeTimeSeconds[0] - remainderSeconds) / 60
-    var remainderMinutes = totalMinutes % 60
-    var journeyhours = (totalMinutes - remainderMinutes) / 60
-    var userTime = document.querySelector('#time_depart').value
-   var userhours = +userTime.substring(0,2)
-   var  userminutes= +userTime.substring(3)
-    userhours += journeyhours
-    userminutes += totalMinutes
-    this.clock.hour = userhours
-
-    this.clock.minute = userminutes
-    this.clock.seconds = 0
-
-    
-    console.log("minutes", this.clock.minute)
-    
-    var ctx = this.clock.ctx
-    var radius = this.clock.radius
-
-    this.clock.drawClock2(ctx, radius)
-  }
-=======
       for(var i=0; i<this.timeouts.length; i++){
         clearTimeout(this.timeouts[i])
       } this.animationRunning= false
@@ -416,10 +375,10 @@ updateClock: function(){
 
   this.clock.drawClock2(ctx, radius)
 
+  }
+
 }
 
 
->>>>>>> 09026afacc9e129b428892708b1fa6cf2f176cfa
-}
 
 module.exports = MapWrapper
