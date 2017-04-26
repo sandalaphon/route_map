@@ -96,26 +96,15 @@ Sidebar.prototype = {
         var displayRoute = document.createElement('button')
         displayRoute.id = 'sidebarDisplayRouteButton'
         displayRoute.innerText = 'Display Route'
-
         displayRoute.addEventListener('click', function () {
           var mainMap = sidebarScope.page.map.mainMap
-          //! BUG! Routes displaying on top of each other, fixed below
-
-          // FIX ME TOMORROW!
           var containerDiv = document.querySelector('#main-map')
 
-          // mainMap = new MapWrapper(containerDiv, element.googleResponse.destination, 12)
           sidebarScope.hideReveal()
           mainMap.clearRoutes()
 
-          var displayRoute = document.createElement('button');
-          displayRoute.id = 'sidebarDisplayRouteButton'
-          displayRoute.innerText = "Display Route"
-          displayRoute.addEventListener('click', function(){
+          mainMap.drawRoute(element.googleResponse);
 
-            var mainMap = sidebarScope.page.map.mainMap;
-            mainMap.drawRoute(element.googleResponse);
-        })
 
       })
         newLi.appendChild(divP)
