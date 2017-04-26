@@ -112,15 +112,16 @@ Sidebar.prototype = {
             mainMap.drawRoute(element.googleResponse);
         })
 
+      })
         newLi.appendChild(divP)
         newLi.appendChild(displayRoute)
         newLi.appendChild(doneButton)
         newLi.appendChild(deleteButton)
         wishlistUL.appendChild(newLi)
+        console.log(wishlistUL)
 
         var listBr = document.createElement('br')
         wishlistUL.appendChild(listBr)
-      })
     })
   })
   },
