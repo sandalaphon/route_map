@@ -66,11 +66,16 @@ Sidebar.prototype = {
         doneButton.id = 'doneButton'
         doneButton.innerText = 'Done'
         doneButton.onclick = function () {
-          // newLi.style.textDecoration = 'line-through'
-          if (element.done) {
-            element.done = false
-          } else element.done = true
+          if (newLi.style.textDecoration !== 'line-through'){
+          newLi.style.textDecoration = 'line-through'
+          element.done = true
         }
+          else if (newLi.style.textDecoration === 'line-through'){
+              newLi.style.textDecoration = 'initial'
+              element.done = false
+            }  
+        }
+        
 
         var deleteRouteFromDB = function (routeID) {
           url = 'http://localhost:3000/api/routes/'
