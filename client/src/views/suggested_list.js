@@ -25,8 +25,16 @@ SuggestionList.prototype = {
     }
   },
 
+  addCloseAction: function (htmlElement) {
+    htmlElement.onclick = function () {
+      this.hideReveal()
+    }.bind(this)
+  },
+
   populateList: function (getAllRoutes) {
     var suggestedlistUL = document.querySelector('#suggested-list')
+
+    this.addCloseAction(document.querySelector('#suggested-close'))  // using span id=sidebar-close
 
     while (suggestedlistUL.hasChildNodes()) {
       suggestedlistUL.removeChild(suggestedlistUL.lastChild)
@@ -39,16 +47,7 @@ SuggestionList.prototype = {
       parsedList.forEach(function (element) {
         var newLi = document.createElement('li')
 
-        newLi.innerText = 'Name of Route:\n' + element.name + ' \n' + element.googleResponse.travelMode
-
-        var newBr = document.createElement('br')
-        newLi.appendChild(newBr)
-
-        var newATag = document.createElement('a')
-        var hrefString = 'http://localhost:3000/api/suggested_routes/' + element.name
-        newATag.href = hrefString
-        newATag.text = 'Map Link Here'
-        newLi.appendChild(newATag)
+        newLi.innerHTML = '<p class="route-name">' + element.name + '</p>' + '<p class="travel-mode">' + element.googleResponse.travelMode + '</p>'
 
         var buttonsDiv = document.createElement('div')
         var divP = document.createElement('p')
@@ -69,6 +68,8 @@ SuggestionList.prototype = {
 
         displayRoute.addEventListener('click', function () {
           var mainMap = suggestionsListScope.page.map.mainMap
+          suggestionsListScope.hideReveal()
+          mainMap.clearRoutes()
           mainMap.drawRoute(element.googleResponse)
         })
 
@@ -84,7 +85,6 @@ SuggestionList.prototype = {
   },
 
   revealList: function () {
-    console.log('button pressed')
     var suggestionList = document.querySelector('#suggested-routes')
     if (suggestionList.style.display === 'inline-block') {
       suggestionList.style.display = 'none'

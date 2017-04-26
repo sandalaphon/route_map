@@ -3,6 +3,8 @@ var Sidebar = require('./views/sidebar.js')
 var Elevation = require('./models/elevation.js')
 var SuggestionList = require('./views/suggested_list.js')
 var GeoLocate = require('./models/geolocate_map.js')
+
+
 var app = function () {
   localStorage.clear()
   var page = new Page()

@@ -13,10 +13,10 @@ GeoLocate.prototype = {
         }
         var infoWindow = new google.maps.InfoWindow()
         infoWindow.setPosition(pos)
-        infoWindow.setContent('Location')
+        infoWindow.setContent('Your Location')
         infoWindow.open(this.map)
         this.map.setCenter(pos)
-        this.map.setZoom(10)
+        this.map.setZoom(7)
       }.bind(this), function () {
         this.handleLocationError(true, infoWindow, this.map.getCenter())
       }.bind(this))
