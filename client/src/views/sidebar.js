@@ -61,19 +61,23 @@ Sidebar.prototype = {
         var divP = document.createElement('p')
         buttonsDiv.appendChild(divP)
 
-        var doneButton = document.createElement('button')
-        doneButton.id = 'doneButton' + element._id
-        doneButton.innerText = 'Done'
+        // TODO delete once checkbox working
+        // var doneButton = document.createElement('button')
+        // doneButton.id = 'doneButton' + element._id
+        // doneButton.innerText = 'Done'
         var label = document.createElement('label')
         var checkbox = document.createElement('input')
         checkbox.type = 'checkbox'
         checkbox.id = 'checkbox' + element._id
+        checkbox.className = 'wishlist-checkbox'
         checkbox.value = element._id
         checkbox.checked = element.done
         label.for = element._id
-        label.innerHTML = element.name
+        label.innerText = 'Done? '
+        label.className = 'wishlist-checkbox-label'
 
-        doneButton.onclick = function () {
+        checkbox.addEventListener('change', function () {
+        // doneButton.onclick = function () {
           // newLi.style.textDecoration = 'line-through'
           var payload = { 'done': false}
           if (element.done) {
@@ -94,7 +98,7 @@ Sidebar.prototype = {
             // set checkbox state to match
             // finish
           }, payload)
-        }
+        })
 
         var deleteRouteFromDB = function (routeID) {
           var url = 'http://localhost:3000/api/routes/'
@@ -106,11 +110,13 @@ Sidebar.prototype = {
 
         var deleteButton = document.createElement('button')
         deleteButton.id = 'deleteButton'
-        deleteButton.innerText = 'Delete'
+        deleteButton.innerText = 'Delete this route'
         deleteButton.addEventListener('click', function () {
           deleteRouteFromDB(element._id)
           newLi.style.display = 'none'
-        })
+          console.log(this)
+          this.page.map.mainMap.clearRoutes()
+        }.bind(sidebarScope))
 
         var displayRoute = document.createElement('button')
         displayRoute.id = 'sidebarDisplayRouteButton'
@@ -129,9 +135,10 @@ Sidebar.prototype = {
         })
 
         newLi.appendChild(divP)
-        newLi.appendChild(displayRoute)
-        newLi.appendChild(doneButton)
+        newLi.appendChild(label)
         newLi.appendChild(checkbox)
+        newLi.appendChild(displayRoute)
+        // newLi.appendChild(doneButton)
         newLi.appendChild(deleteButton)
         wishlistUL.appendChild(newLi)
 
