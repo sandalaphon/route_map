@@ -1,8 +1,9 @@
 var Route = require('./models/route.js')
+var Clock = require('./models/clock.js')
 
 var MapWrapper = function (container, coords, zoom) {
   this.startmarkers = []
-
+  this.restaurantMarkers = []
   this.endmarkers = []
   this.currentRoute = null
   this.googleMap = new google.maps.Map(container, {
@@ -14,6 +15,11 @@ var MapWrapper = function (container, coords, zoom) {
   this.directionsDisplay = null
   this.animationMarker = null
   this.timeouts = []
+  this.animeCoordsArray = []
+  this.onOff = true
+  this.clock = new Clock
+  this.totalSeconds = null;
+  this.animeTimeSeconds
 }
 
 MapWrapper.prototype = {
@@ -108,7 +114,10 @@ MapWrapper.prototype = {
   },
 
   clearRoutes: function() {
-    this.directionsDisplay.setMap(null)
+    this.animeTimeSeconds=[]
+    this.clock.anime=false
+    if(this.directionsDisplay){
+    this.directionsDisplay.setMap(null)}
     if(this.polyline){
     this.polyline.setMap(null)
   }
@@ -122,6 +131,14 @@ MapWrapper.prototype = {
       for (var i=0; i<this.timeouts.length; i++) {
         clearTimeout(this.timeouts[i]);
       }
+      if(this.restaurantMarkers.length){
+        for(var j = 0; j< this.restaurantMarkers.length; j++){
+          console.log(this.restaurantMarkers[j])
+          this.restaurantMarkers[j].setMap(null)
+        }
+        this.restaurantMarkers =[]
+      }
+
 
   },
 
@@ -182,6 +199,7 @@ MapWrapper.prototype = {
     for (var i = 0; i < myroute.legs.length; i++) {
       totalSeconds += myroute.legs[i].duration.value
     }
+    this.totalSeconds = totalSeconds
     var remainderSeconds = totalSeconds % 60
     var totalMinutes = (totalSeconds - remainderSeconds) / 60
     var remainderMinutes = totalMinutes % 60
@@ -190,6 +208,9 @@ MapWrapper.prototype = {
   },
 
   animateRoute: function () {
+    this.clock.anime = true
+    this.animeCoordsArray = []
+    this.animeTimeSeconds =[]
     this.autoRefresh(this.googleMap, this.currentRoute.routes[0].overview_path)
   },
 
@@ -228,17 +249,27 @@ MapWrapper.prototype = {
     editable: false,
     map:this.googleMap
   });                
-
+    var secondsFraction = this.totalSeconds/pathCoords.length
+    console.log("this.totalSeconds", this.totalSeconds)
     for (var i = 0; i < pathCoords.length; i++) {
+      this.animeCoordsArray.push(pathCoords[i])
+      this.animeTimeSeconds.push(secondsFraction*i)
+      console.log('for array', pathCoords[i])
         this.timeouts.push(setTimeout(function (coords) {
         this.polyline.getPath().push(coords)
         this.moveMarker(this.googleMap, this.animationMarker, coords)
+        // var currentCoords = {lat: coords.lat(), lng: coords.lng()}
       }.bind(this), 100 * i, pathCoords[i]))
     }
   },
 
   moveMarker: function (map, marker, latlng) {
     marker.setPosition(latlng)
+    var coords = {lat: latlng.lat(), lng: latlng.lng()}
+    this.animeCoordsArray.shift()
+    var latest =this.animeTimeSeconds.shift()
+    sessionStorage.setItem("animeCoords", coords)
+    this.clock.secondsSinceStart = latest
   },
     /// ////////////////////////
 /// /  places nearby code now  //////
@@ -259,6 +290,8 @@ MapWrapper.prototype = {
     }.bind(this))
   },
 
+  
+  
   // see here for types : https://developers.google.com/places/supported_types
 
   createMarker: function (place) {
@@ -274,12 +307,37 @@ MapWrapper.prototype = {
       position: place.geometry.location,
       icon: icon
     })
-
+    this.restaurantMarkers.push(marker)
     google.maps.event.addListener(marker, 'click', function () {
       infowindow.setContent(place.name)
       infowindow.open(this.googleMap, marker)
     })
-  }
+  },
+
+  pauseAnimation: function(){
+    if(this.onOff){
+      //iterate through array of timeouts and discard them
+    for(var i=0; i<this.timeouts.length; i++){
+    clearTimeout(this.timeouts[i])
+    } this.onOff= false
+    console.log("on")
+    }else {
+   this.onOff= true
+   console.log(this.animeCoordsArray.length)
+     // continue animation
+      for(var j = 0; j < this.animeCoordsArray.length; j++ ){
+          this.timeouts.push(setTimeout(function (coords) {
+            console.log(coords)
+          this.polyline.getPath().push(coords)
+          this.moveMarker(this.googleMap, this.animationMarker, coords)
+        }.bind(this), 100 * j, this.animeCoordsArray[j]))
+
+    }console.log(this)
+    console.log('off')
+      }
+  
+  },
+
 
 }
 
