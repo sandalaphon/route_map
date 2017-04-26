@@ -28,7 +28,6 @@ Reviews.prototype = {
     suggestedRoutesResponse.forEach(function(element){
       ids.push(element._id)
     })
-    
     return ids
   },
 
@@ -57,6 +56,7 @@ Reviews.prototype = {
 
       var reviewMainDiv = document.createElement('div');
       reviewMainDiv.id = routeWithID.id;
+      reviewMainDiv.margin = '100px'
       reviewMainDiv.style.display = 'none'
 
       var mainReviewHeading = document.createElement('h3')
