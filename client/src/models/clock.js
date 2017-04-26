@@ -1,20 +1,11 @@
 var secondsInterval = null
 
 var Clock = function(){
-//   var canvas = document.getElementById("canvas");
-// this.ctx = canvas.getContext("2d");
-// this.radius = canvas.height / 2;
-// var ctx = this.ctx
-// var radius = this.radius
-//   ctx.translate(radius/2, radius/2);
-// secondsInterval = setInterval(this.drawClock(ctx, radius), 1000);
 this.haveUserTime = true
 this.animationRunning = false
 this.hour = 0
 this.minute = 0
 this.second = 0
-
-
 }
 
 

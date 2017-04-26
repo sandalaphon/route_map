@@ -205,7 +205,11 @@ MapWrapper.prototype = {
 
   animateRoute: function () {
     this.clock.setAnime(false)
-
+     var userTime = document.querySelector('#time_depart').value
+    var userhours = +userTime.substring(0,2)
+    var  userminutes= +userTime.substring(3)
+     this.clock.hour = userhours
+     this.clock.minute = userminutes
     for (var i = 0; i < this.timeouts.length; i++) {
       clearTimeout(this.timeouts[i])
     }
@@ -347,15 +351,7 @@ MapWrapper.prototype = {
       }
   },
 
-
-
   updateClock: function(){
-
-    var userTime = document.querySelector('#time_depart').value
-   var userhours = +userTime.substring(0,2)
-   var  userminutes= +userTime.substring(3)
-    this.clock.hour = userhours
-    this.clock.minute = userminutes
     this.clock.addSeconds( this.animeTimeSeconds[0], this.clock.createAnotherClock())
   }
 
