@@ -27,7 +27,6 @@ SuggestionList.prototype = {
 
   addCloseAction: function (htmlElement) {
     htmlElement.onclick = function () {
-      console.log(this, htmlElement)
       this.hideReveal()
     }.bind(this)
   },
@@ -79,6 +78,7 @@ SuggestionList.prototype = {
 
         displayRoute.addEventListener('click', function () {
           var mainMap = suggestionsListScope.page.map.mainMap
+          mainMap.clearRoutes()
           mainMap.drawRoute(element.googleResponse)
         })
 

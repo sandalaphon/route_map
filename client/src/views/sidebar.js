@@ -29,7 +29,6 @@ Sidebar.prototype = {
 
   addCloseAction: function (htmlElement) {
     htmlElement.onclick = function () {
-      console.log(this, htmlElement)
       this.hideReveal()
     }.bind(this)
   },
