@@ -342,6 +342,7 @@ MapWrapper.prototype = {
           this.moveMarker(this.googleMap, this.animationMarker, coords)
         }.bind(this), 100 * j, this.animeCoordsArray[j]))
     }
+  }
   },
 
   updateClock: function () {
