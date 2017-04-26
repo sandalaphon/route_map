@@ -331,12 +331,9 @@ MapWrapper.prototype = {
         clearTimeout(this.timeouts[i])
       } this.animationRunning = false
       this.clock.setAnime(true)
-      console.log('on')
     } else {
       this.animationRunning = true
       this.clock.setAnime(true)
-
-      console.log(this.animeCoordsArray.length)
      // continue animation
       for (var j = 0; j < this.animeCoordsArray.length; j++) {
         this.timeouts.push(setTimeout(function (coords) {
@@ -369,4 +366,5 @@ MapWrapper.prototype = {
   }
 
 }
+
 module.exports = MapWrapper
