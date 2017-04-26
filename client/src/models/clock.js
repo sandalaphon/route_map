@@ -5,8 +5,8 @@ var Clock = function(){
   var radius = canvas.height / 2;
   ctx.translate(radius/2, radius/2);
 setInterval(this.drawClock(ctx, radius), 1000);
-this.unclicked = true
-this.anime = false
+this.haveUserTime = true
+this.animationRunning = false
 this.hour
 this.minute
 this.second
@@ -16,8 +16,8 @@ this.secondsSinceStart
 
 Clock.prototype = {
 
-drawClock: function(ctx, radius) { return function(){
-  
+drawClock: function(ctx, radius) {
+ return function(){
   // radius = radius * 0.90
   this.drawFace(ctx, radius);
   this.drawNumbers(ctx, radius);
@@ -25,6 +25,9 @@ drawClock: function(ctx, radius) { return function(){
 }.bind(this)
   },
 
+setAnime: function(inputBool){
+  this.animationRunning = inputBool
+},
 
 drawFace: function(ctx, radius) {
   var grad;
@@ -64,7 +67,7 @@ drawNumbers: function(ctx, radius) {
 },
 
 drawTime: function(ctx, radius){
-  if(this.unclicked){
+  if(this.haveUserTime){
     var now = new Date();
     var hour = now.getHours();
     var minute = now.getMinutes();
@@ -74,15 +77,19 @@ drawTime: function(ctx, radius){
     var hour=this.hour
     var minute=this.minute
     var second=0
+
     console.log("define me",this.secondsSinceStart)
-    if(this.anime){
-    this.secondsSinceStart
+    console.log("this.animationRunning", this.animationRunning) 
+    if(this.animationRunning){
+    // this.secondsSinceStart
     var remainderSeconds = this.secondsSinceStart % 60
     var totalMinutes = (this.secondsSinceStart - remainderSeconds) / 60
     var remainderMinutes = totalMinutes % 60
-    var hours = (totalMinutes - remainderMinutes) / 60
-    hour += hours
+    var journeyhours = (totalMinutes - remainderMinutes) / 60
+    hour += journeyhours
     minute +=totalMinutes
+    console.log("minute",minute)
+    console.log("hours",journeyhours)
 }
 
   }

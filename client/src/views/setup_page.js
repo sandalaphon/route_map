@@ -105,7 +105,7 @@ Page.prototype = {
       this.clock.hour= +timeInput.substring(0,2)
       this.clock.minute= +timeInput.substring(3)
      console.log("hello",this.clock.minute)
-      this.clock.unclicked=! this.clock.unclicked
+      this.clock.haveUserTime= !this.clock.haveUserTime
 
     }.bind(this))
 

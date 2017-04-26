@@ -14,12 +14,12 @@ var MapWrapper = function (container, coords, zoom) {
   this.polyline = null
   this.directionsDisplay = null
   this.animationMarker = null
-  this.timeouts = []
-  this.animeCoordsArray = []
-  this.onOff = true
+  this.animationRunning = true
   this.clock = new Clock
   this.totalSeconds = null;
-  this.animeTimeSeconds
+  this.animeTimeSeconds = []
+  this.timeouts = []
+  this.animeCoordsArray = []
 }
 
 MapWrapper.prototype = {
@@ -208,7 +208,8 @@ MapWrapper.prototype = {
   },
 
   animateRoute: function () {
-    this.clock.anime = true
+    this.clock.setAnime(true)
+    console.log(this.clock.animationRunning)
     this.animeCoordsArray = []
     this.animeTimeSeconds =[]
     this.autoRefresh(this.googleMap, this.currentRoute.routes[0].overview_path)
@@ -254,7 +255,6 @@ MapWrapper.prototype = {
     for (var i = 0; i < pathCoords.length; i++) {
       this.animeCoordsArray.push(pathCoords[i])
       this.animeTimeSeconds.push(secondsFraction*i)
-      console.log('for array', pathCoords[i])
         this.timeouts.push(setTimeout(function (coords) {
         this.polyline.getPath().push(coords)
         this.moveMarker(this.googleMap, this.animationMarker, coords)
@@ -267,9 +267,11 @@ MapWrapper.prototype = {
     marker.setPosition(latlng)
     var coords = {lat: latlng.lat(), lng: latlng.lng()}
     this.animeCoordsArray.shift()
+    this.updateClock()
     var latest =this.animeTimeSeconds.shift()
     sessionStorage.setItem("animeCoords", coords)
     this.clock.secondsSinceStart = latest
+
   },
     /// ////////////////////////
 /// /  places nearby code now  //////
@@ -315,19 +317,21 @@ MapWrapper.prototype = {
   },
 
   pauseAnimation: function(){
-    if(this.onOff){
+    if(this.animationRunning){
       //iterate through array of timeouts and discard them
     for(var i=0; i<this.timeouts.length; i++){
     clearTimeout(this.timeouts[i])
-    } this.onOff= false
+    } this.animationRunning= false
+    this.clock.setAnime(true)
     console.log("on")
     }else {
-   this.onOff= true
+   this.animationRunning= true
+   this.clock.setAnime(true)
+
    console.log(this.animeCoordsArray.length)
      // continue animation
       for(var j = 0; j < this.animeCoordsArray.length; j++ ){
           this.timeouts.push(setTimeout(function (coords) {
-            console.log(coords)
           this.polyline.getPath().push(coords)
           this.moveMarker(this.googleMap, this.animationMarker, coords)
         }.bind(this), 100 * j, this.animeCoordsArray[j]))
@@ -337,6 +341,29 @@ MapWrapper.prototype = {
       }
   
   },
+
+  updateClock: function(){
+    var remainderSeconds = this.animeTimeSeconds[0] % 60
+    var totalMinutes = (this.animeTimeSeconds[0] - remainderSeconds) / 60
+    var remainderMinutes = totalMinutes % 60
+    var journeyhours = (totalMinutes - remainderMinutes) / 60
+    var userTime = document.querySelector('#time_depart').value
+   var userhours = +userTime.substring(0,2)
+   var  userminutes= +userTime.substring(3)
+    userhours += journeyhours
+    userminutes +=totalMinutes
+    this.clock.hour = userhours
+
+    this.clock.minute = userminutes
+    this.clock.seconds = 0
+    
+    console.log(this.clock.minute)
+    var canvas = document.getElementById("canvas2");
+    var ctx = canvas.getContext("2d");
+    var radius = canvas.height / 2;
+    ctx.translate(radius/2, radius/2);
+    this.clock.drawClock(ctx, radius)
+  }
 
 
 }
