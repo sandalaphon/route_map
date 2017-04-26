@@ -6,6 +6,42 @@
 /*#main-buttons {
 
 }*/
+.tempBox {
+  text-align: center;
+  position: absolute;
+      right: 0px;
+      width: 135px;
+      height: 500px;
+      border: 3px solid #73AD21;
+      padding: 10px; 
+      color: white; 
+}
+
+#canvas {
+  margin-top: 30px;
+
+}
+
+#canvas2 {
+  margin-top: 30px;
+
+}
+
+#time_depart {
+margin-top:20px;
+width:115px;
+}
+
+#time_button {
+  margin-top: 20px;
+}
+
+#pause {
+  padding: 10px;
+  margin: 20px;
+}
+
+
 
 #main-screen {
   text-align: center;
@@ -31,14 +67,6 @@
   /*padding: 15px;*/
 }
 
-#main-screen {
-  text-align: center;
-  display: inline-block;
-  margin-left: 16%;
-  margin-right: 16%;
-  float: right;
-  width: 67%;
-}
 
 #sidebar {
   position: absolute;
