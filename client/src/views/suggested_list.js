@@ -79,6 +79,7 @@ SuggestionList.prototype = {
 
         displayRoute.addEventListener('click', function () {
           var mainMap = suggestionsListScope.page.map.mainMap
+          suggestionsListScope.hideReveal()
           mainMap.clearRoutes()
           mainMap.drawRoute(element.googleResponse)
         })

@@ -105,6 +105,7 @@ Sidebar.prototype = {
           var containerDiv = document.querySelector('#main-map')
 
           // mainMap = new MapWrapper(containerDiv, element.googleResponse.destination, 12)
+          sidebarScope.hideReveal()
           mainMap.clearRoutes()
           mainMap.drawRoute(element.googleResponse)
         })
