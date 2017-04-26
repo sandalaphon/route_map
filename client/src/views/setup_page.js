@@ -1,10 +1,11 @@
 var MapWrapper = require('../mapWrapper.js')
 var Route = require('../models/route.js')
-// var MakeRequest = require('../models/make_requests.js') // moved to sidebar and suggestionlist setup() functions
-// var SuggestionList = require('./suggested_list.js')
 var Forecast = require('../models/forecast.js')
 var WeatherView = require('../models/weather_view')
 var weatherView = new WeatherView()
+var Clock = require('../models/clock.js')
+
+
 
 var Page = function () {
   this.page = document
@@ -19,7 +20,10 @@ var Page = function () {
     findAmenity: document.querySelector('#findAmenity'),
     viewsavedRouteButton: document.querySelector('#savedRoute'),
     animationButton: document.querySelector('#animate'),
-    forecast: document.querySelector('#forecast')
+    forecast: document.querySelector('#forecast'),
+    pause: document.querySelector('#pause'),
+    stopOffFood: document.querySelector('#stopOffFood'),
+    time_button: document.querySelector('#time_button')
   }
   // ensure containerDiv defined before used in setup of this.map
   var containerDiv = document.querySelector('#main-map')
@@ -29,6 +33,8 @@ var Page = function () {
     mainMap: new MapWrapper(containerDiv, {lat: 56.632, lng: -4.180}, 6),
     transportMethod: 'BICYCLING'
   }
+  this.clock = new Clock
+  this.clock.drawClock()
 }
 
 Page.prototype = {
@@ -94,6 +100,15 @@ Page.prototype = {
     this.setButtonEvent('click', this.buttons['findAmenity'], this.findAmenity.bind(this.map.mainMap))
     this.setButtonEvent('click', this.buttons['route'], this.map.mainMap.calculateRoute.bind(this.map))
 
+    this.setButtonEvent('click', this.buttons['time_button'], function(){
+      var timeInput = document.querySelector('#time_depart').value
+      this.clock.hour= +timeInput.substring(0,2)
+      this.clock.minute= +timeInput.substring(3)
+     console.log("hello",this.clock.minute)
+      this.clock.haveUserTime= !this.clock.haveUserTime
+
+    }.bind(this))
+
     // forecast function
     this.setButtonEvent('click', this.buttons['forecast'], this.showForecast)
 
@@ -102,6 +117,15 @@ Page.prototype = {
     this.setButtonEvent('click', this.buttons['animationButton'], function () {
       this.map.mainMap.animateRoute()
     }.bind(this))
+
+    this.setButtonEvent('click', this.buttons['pause'], function(){this.map.mainMap.pauseAnimation()}.bind(this))
+    
+    this.setButtonEvent('click', this.buttons['stopOffFood'], function(){
+      this.map.mainMap.placesService(this.map.mainMap.animeCoordsArray[0], 3000, 'restaurant')
+      this.map.mainMap.googleMap.panTo(this.map.mainMap.animeCoordsArray[0])
+      this.map.mainMap.googleMap.setZoom(12)
+    }.bind(this))
+
   },
 
   getAddressFromGeoCode: function (addressId, callback) {

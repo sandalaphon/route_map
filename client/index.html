@@ -5,15 +5,27 @@
   <title>Route Planner</title>
   
   <link rel="stylesheet" type="text/css" href="style.css">
-<!--   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCSDO8jpfOiO7nJ3wjAoFsER6BXyN8QWo"></script> -->
   <script src ="http://code.highcharts.com/highcharts.js"></script>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCSDO8jpfOiO7nJ3wjAoFsER6BXyN8QWo&libraries=places"></script>
   <script src="bundle.js"></script>
   </head>
   
   <body>
+<section class="tempBox">
+Display Features
+<button id = "pause">Pause Animation</button>
+<button id = "stopOffFood">Find Restaurant</button>
+<canvas id="canvas" width="135" height="135"
+style="background-color:#333">
+</canvas>
+<form >
+  What time will you depart?:
+  <input type="time" id = 'time_depart' >
+</form>
+<button id = "time_button">Set Time</button>
 
 
+  </section>
   <section id="sidebar">
 
     <h2 class='sidebars-title'>Wishlist<span class='close' id="sidebar-close">&times;</span></h2>

@@ -47,19 +47,8 @@ SuggestionList.prototype = {
       parsedList.forEach(function (element) {
         var newLi = document.createElement('li')
 
-        // newLi.innerText = 'Name of Route:\n' + element.name + ' \n' + element.googleResponse.travelMode
         newLi.innerHTML = '<p class="route-name">' + element.name + '</p>' + '<p class="travel-mode">' + element.googleResponse.travelMode + '</p>'
 
-        // var newBr = document.createElement('br')
-        // newLi.appendChild(newBr)
-
-/* Commented out to remove hyperlink from sidbar as button shows route
-        var newATag = document.createElement('a')
-        var hrefString = 'http://localhost:3000/api/suggested_routes/' + element.name
-        newATag.href = hrefString
-        newATag.text = 'Map Link Here'
-        newLi.appendChild(newATag)
-*/
         var buttonsDiv = document.createElement('div')
         var divP = document.createElement('p')
         buttonsDiv.appendChild(divP)
