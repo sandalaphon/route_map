@@ -361,6 +361,7 @@ MapWrapper.prototype = {
         }.bind(this), 100 * j, this.animeCoordsArray[j]))
       }
     }
+  }
   },
 
   /////////////////////////////////////////////////////////////////////////
