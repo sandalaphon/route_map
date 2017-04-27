@@ -40,12 +40,11 @@
 
 #canvas2 {
   margin-top: 30px;
-
 }
 
 #time_depart {
-margin-top:20px;
-width:115px;
+  margin-top:20px;
+  width:115px;
 }
 
 #time_button {
@@ -56,7 +55,6 @@ width:115px;
   padding: 10px;
   margin: 20px;
 }
-
 
 
 #main-screen {
@@ -190,35 +188,59 @@ width:115px;
   float: right;
   display: none;
   z-index: 1;
-  transition: 0.5s;
   border-left: 1px black solid;
   background-color: white;
-  overflow:auto;
-  /* attempt at slide in*/
-  -webkit-animation-name: slideInRight;
-  -webkit-animation-duration: 0.4s;
-  animation-name: slideInRight;
-  animation-duration: 0.4s
-}
-@-webkit-keyframes slideInRight {
-  0% {transform: translateX(150%);}
-  100% {transform: translateX(0%);}
+    overflow:auto;
+    /* attempt at slide in*/
+    -webkit-animation-name: slideInRight;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideInRight;
+    animation-duration: 0.4s
+  }
+  @-webkit-keyframes slideInRight {
+    0% {transform: translateX(150%);}
+    100% {transform: translateX(0%);}
+  }
+
+  @keyframes slideInRight {
+    0% {transform: translateX(150%);}    
+    100% {transform: translateX(0%);}
+  }
+
+  @-webkit-keyframes fadeIn {
+      from {opacity: 0} 
+      to {opacity: 1}
+  }
+
+  @keyframes fadeIn {
+      from {opacity: 0} 
+      to {opacity: 1}
+  }
+
+#reviews-info {
+  display: none;
 }
 
-@keyframes slideInRight {
-  0% {transform: translateX(150%);}    
-  100% {transform: translateX(0%);}
+#review-list {
+  list-style: none;
 }
 
-@-webkit-keyframes fadeIn {
-    from {opacity: 0} 
-    to {opacity: 1}
+#review-heading {
+  display: none;
 }
 
-@keyframes fadeIn {
-    from {opacity: 0} 
-    to {opacity: 1}
+#routeDetails {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  height: 0%;
+
 }
+
+/*#newReviewText {
+  padding-bottom: 50px;
+}*/
+  
 
 
 /* class .close used by both sidebars for their close Xs*/
@@ -238,9 +260,6 @@ width:115px;
 .sidebars-title {
   font-size: 18px;
 }
-
-
-
 
 .menu{
   display: inline-block;

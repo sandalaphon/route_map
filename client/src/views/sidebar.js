@@ -51,7 +51,8 @@ Sidebar.prototype = {
         var newLi = document.createElement('li')
 
         newLi.innerHTML = '<p class="route-name">' + element.name + '</p>' + '<p class="travel-mode">' + element.googleResponse.travelMode + '</p>'
-
+        
+        
         var startFinish = document.createElement('p')
         startFinish.className = 'start-finish'
         startFinish.innerHTML = '<span class="from-to">From: </span>' + element.origin + '<br>' + '<span class="from-to"> To: </span>' + element.destination
@@ -61,10 +62,6 @@ Sidebar.prototype = {
         var divP = document.createElement('p')
         buttonsDiv.appendChild(divP)
 
-        // TODO delete once checkbox working
-        // var doneButton = document.createElement('button')
-        // doneButton.id = 'doneButton' + element._id
-        // doneButton.innerText = 'Done'
         var label = document.createElement('label')
         var checkbox = document.createElement('input')
         checkbox.type = 'checkbox'
@@ -77,8 +74,6 @@ Sidebar.prototype = {
         label.className = 'wishlist-checkbox-label'
 
         checkbox.addEventListener('change', function () {
-        // doneButton.onclick = function () {
-          // newLi.style.textDecoration = 'line-through'
           var payload = { 'done': false}
           if (element.done) {
             element.done = false
@@ -120,18 +115,18 @@ Sidebar.prototype = {
         displayRoute.id = 'sidebarDisplayRouteButton'
         displayRoute.innerText = 'Display This Route'
         displayRoute.addEventListener('click', function () {
+          var reviewsDiv = document.querySelector('#reviews-info')
+          reviewsDiv.style.display = 'none';
           var mainMap = sidebarScope.page.map.mainMap
-          //! BUG! Routes displaying on top of each other, fixed below
-
-          // FIX ME TOMORROW!
           var containerDiv = document.querySelector('#main-map')
 
-          // mainMap = new MapWrapper(containerDiv, element.googleResponse.destination, 12)
           sidebarScope.hideReveal()
           mainMap.clearRoutes()
-          mainMap.drawRoute(element.googleResponse)
-        })
 
+          mainMap.drawRoute(element.googleResponse);
+
+
+      })
         newLi.appendChild(divP)
         newLi.appendChild(label)
         newLi.appendChild(checkbox)
@@ -143,11 +138,11 @@ Sidebar.prototype = {
 
         var listBr = document.createElement('hr')
         wishlistUL.appendChild(listBr)
-      })
     })
+  })
   },
 
-  revealWishlist: function () {
+  revealWishlist: function(){
     var sidebar = document.querySelector('#sidebar')
     if (sidebar.style.display === 'inline-block') {
       sidebar.style.display = 'none'

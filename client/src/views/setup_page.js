@@ -1,16 +1,21 @@
 var MapWrapper = require('../mapWrapper.js')
 var Route = require('../models/route.js')
 var Forecast = require('../models/forecast.js')
+var Reviews = require('../models/reviews.js')
 var WeatherView = require('../models/weather_view')
 var weatherView = new WeatherView()
 var Clock = require('../models/clock.js')
 
 
 
+
+
 var Page = function () {
   this.page = document
   this.route = null
+  this.currentReviewDisplayed = null
   this.buttons = {
+
     start: document.querySelector('#start'),
     end: document.querySelector('#finish'),
     route: document.querySelector('#route'),
@@ -21,6 +26,7 @@ var Page = function () {
     viewsavedRouteButton: document.querySelector('#savedRoute'),
     animationButton: document.querySelector('#animate'),
     forecast: document.querySelector('#forecast'),
+    submitReview: document.querySelector('#submitReview'),
     pause: document.querySelector('#pause'),
     stopOffFood: document.querySelector('#stopOffFood'),
     time_button: document.querySelector('#time_button')
@@ -33,15 +39,13 @@ var Page = function () {
     mainMap: new MapWrapper(containerDiv, {lat: 56.632, lng: -4.180}, 6),
     transportMethod: 'BICYCLING'
   }
+
   this.clock = new Clock
   this.clock.createAClock()
+
 }
 
 Page.prototype = {
-
-  /* setupSideBars: function (sidebar) {
-    // moved function to Sidebar.setup() and SuggestionList.setup()
-  }, */
 
   findAmenity: function () {
     var finLat = localStorage.getItem('finishLatitude')
@@ -100,6 +104,23 @@ Page.prototype = {
     this.setButtonEvent('click', this.buttons['findAmenity'], this.findAmenity.bind(this.map.mainMap))
     this.setButtonEvent('click', this.buttons['route'], this.map.mainMap.calculateRoute.bind(this.map))
 
+    // var reviews = new Reviews();
+
+    //forecast function
+    this.setButtonEvent('click', this.buttons['forecast'], function(){
+    var latitude = localStorage.getItem("finishLatitude");
+    var longitude = localStorage.getItem("finishLongitude");
+    var url = "http://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&APPID=f66376ebcb0af19199eb5e28d449aaf9";
+    var forecast = new Forecast(url).getData(function(weather){
+      // Enables swapping between reviews and weather divs
+      var reviewsDiv = document.querySelector('#reviews-info');
+      reviewsDiv.style.display = 'none';
+      var weatherDiv = document.querySelector('#weather-info');
+      weatherDiv.style.display = 'initial'
+      weatherView.render(weather);
+    })
+
+  }) //forecastfunction)
     this.setButtonEvent('click', this.buttons['time_button'], function(){
       var timeInput = document.querySelector('#time_depart').value
       this.clock.hour= +timeInput.substring(0,2)
@@ -113,7 +134,6 @@ Page.prototype = {
     this.setButtonEvent('click', this.buttons['forecast'], this.showForecast)
 
     this.setButtonEvent('click', this.buttons['save'], this.saveDisplayedRoute.bind(this))
-
     this.setButtonEvent('click', this.buttons['animationButton'], function () {
       this.map.mainMap.animateRoute()
     }.bind(this))
@@ -158,8 +178,34 @@ Page.prototype = {
       var directionsServiceObj = JSON.parse(jsonString)
       this.map.mainMap.drawRoute(directionsServiceObj[0].googleResponse)
     }.bind(this)
+
+    request.send();
+
+  },
+
+  setupReviews: function(){
+    var reviews = new Reviews();
+    reviews.setupReviewsHTML();
+    var request = new XMLHttpRequest();
+    var url = "http://localhost:3000/api/suggested_routes/"
+    request.open("GET", url)
+    request.setRequestHeader("Content-Type", "application/json");
+    request.onload = function(){
+      if(request.status!== 200){
+        console.log('Error')
+        return
+      }
+      var jsonString = request.responseText;
+      var parsedResponse = JSON.parse(jsonString)
+      var allRouteIds = reviews.findAllRouteIDs(parsedResponse)
+      var allReviewsWithIds = reviews.findAllReviewsByGivenId(parsedResponse, allRouteIds);
+
+      reviews.createHTMLElementsForEachReview(allReviewsWithIds)
+
+    }
     request.send()
   },
+
   setButtonEvent: function (type, button, callback) {
     button.addEventListener(type, callback)
   }
