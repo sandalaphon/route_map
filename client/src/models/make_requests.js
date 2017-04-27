@@ -3,7 +3,6 @@ var MakeRequest = function () {
 
 MakeRequest.prototype = {
 
-
   makeGetRequest: function (url, callback) {
     var request = new XMLHttpRequest()
     request.open('GET', url)
@@ -18,6 +17,15 @@ MakeRequest.prototype = {
     request.setRequestHeader('Content-Type', 'application/json')
     request.onload = callback
     request.send(payload)
+  },
+
+  makePutRequest: function (url, callback, objectToUpdate) {
+    var request = new XMLHttpRequest()
+    var jsonString = JSON.stringify(objectToUpdate)
+    request.open('PUT', url)
+    request.setRequestHeader('Content-Type', 'application/json')
+    request.onload = callback(request)
+    request.send(jsonString)
   }
 
   // requestComplete: function () {

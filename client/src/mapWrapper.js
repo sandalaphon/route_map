@@ -258,13 +258,13 @@ MapWrapper.prototype = {
 
   animateRoute: function () {
 
+
     var userTime = document.querySelector('#time_depart').value //set time
     this.clock.hour = +userTime.substring(0,2)
     this.clock.minute= +userTime.substring(3)
     /////////////repress anime clears previous
     this.animeCoordsArray = []  //ensure no residual frames 
     this.animeTimeSeconds = []
-  
     for (var i = 0; i < this.timeouts.length; i++) {
       clearTimeout(this.timeouts[i])
     }
@@ -274,7 +274,6 @@ MapWrapper.prototype = {
     if (this.animationMarker) {
       this.animationMarker.setMap(null)
     }
-/////////////
 
     this.autoRefresh(this.googleMap, this.currentRoute.routes[0].overview_path)
   },
@@ -327,8 +326,6 @@ MapWrapper.prototype = {
         this.polyline.setMap(null)
         this.animationMarker.setMap(null)
       }.bind(this), 100 * pathCoords.length + 1000))
-                 
-           
     }
   },
 
@@ -338,10 +335,12 @@ MapWrapper.prototype = {
     this.animeCoordsArray.shift()
     this.animeTimeSeconds.shift()
     this.updateClock()
-    //finish anime
-    if(this.animeCoordsArray.length===0){
-      setTimeout(function(){this.polyline.setMap(null)
-      this.animationMarker.setMap(null)}, 1000)
+    // finish anime
+    if (this.animeCoordsArray.length === 0) {
+      setTimeout(function () {
+        this.polyline.setMap(null)
+        this.animationMarker.setMap(null)
+      }, 1000)
     }
   },
 
@@ -360,13 +359,14 @@ MapWrapper.prototype = {
           this.polyline.getPath().push(coords)
           this.moveMarker(this.googleMap, this.animationMarker, coords)
         }.bind(this), 100 * j, this.animeCoordsArray[j]))
-    }
       }
+    }
   },
 
   /////////////////////////////////////////////////////////////////////////
   ////////////////        ANIMATION END            ////////////////////////
   /////////////////////////////////////////////////////////////////////////
+
 
 }
 

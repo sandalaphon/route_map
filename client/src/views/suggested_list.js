@@ -53,12 +53,12 @@ SuggestionList.prototype = {
         var divP = document.createElement('p')
         buttonsDiv.appendChild(divP)
 
-        var doneButton = document.createElement('button')
-        doneButton.id = 'doneButton'
-        doneButton.innerText = 'Done'
-        doneButton.onclick = function () {
-          newLi.style.textDecoration = 'line-through'
-        }
+        // var doneButton = document.createElement('button')
+        // doneButton.id = 'doneButton'
+        // doneButton.innerText = 'Done'
+        // doneButton.onclick = function () {
+        //   newLi.style.textDecoration = 'line-through'
+        // }
 
         var displayRoute = document.createElement('button')
         displayRoute.id = 'suggestionsDisplayRouteButton'
@@ -71,11 +71,13 @@ SuggestionList.prototype = {
           suggestionsListScope.hideReveal()
           mainMap.clearRoutes()
           mainMap.drawRoute(element.googleResponse)
+          var inputbox = document.querySelector('#routeName')
+          inputbox.value = element.name
         })
 
         newLi.appendChild(divP)
         newLi.appendChild(displayRoute)
-        newLi.appendChild(doneButton)
+        // newLi.appendChild(doneButton)
         suggestedlistUL.appendChild(newLi)
 
         var listBr = document.createElement('br')
