@@ -115,6 +115,8 @@ Sidebar.prototype = {
         displayRoute.id = 'sidebarDisplayRouteButton'
         displayRoute.innerText = 'Display This Route'
         displayRoute.addEventListener('click', function () {
+          var reviewsDiv = document.querySelector('#reviews-info')
+          reviewsDiv.style.display = 'none';
           var mainMap = sidebarScope.page.map.mainMap
           var containerDiv = document.querySelector('#main-map')
 
