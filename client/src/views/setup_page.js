@@ -5,8 +5,6 @@ var WeatherView = require('../models/weather_view')
 var weatherView = new WeatherView()
 var Clock = require('../models/clock.js')
 
-
-
 var Page = function () {
   this.page = document
   this.route = null
@@ -33,7 +31,7 @@ var Page = function () {
     mainMap: new MapWrapper(containerDiv, {lat: 56.632, lng: -4.180}, 6),
     transportMethod: 'BICYCLING'
   }
-  this.clock = new Clock
+  this.clock = new Clock()
   this.clock.createAClock()
 }
 
@@ -85,6 +83,7 @@ Page.prototype = {
         this.sidebar.setup()
       }.bind(this))
     }.bind(this))
+    document.querySelector('#routeName').value = ''
   },
 
   setupButtons: function (sidebar) {
@@ -100,13 +99,12 @@ Page.prototype = {
     this.setButtonEvent('click', this.buttons['findAmenity'], this.findAmenity.bind(this.map.mainMap))
     this.setButtonEvent('click', this.buttons['route'], this.map.mainMap.calculateRoute.bind(this.map))
 
-    this.setButtonEvent('click', this.buttons['time_button'], function(){
+    this.setButtonEvent('click', this.buttons['time_button'], function () {
       var timeInput = document.querySelector('#time_depart').value
-      this.clock.hour= +timeInput.substring(0,2)
-      this.clock.minute= +timeInput.substring(3)
- 
-      this.clock.haveUserTime= !this.clock.haveUserTime
+      this.clock.hour = +timeInput.substring(0, 2)
+      this.clock.minute = +timeInput.substring(3)
 
+      this.clock.haveUserTime = !this.clock.haveUserTime
     }.bind(this))
 
     // forecast function
@@ -118,14 +116,13 @@ Page.prototype = {
       this.map.mainMap.animateRoute()
     }.bind(this))
 
-    this.setButtonEvent('click', this.buttons['pause'], function(){this.map.mainMap.pauseAnimation()}.bind(this))
-    
-    this.setButtonEvent('click', this.buttons['stopOffFood'], function(){
+    this.setButtonEvent('click', this.buttons['pause'], function () { this.map.mainMap.pauseAnimation() }.bind(this))
+
+    this.setButtonEvent('click', this.buttons['stopOffFood'], function () {
       this.map.mainMap.placesService(this.map.mainMap.animeCoordsArray[0], 3000, 'restaurant')
       this.map.mainMap.googleMap.panTo(this.map.mainMap.animeCoordsArray[0])
       this.map.mainMap.googleMap.setZoom(12)
     }.bind(this))
-
   },
 
   getAddressFromGeoCode: function (addressId, callback) {
