@@ -29,7 +29,9 @@ var Page = function () {
     submitReview: document.querySelector('#submitReview'),
     pause: document.querySelector('#pause'),
     stopOffFood: document.querySelector('#stopOffFood'),
-    time_button: document.querySelector('#time_button')
+    time_button: document.querySelector('#time_button'),
+    clear_route: document.querySelector('#clear_route')
+
   }
   // ensure containerDiv defined before used in setup of this.map
   var containerDiv = document.querySelector('#main-map')
@@ -103,6 +105,8 @@ Page.prototype = {
     }.bind(this))
     this.setButtonEvent('click', this.buttons['findAmenity'], this.findAmenity.bind(this.map.mainMap))
     this.setButtonEvent('click', this.buttons['route'], this.map.mainMap.calculateRoute.bind(this.map))
+     this.setButtonEvent('click', this.buttons['clear_route'], function(){this.map.mainMap.clearRoutes()}.bind(this))
+    
 
     // var reviews = new Reviews();
 
