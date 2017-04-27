@@ -34,7 +34,6 @@ Reviews.prototype = {
   findAllReviewsByGivenId: function(suggestedRoutesResponse, allRouteIDs){
     var reviewsArray = []
     suggestedRoutesResponse.forEach(function(suggestedRoute){
-      console.log(suggestedRoutesResponse)
       allRouteIDs.forEach(function(element){
         if (suggestedRoute._id === element){
           var reviewTemplate = new ReviewTemplate(suggestedRoute._id, suggestedRoute.reviews)
@@ -42,7 +41,6 @@ Reviews.prototype = {
         }
       })
     })
-    console.log(reviewsArray)
     return reviewsArray
   },
 
@@ -112,7 +110,6 @@ Reviews.prototype = {
       reviewNameField.type = 'text'
       reviewNameField.id = 'nameField'
       reviewNameField.id += routeWithID.id
-      console.log(reviewNameField.id)
       reviewMainDiv.appendChild(reviewNameField);
 
       var reviewerRating = document.createElement('span')

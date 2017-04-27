@@ -323,10 +323,6 @@ MapWrapper.prototype = {
         this.moveMarker(this.googleMap, this.animationMarker, coords)
         // var currentCoords = {lat: coords.lat(), lng: coords.lng()}
       }.bind(this), 100 * i, pathCoords[i]))
-      this.timeouts.push(setTimeout(function (coords) {
-        this.polyline.setMap(null)
-        this.animationMarker.setMap(null)
-      }.bind(this), 100 * pathCoords.length + 1000))
     }
   },
 
@@ -339,9 +335,10 @@ MapWrapper.prototype = {
     // finish anime
     if (this.animeCoordsArray.length === 0) {
       setTimeout(function () {
+        console.log(this)
         this.polyline.setMap(null)
         this.animationMarker.setMap(null)
-      }, 1000)
+      }.bind(this), 1000)
     }
   },
 

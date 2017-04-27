@@ -135,7 +135,6 @@ Sidebar.prototype = {
         newLi.appendChild(document.createElement('p'))
         newLi.appendChild(deleteButton)
         wishlistUL.appendChild(newLi)
-        console.log(wishlistUL)
 
         var listBr = document.createElement('hr')
         wishlistUL.appendChild(listBr)

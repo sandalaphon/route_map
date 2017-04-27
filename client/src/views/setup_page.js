@@ -118,7 +118,6 @@ Page.prototype = {
       var weatherDiv = document.querySelector('#weather-info');
       weatherDiv.style.display = 'initial'
       weatherView.render(weather);
-      console.log(weather)
     })
 
   }) //forecastfunction)
@@ -135,39 +134,6 @@ Page.prototype = {
     this.setButtonEvent('click', this.buttons['forecast'], this.showForecast)
 
     this.setButtonEvent('click', this.buttons['save'], this.saveDisplayedRoute.bind(this))
-
-// <<<<<<< HEAD
-//   this.setButtonEvent('click', this.buttons['animationButton'], function(){
-//   this.map.mainMap.animateRoute()  
-//   }.bind(this))
-    
-// },
-
-//     getAddressFromGeoCode: function(addressId, callback){
-//           var geoCoder = new google.maps.Geocoder;
-//            geoCoder.geocode({'placeId': addressId}, function(results, status){
-//             console.log("we got here and this is: ", this)
-//            if(status==="OK"){
-//            if(results[0]){
-//               // this.getCountryFromGeoCode(results)
-             
-//              var streetName =results[0].formatted_address
-//              console.log(streetName)
-//              console.log("STREET NAME!!", streetName)
-//              console.log("results", results)
-//            } else {
-//                window.alert('No results found');
-//              }
-//            } else {
-//              window.alert('Geocoder failed due to: ' + status + "\nDont click in the sea!");
-//          }
-//          console.log("streetName",streetName)
-//         callback(streetName);
-
-//        }.bind(this))
-           
-//    },
-// =======
     this.setButtonEvent('click', this.buttons['animationButton'], function () {
       this.map.mainMap.animateRoute()
     }.bind(this))
@@ -213,7 +179,6 @@ Page.prototype = {
       this.map.mainMap.drawRoute(directionsServiceObj[0].googleResponse)
     }.bind(this)
 
-    console.log("get here??", this)
     request.send();
 
   },
@@ -234,8 +199,6 @@ Page.prototype = {
       var parsedResponse = JSON.parse(jsonString)
       var allRouteIds = reviews.findAllRouteIDs(parsedResponse)
       var allReviewsWithIds = reviews.findAllReviewsByGivenId(parsedResponse, allRouteIds);
-
-      console.log(allReviewsWithIds)
 
       reviews.createHTMLElementsForEachReview(allReviewsWithIds)
 
