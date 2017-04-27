@@ -262,6 +262,7 @@ MapWrapper.prototype = {
     var userTime = document.querySelector('#time_depart').value //set time
     this.clock.hour = +userTime.substring(0,2)
     this.clock.minute= +userTime.substring(3)
+    this.clock.second = 0
     /////////////repress anime clears previous
     this.animeCoordsArray = []  //ensure no residual frames 
     this.animeTimeSeconds = []
