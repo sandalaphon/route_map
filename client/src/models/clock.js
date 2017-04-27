@@ -19,14 +19,14 @@ Clock.prototype = {
     secondsInterval = setInterval(this.drawClock(ctx, radius), 1000);
 
   },
-
+/////////////
   createAnotherClock: function(){
     clearInterval(secondsInterval)
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     var radius = canvas.height / 2;
     ctx.translate(0, 0);
-    this.drawClock2(ctx, radius)
+    this.drawClock2(ctx, radius)  //no setInterval
   },
 
   drawClock: function(ctx, radius) {
@@ -38,6 +38,7 @@ Clock.prototype = {
 }.bind(this)
 },
 
+///////////////////
 drawClock2: function(ctx, radius) {
  
   this.drawFace(ctx, radius);
@@ -100,7 +101,7 @@ addSeconds: function(seconds, callback){
 
 drawTime2: function(ctx, radius){
   if(secondsInterval) {
-    clearInterval(secondsInterval)}
+    clearInterval(secondsInterval)} //stop previous clock
     var hour = this.hour
     var minute = this.minute
     var second = this.second

@@ -13,7 +13,7 @@
   <body>
 <section class="tempBox">
 Display Features
-<button id = "pause">Pause Animation</button>
+<button id = "pause">Start Stop</button>
 <button id = "stopOffFood">Find Restaurant</button>
 
 <canvas id="canvas" width="135" height="135"
@@ -23,10 +23,18 @@ style="background-color:#333">
   What time will you depart?:
   <input type="time" id = 'time_depart' >
 </form>
-<button id = "time_button">Set Time</button>
+<button id = "time_button">Set Departure Time</button>
 
 
   </section>
+
+  <section class="left_box">
+  <div class="box_text">
+    <p><span id="total" ></span></p>
+    <p><span id="time" ></span></p>
+
+  </section>
+
   <section id="sidebar">
 
     <h2 class='sidebars-title'>Wishlist<span class='close' id="sidebar-close">&times;</span></h2>
@@ -56,10 +64,10 @@ style="background-color:#333">
   <button class= "menu" id="elevation">Elevation</button>
   <button class= "menu" id="forecast">Weather Forecast</button>
   
-  <div>
+  <!-- <div>
     <p><span id="total"></span></p>
     <p><span id="time"></span></p>
-  </div>
+  </div> -->
   <div id="elevation-display"></div>
   <div id="temperature-display"></div>
   <div id="windspeed-display"></div>

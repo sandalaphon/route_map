@@ -186,7 +186,7 @@ MapWrapper.prototype = {
     localStorage.setItem('journeyDistance', total / 1000)
     total = total / 1000
 
-    document.getElementById('total').innerHTML = 'Distance: ' + total + ' km'
+    document.getElementById('total').innerHTML = 'Distance:' + "<br />"+ total + ' km'
   },
 
   computeEstimatedTime: function (result) {
@@ -200,97 +200,10 @@ MapWrapper.prototype = {
     var totalMinutes = (totalSeconds - remainderSeconds) / 60
     var remainderMinutes = totalMinutes % 60
     var hours = (totalMinutes - remainderMinutes) / 60
-    document.getElementById('time').innerHTML = 'Time: ' + hours + ' hours ' + remainderMinutes + ' minutes and ' + remainderSeconds + ' seconds'
+    document.getElementById('time').innerHTML = "<br />"+'Journey Time: ' + "<br />"+ hours + ' hours' + "<br />" +remainderMinutes + ' minutes'
   },
 
-  animateRoute: function () {
-    this.clock.setAnime(false)
-     var userTime = document.querySelector('#time_depart').value
-    var userhours = +userTime.substring(0,2)
-    var  userminutes= +userTime.substring(3)
-     this.clock.hour = userhours
-     this.clock.minute = userminutes
-    for (var i = 0; i < this.timeouts.length; i++) {
-      clearTimeout(this.timeouts[i])
-    }
-    if (this.polyline) {
-      this.polyline.setMap(null)
-    }
-    if (this.animationMarker) {
-      this.animationMarker.setMap(null)
-    }
-
-    this.animeCoordsArray = []
-    this.animeTimeSeconds = []
-    this.clock.setAnime(true)
-    this.autoRefresh(this.googleMap, this.currentRoute.routes[0].overview_path)
-  },
-
-  autoRefresh: function (map, pathCoords) {
-    if (this.currentRoute.request.travelMode === 'BICYCLING') {
-      var icon = {
-        url: 'http://www.animatedimages.org/data/media/237/animated-bicycle-image-0001.gif',
-        scaledSize: new google.maps.Size(50, 50)
-      }
-      this.animationMarker = new google.maps.Marker({
-        map: this.googleMap,
-        optimized: false, // <-- required for animated gif
-        animation: google.maps.Animation.DROP,
-        icon: icon
-      })
-    } else {
-      var icon = {
-        url: 'http://www.animatedimages.org/data/media/1635/animated-walking-image-0066.gif',
-        scaledSize: new google.maps.Size(50, 50)
-      }
-      this.animationMarker = new google.maps.Marker({
-        map: this.googleMap,
-        optimized: false, // <-- required for animated gif
-        animation: google.maps.Animation.DROP,
-        icon: icon})
-    };
-
-    this.polyline = new google.maps.Polyline({
-      path: [],
-      geodesic: true,
-      strokeColor: '#FF0000',
-      strokeOpacity: 1.0,
-      strokeWeight: 2,
-      editable: false,
-      map: this.googleMap
-    })
-    var secondsFraction = this.totalSeconds / pathCoords.length
-    for (var i = 0; i < pathCoords.length; i++) {
-      this.animeCoordsArray.push(pathCoords[i])
-      this.animeTimeSeconds.push(secondsFraction)
-      this.timeouts.push(setTimeout(function (coords) {
-        this.polyline.getPath().push(coords)
-        this.moveMarker(this.googleMap, this.animationMarker, coords)
-        // var currentCoords = {lat: coords.lat(), lng: coords.lng()}
-      }.bind(this), 100 * i, pathCoords[i]))
-      this.timeouts.push(setTimeout(function (coords) {
-        this.polyline.setMap(null)
-        this.animationMarker.setMap(null)
-      }.bind(this), 100 * pathCoords.length + 1000))
-      
-          
-              
-           
-    }
-  },
-
-  moveMarker: function (map, marker, latlng) {
-    marker.setPosition(latlng)
-    var coords = {lat: latlng.lat(), lng: latlng.lng()}
-    this.animeCoordsArray.shift()
-    this.animeTimeSeconds.shift()
-    this.updateClock()
-    //finish anime
-    if(this.animeCoordsArray.length===0){
-      setTimeout(function(){this.polyline.setMap(null)
-      this.animationMarker.setMap(null)}, 1000)
-    }
-  },
+  
     /// ////////////////////////
 /// /  places nearby code now  //////
 /// ////////////////////////////
@@ -336,6 +249,102 @@ MapWrapper.prototype = {
   },
 
 
+  updateClock: function(){
+    this.clock.addSeconds( this.animeTimeSeconds[0], this.clock.createAnotherClock())
+  },
+/////////////////////////////////////////////////////////////////////////
+////////////////        ANIMATION START          ////////////////////////
+/////////////////////////////////////////////////////////////////////////
+
+  animateRoute: function () {
+
+    var userTime = document.querySelector('#time_depart').value //set time
+    this.clock.hour = +userTime.substring(0,2)
+    this.clock.minute= +userTime.substring(3)
+    /////////////repress anime clears previous
+    this.animeCoordsArray = []  //ensure no residual frames 
+    this.animeTimeSeconds = []
+  
+    for (var i = 0; i < this.timeouts.length; i++) {
+      clearTimeout(this.timeouts[i])
+    }
+    if (this.polyline) {
+      this.polyline.setMap(null)
+    }
+    if (this.animationMarker) {
+      this.animationMarker.setMap(null)
+    }
+/////////////
+
+    this.autoRefresh(this.googleMap, this.currentRoute.routes[0].overview_path)
+  },
+
+  autoRefresh: function (map, pathCoords) {
+    if (this.currentRoute.request.travelMode === 'BICYCLING') {
+      var icon = {
+        url: 'http://www.animatedimages.org/data/media/237/animated-bicycle-image-0001.gif',
+        scaledSize: new google.maps.Size(50, 50)
+      }
+      this.animationMarker = new google.maps.Marker({
+        map: this.googleMap,
+        optimized: false, // <-- required for animated gif
+        animation: google.maps.Animation.DROP,
+        icon: icon
+      })
+    } else {
+      var icon = {
+        url: 'http://www.animatedimages.org/data/media/1635/animated-walking-image-0066.gif',
+        scaledSize: new google.maps.Size(50, 50)
+      }
+      this.animationMarker = new google.maps.Marker({
+        map: this.googleMap,
+        optimized: false, // <-- required for animated gif
+        animation: google.maps.Animation.DROP,
+        icon: icon})
+    };
+
+    this.polyline = new google.maps.Polyline({
+      path: [],
+      geodesic: true,
+      strokeColor: '#FF0000',
+      strokeOpacity: 1.0,
+      strokeWeight: 2,
+      editable: false,
+      map: this.googleMap
+    })
+
+    var secondsFraction = this.totalSeconds / pathCoords.length
+    
+    for (var i = 0; i < pathCoords.length; i++) {
+      this.animeCoordsArray.push(pathCoords[i])
+      this.animeTimeSeconds.push(secondsFraction)
+      this.timeouts.push(setTimeout(function (coords) {
+        this.polyline.getPath().push(coords)
+        this.moveMarker(this.googleMap, this.animationMarker, coords)
+        // var currentCoords = {lat: coords.lat(), lng: coords.lng()}
+      }.bind(this), 100 * i, pathCoords[i]))
+      this.timeouts.push(setTimeout(function (coords) {
+        this.polyline.setMap(null)
+        this.animationMarker.setMap(null)
+      }.bind(this), 100 * pathCoords.length + 1000))
+                 
+           
+    }
+  },
+
+  moveMarker: function (map, marker, latlng) {
+    marker.setPosition(latlng)
+    var coords = {lat: latlng.lat(), lng: latlng.lng()}
+    this.animeCoordsArray.shift()
+    this.animeTimeSeconds.shift()
+    this.updateClock()
+    //finish anime
+    if(this.animeCoordsArray.length===0){
+      setTimeout(function(){this.polyline.setMap(null)
+      this.animationMarker.setMap(null)}, 1000)
+    }
+  },
+
   pauseAnimation: function(){
     if(this.animationRunning){
       //iterate through array of timeouts and discard them
@@ -355,9 +364,9 @@ MapWrapper.prototype = {
       }
   },
 
-  updateClock: function(){
-    this.clock.addSeconds( this.animeTimeSeconds[0], this.clock.createAnotherClock())
-  }
+  /////////////////////////////////////////////////////////////////////////
+  ////////////////        ANIMATION END            ////////////////////////
+  /////////////////////////////////////////////////////////////////////////
 
 }
 
