@@ -187,7 +187,7 @@ MapWrapper.prototype = {
     localStorage.setItem('journeyDistance', total / 1000)
     total = total / 1000
 
-    document.getElementById('total').innerHTML = 'Distance:' + "<br />"+ total + ' km'
+    document.getElementById('total').innerHTML = 'Distance:' + '<br />' + total + ' km'
   },
 
   computeEstimatedTime: function (result) {
@@ -201,9 +201,9 @@ MapWrapper.prototype = {
     var totalMinutes = (totalSeconds - remainderSeconds) / 60
     var remainderMinutes = totalMinutes % 60
     var hours = (totalMinutes - remainderMinutes) / 60
-    document.getElementById('time').innerHTML = "<br />"+'Journey Time: ' + "<br />"+ hours + ' hours' + "<br />" +remainderMinutes + ' minutes'
+    document.getElementById('time').innerHTML = '<br />' + 'Journey Time: ' + '<br />' + hours + ' hours' + '<br />' + remainderMinutes + ' minutes'
   },
-  
+
     /// ////////////////////////
 /// /  places nearby code now  //////
 /// ////////////////////////////
@@ -248,23 +248,21 @@ MapWrapper.prototype = {
     })
   },
 
-
-  updateClock: function(){
-    this.clock.addSeconds( this.animeTimeSeconds[0], this.clock.createAnotherClock())
+  updateClock: function () {
+    this.clock.addSeconds(this.animeTimeSeconds[0], this.clock.createAnotherClock())
   },
-/////////////////////////////////////////////////////////////////////////
-////////////////        ANIMATION START          ////////////////////////
-/////////////////////////////////////////////////////////////////////////
+/// //////////////////////////////////////////////////////////////////////
+/// /////////////        ANIMATION START          ////////////////////////
+/// //////////////////////////////////////////////////////////////////////
 
   animateRoute: function () {
-
-
-    var userTime = document.querySelector('#time_depart').value //set time
-    this.clock.hour = +userTime.substring(0,2)
-    this.clock.minute= +userTime.substring(3)
+    var userTime = document.querySelector('#time_depart').value // set time
+    this.clock.hour = +userTime.substring(0, 2)
+    this.clock.minute = +userTime.substring(3)
     this.clock.second = 0
-    /////////////repress anime clears previous
-    this.animeCoordsArray = []  //ensure no residual frames 
+    /// //////////repress anime clears previous
+    this.animeCoordsArray = []  // ensure no residual frames
+
     this.animeTimeSeconds = []
     for (var i = 0; i < this.timeouts.length; i++) {
       clearTimeout(this.timeouts[i])
@@ -314,7 +312,7 @@ MapWrapper.prototype = {
     })
 
     var secondsFraction = this.totalSeconds / pathCoords.length
-    
+
     for (var i = 0; i < pathCoords.length; i++) {
       this.animeCoordsArray.push(pathCoords[i])
       this.animeTimeSeconds.push(secondsFraction)
@@ -342,29 +340,28 @@ MapWrapper.prototype = {
     }
   },
 
-  pauseAnimation: function(){
-    if(this.animationRunning){
-      //iterate through array of timeouts and discard them
-    for(var i=0; i<this.timeouts.length; i++){
-    clearTimeout(this.timeouts[i])
-    } this.animationRunning= false
-    this.clock.setAnime(true)
-    }else {
-   this.animationRunning= true
-   this.clock.setAnime(true)
-      for(var j = 0; j < this.animeCoordsArray.length; j++ ){
-          this.timeouts.push(setTimeout(function (coords) {
+  pauseAnimation: function () {
+    if (this.animationRunning) {
+      // iterate through array of timeouts and discard them
+      for (var i = 0; i < this.timeouts.length; i++) {
+        clearTimeout(this.timeouts[i])
+      } this.animationRunning = false
+      this.clock.setAnime(true)
+    } else {
+      this.animationRunning = true
+      this.clock.setAnime(true)
+      for (var j = 0; j < this.animeCoordsArray.length; j++) {
+        this.timeouts.push(setTimeout(function (coords) {
           this.polyline.getPath().push(coords)
           this.moveMarker(this.googleMap, this.animationMarker, coords)
         }.bind(this), 100 * j, this.animeCoordsArray[j]))
       }
     }
-  },
+  }
 
-  /////////////////////////////////////////////////////////////////////////
-  ////////////////        ANIMATION END            ////////////////////////
-  /////////////////////////////////////////////////////////////////////////
-
+  /// //////////////////////////////////////////////////////////////////////
+  /// /////////////        ANIMATION END            ////////////////////////
+  /// //////////////////////////////////////////////////////////////////////
 
 }
 
