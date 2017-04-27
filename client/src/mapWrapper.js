@@ -333,7 +333,6 @@ MapWrapper.prototype = {
     // finish anime
     if (this.animeCoordsArray.length === 0) {
       setTimeout(function () {
-        console.log(this)
         this.polyline.setMap(null)
         this.animationMarker.setMap(null)
       }.bind(this), 1000)
