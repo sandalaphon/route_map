@@ -146,6 +146,7 @@ MapWrapper.prototype = {
       draggable: true,
       map: this.googleMap
     })
+
     directionsService.route(directionsResult, function (res, status) {
       if (status == 'OK') {
         this.directionsDisplay.setDirections(res)
@@ -202,7 +203,6 @@ MapWrapper.prototype = {
     var hours = (totalMinutes - remainderMinutes) / 60
     document.getElementById('time').innerHTML = "<br />"+'Journey Time: ' + "<br />"+ hours + ' hours' + "<br />" +remainderMinutes + ' minutes'
   },
-
   
     /// ////////////////////////
 /// /  places nearby code now  //////

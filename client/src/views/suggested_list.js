@@ -1,6 +1,7 @@
 var MakeRequest = require('../models/make_requests.js')
+var Reviews = require('../models/reviews.js')
 
-var SuggestionList = function (passedPage) {
+var SuggestionList = function (passedPage, reviews) {
   this.sidebarHTMLObject = document.querySelector('#suggested-routes')
   this.suggestionListHidden = true
   this.page = passedPage
@@ -32,6 +33,7 @@ SuggestionList.prototype = {
   },
 
   populateList: function (getAllRoutes) {
+    var reviews = new Reviews();
     var suggestedlistUL = document.querySelector('#suggested-list')
 
     this.addCloseAction(document.querySelector('#suggested-close'))  // using span id=sidebar-close
@@ -47,32 +49,37 @@ SuggestionList.prototype = {
       parsedList.forEach(function (element) {
         var newLi = document.createElement('li')
 
+
         newLi.innerHTML = '<p class="route-name">' + element.name + '</p>' + '<p class="travel-mode">' + element.googleResponse.travelMode + '</p>'
 
         var buttonsDiv = document.createElement('div')
         var divP = document.createElement('p')
         buttonsDiv.appendChild(divP)
 
-        // var doneButton = document.createElement('button')
-        // doneButton.id = 'doneButton'
-        // doneButton.innerText = 'Done'
-        // doneButton.onclick = function () {
-        //   newLi.style.textDecoration = 'line-through'
-        // }
-
         var displayRoute = document.createElement('button')
         displayRoute.id = 'suggestionsDisplayRouteButton'
         displayRoute.innerText = 'Display Route'
 
-        // var listScope = this;
 
         displayRoute.addEventListener('click', function () {
           var mainMap = suggestionsListScope.page.map.mainMap
           suggestionsListScope.hideReveal()
           mainMap.clearRoutes()
           mainMap.drawRoute(element.googleResponse)
+
+          // Set the weather for route to disappear if already open
+
+          var weatherDiv = document.querySelector('#weather-info');
+          weatherDiv.style.display = 'none'
+
+          var routeDetailsBackgroundColor = document.querySelector('#routeDetails')
+          routeDetailsBackgroundColor.style.backgroundColor = 'white'
+
+          reviews.revealReviewsForCurrentRoute(element)
+          
           var inputbox = document.querySelector('#routeName')
           inputbox.value = element.name
+
         })
 
         newLi.appendChild(divP)
