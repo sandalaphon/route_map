@@ -186,7 +186,7 @@ MapWrapper.prototype = {
     localStorage.setItem('journeyDistance', total / 1000)
     total = total / 1000
 
-    document.getElementById('total').innerHTML = 'Distance: ' + total + ' km'
+    document.getElementById('total').innerHTML = 'Distance:' + "<br />"+ total + ' km'
   },
 
   computeEstimatedTime: function (result) {
@@ -200,12 +200,71 @@ MapWrapper.prototype = {
     var totalMinutes = (totalSeconds - remainderSeconds) / 60
     var remainderMinutes = totalMinutes % 60
     var hours = (totalMinutes - remainderMinutes) / 60
-    document.getElementById('time').innerHTML = 'Time: ' + hours + ' hours ' + remainderMinutes + ' minutes and ' + remainderSeconds + ' seconds'
+    document.getElementById('time').innerHTML = "<br />"+'Journey Time: ' + "<br />"+ hours + ' hours' + "<br />" +remainderMinutes + ' minutes'
   },
 
-  animateRoute: function () {
-    this.clock.setAnime(false)
+  
+    /// ////////////////////////
+/// /  places nearby code now  //////
+/// ////////////////////////////
+  placesService: function (searchCenterCoords, radius, type) {
+    var service = new google.maps.places.PlacesService(this.googleMap)// define map
+    service.nearbySearch({
+      location: searchCenterCoords,
+      radius: radius,
+      type: [ type ]
+    }, function (results, status) {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        var numberToShow = Math.min(results.length, 8)
+        for (var i = 0; i < numberToShow; i++) {
+          this.createMarker(results[i])
+        }
+      }
+    }.bind(this))
+  },
 
+  // see here for types : https://developers.google.com/places/supported_types
+
+  createMarker: function (place) {
+    var infowindow = new google.maps.InfoWindow()
+
+    var icon = {
+      url: 'http://icons.iconarchive.com/icons/icons-land/points-of-interest/256/Restaurant-Blue-icon.png',
+      scaledSize: new google.maps.Size(20, 20)
+    }
+
+    var marker = new google.maps.Marker({
+      map: this.googleMap,
+      size: new google.maps.Size(4, 4),
+      position: place.geometry.location,
+      animation: google.maps.Animation.DROP,
+      icon: icon
+    })
+
+    this.restaurantMarkers.push(marker)
+    google.maps.event.addListener(marker, 'click', function () {
+      infowindow.setContent(place.name)
+      infowindow.open(this.googleMap, marker)
+    })
+  },
+
+
+  updateClock: function(){
+    this.clock.addSeconds( this.animeTimeSeconds[0], this.clock.createAnotherClock())
+  },
+/////////////////////////////////////////////////////////////////////////
+////////////////        ANIMATION START          ////////////////////////
+/////////////////////////////////////////////////////////////////////////
+
+  animateRoute: function () {
+
+
+    var userTime = document.querySelector('#time_depart').value //set time
+    this.clock.hour = +userTime.substring(0,2)
+    this.clock.minute= +userTime.substring(3)
+    /////////////repress anime clears previous
+    this.animeCoordsArray = []  //ensure no residual frames 
+    this.animeTimeSeconds = []
     for (var i = 0; i < this.timeouts.length; i++) {
       clearTimeout(this.timeouts[i])
     }
@@ -216,9 +275,6 @@ MapWrapper.prototype = {
       this.animationMarker.setMap(null)
     }
 
-    this.animeCoordsArray = []
-    this.animeTimeSeconds = []
-    this.clock.setAnime(true)
     this.autoRefresh(this.googleMap, this.currentRoute.routes[0].overview_path)
   },
 
@@ -255,7 +311,9 @@ MapWrapper.prototype = {
       editable: false,
       map: this.googleMap
     })
+
     var secondsFraction = this.totalSeconds / pathCoords.length
+    
     for (var i = 0; i < pathCoords.length; i++) {
       this.animeCoordsArray.push(pathCoords[i])
       this.animeTimeSeconds.push(secondsFraction)
@@ -268,11 +326,6 @@ MapWrapper.prototype = {
         this.polyline.setMap(null)
         this.animationMarker.setMap(null)
       }.bind(this), 100 * pathCoords.length + 1000))
-      
-          this.timeouts.push(setTimeout(function (coords) {
-              this.polyline.setMap(null)
-              this.animationMarker.setMap(null)
-            }.bind(this), 100 * pathCoords.length + 1000))
     }
   },
 
@@ -280,52 +333,16 @@ MapWrapper.prototype = {
     marker.setPosition(latlng)
     var coords = {lat: latlng.lat(), lng: latlng.lng()}
     this.animeCoordsArray.shift()
+    this.animeTimeSeconds.shift()
     this.updateClock()
-
-  },
-    /// ////////////////////////
-/// /  places nearby code now  //////
-/// ////////////////////////////
-  placesService: function (searchCenterCoords, radius, type) {
-    var service = new google.maps.places.PlacesService(this.googleMap)// define map
-    service.nearbySearch({
-      location: searchCenterCoords,
-      radius: radius,
-      type: [ type ]
-    }, function (results, status) {
-      if (status === google.maps.places.PlacesServiceStatus.OK) {
-        var numberToShow = Math.min(results.length, 8)
-        for (var i = 0; i < numberToShow; i++) {
-          this.createMarker(results[i])
-        }
-      }
-    }.bind(this))
-  },
-
-  // see here for types : https://developers.google.com/places/supported_types
-
-  createMarker: function (place) {
-    var infowindow = new google.maps.InfoWindow()
-
-    var icon = {
-      url: 'http://icons.iconarchive.com/icons/icons-land/points-of-interest/256/Restaurant-Blue-icon.png',
-      scaledSize: new google.maps.Size(20, 20)
+    // finish anime
+    if (this.animeCoordsArray.length === 0) {
+      setTimeout(function () {
+        this.polyline.setMap(null)
+        this.animationMarker.setMap(null)
+      }, 1000)
     }
-
-    var marker = new google.maps.Marker({
-      map: this.googleMap,
-      size: new google.maps.Size(4, 4),
-      position: place.geometry.location,
-      icon: icon
-    })
-
-    this.restaurantMarkers.push(marker)
-    google.maps.event.addListener(marker, 'click', function () {
-      infowindow.setContent(place.name)
-      infowindow.open(this.googleMap, marker)
-    })
   },
-
 
   pauseAnimation: function(){
     if(this.animationRunning){
@@ -342,21 +359,14 @@ MapWrapper.prototype = {
           this.polyline.getPath().push(coords)
           this.moveMarker(this.googleMap, this.animationMarker, coords)
         }.bind(this), 100 * j, this.animeCoordsArray[j]))
-    }
       }
+    }
   },
 
+  /////////////////////////////////////////////////////////////////////////
+  ////////////////        ANIMATION END            ////////////////////////
+  /////////////////////////////////////////////////////////////////////////
 
-
-  updateClock: function(){
-
-    var userTime = document.querySelector('#time_depart').value
-   var userhours = +userTime.substring(0,2)
-   var  userminutes= +userTime.substring(3)
-    this.clock.hour = userhours
-    this.clock.minute = userminutes
-    this.clock.addSeconds( this.animeTimeSeconds[0], this.clock.createAnotherClock())
-  }
 
 }
 

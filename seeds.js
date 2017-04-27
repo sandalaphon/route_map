@@ -3,7 +3,7 @@ db.dropDatabase()
 
 // sample route to populate wishlist
 db.routes.insert(
-  { 'name' : 'Hebridean Way', 'rating' : null, 'origin' : 'not needed', 'destination' : 'not needed', 'waypoints' : [ ], 'travelMode' : 'not needed', 'calculatedRoute' : {  }, 'googleResponse' : { 'origin' : { 'lat' : 56.93373668301624, 'lng' : -7.538337707519531 }, 'destination' : { 'lat' : 58.51360355740183, 'lng' : -6.26495361328125 }, 'travelMode' : 'BICYCLING', 'waypoints' : [ ] }, 'optimizeWaypoints' : true }
+  { 'name' : 'Hebridean Way', 'rating' : null, "done": false,  'origin' : 'not needed', 'destination' : 'not needed', 'waypoints' : [ ], 'travelMode' : 'not needed', 'calculatedRoute' : {  }, 'googleResponse' : { 'origin' : { 'lat' : 56.93373668301624, 'lng' : -7.538337707519531 }, 'destination' : { 'lat' : 58.51360355740183, 'lng' : -6.26495361328125 }, 'travelMode' : 'BICYCLING', 'waypoints' : [ ] }, 'optimizeWaypoints' : true }
 )
 
 
