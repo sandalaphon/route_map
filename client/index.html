@@ -14,7 +14,7 @@
 
 <section class="tempBox">
 Display Features
-<button id = "pause">Pause Animation</button>
+<button id = "pause">Start Stop</button>
 <button id = "stopOffFood">Find Restaurant</button>
 
 <canvas id="canvas" width="135" height="135"
@@ -24,11 +24,21 @@ style="background-color:#333">
   What time will you depart?:
   <input type="time" id = 'time_depart' >
 </form>
-<button id = "time_button">Set Time</button>
+
+<button id = "time_button">Set Departure Time</button>
 </section>
-  
-<section id="sidebar">
-<h2 class='sidebars-title'>Wishlist<span class='close' id="sidebar-close">&times;</span></h2>
+
+  <section class="left_box">
+  <div class="box_text">
+    <p><span id="total" ></span></p>
+    <p><span id="time" ></span></p>
+
+  </section>
+
+  <section id="sidebar">
+
+    <h2 class='sidebars-title'>Wishlist<span class='close' id="sidebar-close">&times;</span></h2>
+
     <div id="wishlist-container">
       <ul id="wishlist"></ul>
     </div>
@@ -39,25 +49,19 @@ style="background-color:#333">
   <div id="main-map"></div>
   <div id="spacing"> </div>
   <input placeholder="Enter a Name for your Route..." type="text" id="routeName">
-  <button class="menu" id="start">Start</button>
-  <button class="menu" id="finish">Finish</button>
-  <button class="menu" id="walking">Walking</button>
-  <button class="menu" id="cycling">Cycling</button>
-  <button class="menu" id="route">Calculate Route</button>
-  <button class="menu" id="findAmenity">Restaurants</button>
-<!--   <input type="text" id="routeName"> -->
-  <button class="menu" id="save">Save Route</button>
-  <button class="menu" id="wishlist-button">Wishlist</button>
-  <button class="menu" id="suggested">Suggested Routes</button>
-  <button class="menu" id="animate">Animate</button>
-  <button class="menu" id="elevation">Elevation</button>
-  <button class="menu" id="forecast">Weather Forecast</button>
-
-  <div>
-   <p>Total Distance: <span id="total"></span></p>
-    <p><span id="total"></span></p>
-    <p><span id="time"></span></p>
-  </div>
+  <button class= "menu" id="start">Start</button>
+  <button class= "menu" id="finish">Finish</button>
+  <button class= "menu" id="walking">Walking</button>
+  <button class= "menu" id="cycling">Cycling</button>
+  <button class= "menu" id="route">Calculate Route</button>
+  <button class= "menu" id="save">Save Route</button>
+  <button class= "menu" id="findAmenity">Restaurants</button>
+  
+  <button class= "menu" id="wishlist-button">Wishlist</button>
+  <button class= "menu" id="suggested">Suggested Routes</button>
+  <button class= "menu" id="animate">Animate</button>
+  <button class= "menu" id="elevation">Elevation</button>
+  <button class= "menu" id="forecast">Weather Forecast</button>
   
   <div id="routeDetails">
     <div id="weather-info">
@@ -67,25 +71,22 @@ style="background-color:#333">
       <div id= "cloudcover-display"></div>
       <div id="rainfall-display"></div>
 
-<!--       <div>
-        <ul id="routes"></ul>
-      </div> -->
-
-      </div>
+    </div>
   
     <div id="reviews-info">
-      <div id="review-heading"></div>
-      <div id="newReviewDiv"></div>
+    <div id="review-heading"></div>
+    <div id="newReviewDiv"></div>
         <ul id="review-list"></ul>
     </div>
   </div>
-
   </div>
 
-      <section id="suggested-routes">
-        <h2 class='sidebars-title'>Suggested Routes<span class='close' id="suggested-close">&times;</span></h2>
-        <div id="suggested-list-container">
-          <ul id="suggested-list"></ul>
-  
+    <section id="suggested-routes">
+      <h2 class='sidebars-title'>Suggested Routes<span class='close' id="suggested-close">&times;</span></h2>
+      <div id="suggested-list-container">
+        <ul id="suggested-list"></ul>
+      </div>
+    </section>
+
 </body>
 </html>

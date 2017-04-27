@@ -19,19 +19,16 @@ MakeRequest.prototype = {
     request.send(payload)
   },
 
-  makePutRequest: function(url, callback, payload){
-    console.log('XMLHttpRequest...')
+  makePutRequest: function (url, callback, objectToUpdate) {
     var request = new XMLHttpRequest()
+    var jsonString = JSON.stringify(objectToUpdate)
     request.open('PUT', url)
     request.setRequestHeader('Content-Type', 'application/json')
-    request.onload = callback
-    request.send(payload)
+    request.onload = callback(request)
+    request.send(jsonString)
+
   }
 
-  // requestComplete: function () {
-  //   if (this.status !== 200) return
-  //   var jsonString = this.responseText
-  //   result = JSON.parse(jsonString)
-  // }
+
 }
 module.exports = MakeRequest

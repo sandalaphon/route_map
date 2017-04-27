@@ -49,43 +49,22 @@ SuggestionList.prototype = {
       parsedList.forEach(function (element) {
         var newLi = document.createElement('li')
 
-// <<<<<<< HEAD
-//         newLi.innerText = 'Name of Route:\n' + element.name + ' \n' + element.googleResponse.travelMode
 
-//         var newBr = document.createElement('br')
-//         newLi.appendChild(newBr)
-// =======
         newLi.innerHTML = '<p class="route-name">' + element.name + '</p>' + '<p class="travel-mode">' + element.googleResponse.travelMode + '</p>'
-// >>>>>>> develop
 
         var buttonsDiv = document.createElement('div')
         var divP = document.createElement('p')
         buttonsDiv.appendChild(divP)
 
-        var doneButton = document.createElement('button')
-        doneButton.id = 'doneButton'
-        doneButton.innerText = 'Done'
-        doneButton.onclick = function () {
-          newLi.style.textDecoration = 'line-through'
-        }
-
         var displayRoute = document.createElement('button')
         displayRoute.id = 'suggestionsDisplayRouteButton'
         displayRoute.innerText = 'Display Route'
 
-// <<<<<<< HEAD
-//         // Display reviews for that route
-        
-//         displayRoute.addEventListener('click', function(){
-//           var mainMap = suggestionsListScope.page.map.mainMap;
-// =======
-//         // var listScope = this;
 
         displayRoute.addEventListener('click', function () {
           var mainMap = suggestionsListScope.page.map.mainMap
           suggestionsListScope.hideReveal()
           mainMap.clearRoutes()
-// >>>>>>> develop
           mainMap.drawRoute(element.googleResponse)
 
           // Set the weather for route to disappear if already open
@@ -98,11 +77,14 @@ SuggestionList.prototype = {
 
           reviews.revealReviewsForCurrentRoute(element)
           
+          var inputbox = document.querySelector('#routeName')
+          inputbox.value = element.name
+
         })
 
         newLi.appendChild(divP)
         newLi.appendChild(displayRoute)
-        newLi.appendChild(doneButton)
+        // newLi.appendChild(doneButton)
         suggestedlistUL.appendChild(newLi)
 
         var listBr = document.createElement('br')
