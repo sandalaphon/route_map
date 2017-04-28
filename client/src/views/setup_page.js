@@ -6,14 +6,11 @@ var WeatherView = require('../models/weather_view')
 var weatherView = new WeatherView()
 var Clock = require('../models/clock.js')
 
-
-
-
-
 var Page = function () {
   this.page = document
   this.route = null
   this.currentReviewDisplayed = null
+  this.mapWrapper = null
   this.buttons = {
 
     start: document.querySelector('#start'),
@@ -39,9 +36,9 @@ var Page = function () {
     center: {lat: 55.953251, lng: -3.188267},
     containerDiv: containerDiv,
     mainMap: new MapWrapper(containerDiv, {lat: 56.632, lng: -4.180}, 6),
-    transportMethod: 'BICYCLING'
+    // transportMethod: 'BICYCLING'
   }
-
+  this.mapWrapper = this.map.mainMap
   this.clock = new Clock
   this.clock.createAClock()
 
@@ -70,15 +67,17 @@ Page.prototype = {
 
   saveDisplayedRoute: function () {
     var routeName = document.querySelector('#routeName').value
-    // var currentRoute = this.map.mainMap.currentRoute
+    // var currentRoute = this.mapWrapper.currentRoute
     if (!routeName) {
       alert('Please enter a route Name')
       return
     }
-    this.map.mainMap.saveRoute.bind(this.map)
-    var googleResponse = this.map.mainMap.currentRoute.request      // save if route is named and defined
-    var originAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[0].place_id
-    var destinationAddressId = this.map.mainMap.currentRoute.geocoded_waypoints[this.map.mainMap.currentRoute.geocoded_waypoints.length - 1].place_id
+    //////////////////////////////////////////
+    // this.mapWrapper.saveRoute.bind(this.map)///////////////////////////////////////////////
+  
+    var googleResponse = this.mapWrapper.currentRoute.request      // save if route is named and defined
+    var originAddressId = this.mapWrapper.currentRoute.geocoded_waypoints[0].place_id
+    var destinationAddressId = this.mapWrapper.currentRoute.geocoded_waypoints[this.mapWrapper.currentRoute.geocoded_waypoints.length - 1].place_id
 
     this.getAddressFromGeoCode(destinationAddressId, function (streetName) {
       var destinationAddress = streetName
@@ -95,17 +94,23 @@ Page.prototype = {
 
   setupButtons: function (sidebar) {
     this.sidebar = sidebar
-    this.setButtonEvent('click', this.buttons['start'], this.map.mainMap.addStartClickEvent.bind(this.map.mainMap))
-    this.setButtonEvent('click', this.buttons['end'], this.map.mainMap.addFinishClickEvent.bind(this.map.mainMap))
+    this.setButtonEvent('click', this.buttons['start'], this.mapWrapper.addStartClickEvent.bind(this.mapWrapper))
+    this.setButtonEvent('click', this.buttons['end'], this.mapWrapper.addFinishClickEvent.bind(this.mapWrapper))
     this.setButtonEvent('click', this.buttons['cycling'], function () {
-      this.map.transportMethod = 'BICYCLING'
+      this.mapWrapper.transportMethod = 'BICYCLING'
     }.bind(this))
     this.setButtonEvent('click', this.buttons['walking'], function () {
-      this.map.transportMethod = 'WALKING'
+      this.mapWrapper.transportMethod = 'WALKING'
+      console.log("Walking")
     }.bind(this))
-    this.setButtonEvent('click', this.buttons['findAmenity'], this.findAmenity.bind(this.map.mainMap))
-    this.setButtonEvent('click', this.buttons['route'], this.map.mainMap.calculateRoute.bind(this.map))
-     this.setButtonEvent('click', this.buttons['clear_route'], function(){this.map.mainMap.clearRoutes()}.bind(this))
+    this.setButtonEvent('click', this.buttons['findAmenity'], function(){this.findAmenity()})
+    ///////////////////////////////////
+    // this.setButtonEvent('click', this.buttons['route'], this.mapWrapper.calculateRoute.bind(this.map))
+    ////////////////////////////////
+    this.setButtonEvent('click', this.buttons['route'], function(){
+      this.mapWrapper.calculateRoute()
+    }.bind(this))
+     this.setButtonEvent('click', this.buttons['clear_route'], function(){this.mapWrapper.clearRoutes()}.bind(this))
     
 
     // var reviews = new Reviews();
@@ -139,15 +144,15 @@ Page.prototype = {
 
     this.setButtonEvent('click', this.buttons['save'], this.saveDisplayedRoute.bind(this))
     this.setButtonEvent('click', this.buttons['animationButton'], function () {
-      this.map.mainMap.animateRoute()
+      this.mapWrapper.animateRoute()
     }.bind(this))
 
-    this.setButtonEvent('click', this.buttons['pause'], function(){this.map.mainMap.pauseAnimation()}.bind(this))
+    this.setButtonEvent('click', this.buttons['pause'], function(){this.mapWrapper.pauseAnimation()}.bind(this))
     
     this.setButtonEvent('click', this.buttons['stopOffFood'], function(){
-      this.map.mainMap.placesService(this.map.mainMap.animeCoordsArray[0], 3000, 'restaurant')
-      this.map.mainMap.googleMap.panTo(this.map.mainMap.animeCoordsArray[0])
-      this.map.mainMap.googleMap.setZoom(12)
+      this.mapWrapper.placesService(this.mapWrapper.animeCoordsArray[0], 3000, 'restaurant')
+      this.mapWrapper.googleMap.panTo(this.mapWrapper.animeCoordsArray[0])
+      this.mapWrapper.googleMap.setZoom(12)
     }.bind(this))
 
   },
@@ -180,7 +185,7 @@ Page.prototype = {
       }
       var jsonString = request.responseText
       var directionsServiceObj = JSON.parse(jsonString)
-      this.map.mainMap.drawRoute(directionsServiceObj[0].googleResponse)
+      this.mapWrapper.drawRoute(directionsServiceObj[0].googleResponse)
     }.bind(this)
 
     request.send();

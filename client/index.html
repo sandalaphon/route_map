@@ -8,28 +8,28 @@
   <script src ="http://code.highcharts.com/highcharts.js"></script>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCSDO8jpfOiO7nJ3wjAoFsER6BXyN8QWo&libraries=places"></script>
   <script src="bundle.js"></script>
-  </head>
-  
+</head>
+
 <body>
 
-<section class="tempBox">
-Display Features
-<button id = "pause">Start Stop</button>
-<button id = "stopOffFood">Find Restaurant</button>
+  <section class="tempBox">
+    Display Features
+    <button id = "pause">Start Stop</button>
+    <button id = "stopOffFood">Find Restaurant</button>
 
-<canvas id="canvas" width="135" height="135"
-style="background-color:#333">
-</canvas>
-<form >
-  What time will you depart?:
-  <input type="time" id = 'time_depart' >
-</form>
+    <canvas id="canvas" width="135" height="135"
+    style="background-color:#333">
+  </canvas>
+  <form >
+    What time will you depart?:
+    <input type="time" id = 'time_depart' >
+  </form>
 
-<button id = "time_button">Set Departure Time</button>
-<button id = "clear_route">Clear Route</button>
+  <button id = "time_button">Set Departure Time</button>
+  <button id = "clear_route">Clear Route</button>
 </section>
 
-  <section class="left_box">
+<section class="left_box">
   <div class="box_text">
     <p><span id="total" ></span></p>
     <p><span id="time" ></span></p>
@@ -43,51 +43,51 @@ style="background-color:#333">
     <div id="wishlist-container">
       <ul id="wishlist"></ul>
     </div>
-</section>
+  </section>
 
   <div id="main-screen">
     <h1 id="main-title">Route Planner</h1>
-  <div id="main-map"></div>
-  <div id="spacing"> </div>
-  <input placeholder="Enter a Name for your Route..." type="text" id="routeName">
-  <button class= "menu" id="start">Start</button>
-  <button class= "menu" id="finish">Finish</button>
-  <button class= "menu" id="walking">Walking</button>
-  <button class= "menu" id="cycling">Cycling</button>
-  <button class= "menu" id="route">Calculate Route</button>
-  <button class= "menu" id="save">Save Route</button>
-  <button class= "menu" id="findAmenity">Restaurants</button>
-  
-  <button class= "menu" id="wishlist-button">Wishlist</button>
-  <button class= "menu" id="suggested">Suggested Routes</button>
-  <button class= "menu" id="animate">Animate</button>
-  <button class= "menu" id="elevation">Elevation</button>
-  <button class= "menu" id="forecast">Weather Forecast</button>
-  
-  <div id="routeDetails">
-    <div id="weather-info">
-      <div id="elevation-display"></div>
-      <div id="temperature-display"></div>
-      <div id="windspeed-display"></div>
-      <div id= "cloudcover-display"></div>
-      <div id="rainfall-display"></div>
+    <div id="main-map"></div>
+    <div id="spacing"> </div>
+    <input placeholder="Enter a Name for your Route..." type="text" id="routeName">
+    <button class= "menu" id="start">Start</button>
+    <button class= "menu" id="finish">Finish</button>
+    <button class= "menu" id="walking">Walking</button>
+    <button class= "menu" id="cycling">Cycling</button>
+    <button class= "menu" id="route">Calculate Route</button>
+    <button class= "menu" id="save">Save Route</button>
+    <button class= "menu" id="findAmenity">Restaurants</button>
+    
+    <button class= "menu" id="wishlist-button">Wishlist</button>
+    <button class= "menu" id="suggested">Suggested Routes</button>
+    <button class= "menu" id="animate">Animate</button>
+    <button class= "menu" id="elevation">Elevation</button>
+    <button class= "menu" id="forecast">Weather Forecast</button>
+    
+    <div id="routeDetails">
+      <div id="weather-info">
+        <div id="elevation-display"></div>
+        <div id="temperature-display"></div>
+        <div id="windspeed-display"></div>
+        <div id= "cloudcover-display"></div>
+        <div id="rainfall-display"></div>
 
-    </div>
-  
-    <div id="reviews-info">
-    <div id="review-heading"></div>
-    <div id="newReviewDiv"></div>
-        <ul id="review-list"></ul>
-    </div>
-  </div>
-  </div>
-
-    <section id="suggested-routes">
-      <h2 class='sidebars-title'>Suggested Routes<span class='close' id="suggested-close">&times;</span></h2>
-      <div id="suggested-list-container">
-        <ul id="suggested-list"></ul>
       </div>
-    </section>
+      
+      <div id="reviews-info">
+        <div id="review-heading"></div>
+        <div id="newReviewDiv"></div>
+        <ul id="review-list"></ul>
+      </div>
+    </div>
+  </div>
+
+  <section id="suggested-routes">
+    <h2 class='sidebars-title'>Suggested Routes<span class='close' id="suggested-close">&times;</span></h2>
+    <div id="suggested-list-container">
+      <ul id="suggested-list"></ul>
+    </div>
+  </section>
 
 </body>
 </html>

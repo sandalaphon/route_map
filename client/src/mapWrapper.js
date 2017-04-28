@@ -20,6 +20,7 @@ var MapWrapper = function (container, coords, zoom) {
   this.animeTimeSeconds = []
   this.timeouts = []
   this.animeCoordsArray = []
+  this.transportMethod = 'BICYCLING'
 }
 
 MapWrapper.prototype = {
@@ -103,7 +104,11 @@ MapWrapper.prototype = {
     var start = {lat: +startLatitude, lng: +startLongitude}
     var end = {lat: +finishLatitude, lng: +finishLongitude}
     this.route = new Route(start, end, this.transportMethod)
-    this.mainMap.drawRoute(this.route.directions())
+    ///////////////////////////////////////
+    // this.mainMap.drawRoute(this.route.directions())
+    ////////////////////////////////////
+  console.log(this.route)
+    this.drawRoute(this.route.directions())
   },
 
   saveRoute: function () {
@@ -167,15 +172,19 @@ MapWrapper.prototype = {
           localStorage.setItem('finishLatitude', latitude)
           localStorage.setItem('finishLongitude', longitude)
          // Marker disappear upon drag
-          var marker1 = this.startmarkers.pop()
-          if (marker1) marker1.setMap(null)
-          var marker2 = this.endmarkers.pop()
-          if (marker2) marker2.setMap(null)
+          this.clearMarkers()
           this.computeTotalDistance(this.currentRoute)
           this.computeEstimatedTime(this.currentRoute)
         }.bind(this))
       }
     }.bind(this))
+  },
+
+  clearMarkers: function(){
+    var marker1 = this.startmarkers.pop()
+    if (marker1) marker1.setMap(null)
+    var marker2 = this.endmarkers.pop()
+    if (marker2) marker2.setMap(null)
   },
 
   computeTotalDistance: function (result) {
