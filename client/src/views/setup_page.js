@@ -36,7 +36,6 @@ var Page = function () {
     center: {lat: 55.953251, lng: -3.188267},
     containerDiv: containerDiv,
     mainMap: new MapWrapper(containerDiv, {lat: 56.632, lng: -4.180}, 6),
-    // transportMethod: 'BICYCLING'
   }
   this.mapWrapper = this.map.mainMap
   this.clock = new Clock
@@ -50,10 +49,10 @@ Page.prototype = {
     var finLat = localStorage.getItem('finishLatitude')
     var finLng = localStorage.getItem('finishLongitude')
     var coords = {lat: +finLat, lng: +finLng}
-    this.googleMap.setZoom(10)
-    this.googleMap.setCenter(coords)
+    this.mapWrapper.googleMap.setZoom(10)
+    this.mapWrapper.googleMap.setCenter(coords)
     var radius = 10000 // change cycling or walking
-    this.placesService(coords, radius, 'restaurant')
+    this.mapWrapper.placesService(coords, radius, 'restaurant')
   },
 
   showForecast: function () {
@@ -72,8 +71,6 @@ Page.prototype = {
       alert('Please enter a route Name')
       return
     }
-    //////////////////////////////////////////
-    // this.mapWrapper.saveRoute.bind(this.map)///////////////////////////////////////////////
   
     var googleResponse = this.mapWrapper.currentRoute.request      // save if route is named and defined
     var originAddressId = this.mapWrapper.currentRoute.geocoded_waypoints[0].place_id
@@ -101,19 +98,12 @@ Page.prototype = {
     }.bind(this))
     this.setButtonEvent('click', this.buttons['walking'], function () {
       this.mapWrapper.transportMethod = 'WALKING'
-      console.log("Walking")
     }.bind(this))
-    this.setButtonEvent('click', this.buttons['findAmenity'], function(){this.findAmenity()})
-    ///////////////////////////////////
-    // this.setButtonEvent('click', this.buttons['route'], this.mapWrapper.calculateRoute.bind(this.map))
-    ////////////////////////////////
+    this.setButtonEvent('click', this.buttons['findAmenity'], function(){this.findAmenity()}.bind(this))
     this.setButtonEvent('click', this.buttons['route'], function(){
       this.mapWrapper.calculateRoute()
     }.bind(this))
      this.setButtonEvent('click', this.buttons['clear_route'], function(){this.mapWrapper.clearRoutes()}.bind(this))
-    
-
-    // var reviews = new Reviews();
 
     //forecast function
     this.setButtonEvent('click', this.buttons['forecast'], function(){
@@ -134,21 +124,17 @@ Page.prototype = {
       var timeInput = document.querySelector('#time_depart').value
       this.clock.hour= +timeInput.substring(0,2)
       this.clock.minute= +timeInput.substring(3)
- 
-      this.clock.haveUserTime= !this.clock.haveUserTime
+      this.clock.haveUserTime= false
 
     }.bind(this))
 
     // forecast function
     this.setButtonEvent('click', this.buttons['forecast'], this.showForecast)
-
     this.setButtonEvent('click', this.buttons['save'], this.saveDisplayedRoute.bind(this))
     this.setButtonEvent('click', this.buttons['animationButton'], function () {
       this.mapWrapper.animateRoute()
     }.bind(this))
-
     this.setButtonEvent('click', this.buttons['pause'], function(){this.mapWrapper.pauseAnimation()}.bind(this))
-    
     this.setButtonEvent('click', this.buttons['stopOffFood'], function(){
       this.mapWrapper.placesService(this.mapWrapper.animeCoordsArray[0], 3000, 'restaurant')
       this.mapWrapper.googleMap.panTo(this.mapWrapper.animeCoordsArray[0])

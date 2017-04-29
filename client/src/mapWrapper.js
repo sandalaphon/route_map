@@ -5,6 +5,8 @@ var MapWrapper = function (container, coords, zoom) {
   this.startmarkers = []
   this.restaurantMarkers = []
   this.endmarkers = []
+  this.allRenderedRoutes = []
+  this.currentRoutes = []
   this.currentRoute = null
   this.googleMap = new google.maps.Map(container, {
     center: coords,
@@ -14,8 +16,9 @@ var MapWrapper = function (container, coords, zoom) {
   this.polyline = null
   this.directionsDisplay = null
   this.animationMarker = null
-  this.animationRunning = true
-  this.clock = new Clock()
+  this.animationRunning = null
+  this.clock2 = new Clock()
+  this.clock = this.clock2.clockInstances[0]
   this.totalSeconds = null
   this.animeTimeSeconds = []
   this.timeouts = []
@@ -80,7 +83,7 @@ MapWrapper.prototype = {
       localStorage.setItem('finishLongitude', finishLongitude)
       var marker = this.endmarkers.pop()
       if (marker) marker.setMap(null)
-      marker = this.addMarker({lat: finishLatitude, lng: finishLongitude})
+        marker = this.addMarker({lat: finishLatitude, lng: finishLongitude})
       this.endmarkers.push(marker)
       google.maps.event.removeListener(endListener)
     }.bind(this))
@@ -104,10 +107,6 @@ MapWrapper.prototype = {
     var start = {lat: +startLatitude, lng: +startLongitude}
     var end = {lat: +finishLatitude, lng: +finishLongitude}
     this.route = new Route(start, end, this.transportMethod)
-    ///////////////////////////////////////
-    // this.mainMap.drawRoute(this.route.directions())
-    ////////////////////////////////////
-  console.log(this.route)
     this.drawRoute(this.route.directions())
   },
 
@@ -118,24 +117,22 @@ MapWrapper.prototype = {
   },
 
   clearRoutes: function () {
-    this.animeTimeSeconds = []
+    this.clearAnimationFrames()
+    this.clearMarkers()
     this.clock.animationRunning = false
-    if (this.directionsDisplay) {
-      this.directionsDisplay.setMap(null)
+    no_routes = this.allRenderedRoutes.length
+    if(no_routes>0){
+      this.currentRoute=this.currentRoutes[no_routes-2]
+      this.currentRoutes.pop()
+      var toDelete = this.allRenderedRoutes.pop()
+      toDelete.setMap(null)
+      console.log(no_routes)
+    }else{
+      this.currentRoute = null
+      this.restartClock()
     }
     if (this.polyline) {
       this.polyline.setMap(null)
-    }
-    if (this.animationMarker) {
-      this.animationMarker.setMap(null)
-    }
-
-    var marker1 = this.startmarkers.pop()
-    if (marker1) marker1.setMap(null)
-    var marker2 = this.endmarkers.pop()
-    if (marker2) marker2.setMap(null)
-    for (var i = 0; i < this.timeouts.length; i++) {
-      clearTimeout(this.timeouts[i])
     }
     if (this.restaurantMarkers.length) {
       for (var j = 0; j < this.restaurantMarkers.length; j++) {
@@ -145,17 +142,19 @@ MapWrapper.prototype = {
     }
   },
 
+
   drawRoute: function (directionsResult) {
     var directionsService = new google.maps.DirectionsService()
     this.directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,
       map: this.googleMap
     })
-
+    this.allRenderedRoutes.push(this.directionsDisplay)
     directionsService.route(directionsResult, function (res, status) {
       if (status == 'OK') {
         this.directionsDisplay.setDirections(res)
         this.currentRoute = res
+        this.currentRoutes.push(res)
         var no_steps = res.routes[0].legs[0].steps.length - 1
         var latitude = res.routes[0].legs[0].steps[no_steps].end_location.lat()
         var longitude = res.routes[0].legs[0].steps[no_steps].end_location.lng()
@@ -163,16 +162,17 @@ MapWrapper.prototype = {
         localStorage.setItem('finishLatitude', latitude)
         this.computeTotalDistance(res)
         this.computeEstimatedTime(res)
+        this.clearMarkers()
         // Distance and time update with new route
         this.directionsDisplay.addListener('directions_changed', function () {
           this.currentRoute = this.directionsDisplay.getDirections()
+          this.currentRoutes.pop
+          this.currentRoutes.push(this.currentRoute)
           no_steps = this.currentRoute.routes[0].legs[0].steps.length - 1
           var latitude = this.currentRoute.routes[0].legs[0].steps[no_steps].end_location.lat()
           var longitude = this.currentRoute.routes[0].legs[0].steps[no_steps].end_location.lng()
           localStorage.setItem('finishLatitude', latitude)
           localStorage.setItem('finishLongitude', longitude)
-         // Marker disappear upon drag
-          this.clearMarkers()
           this.computeTotalDistance(this.currentRoute)
           this.computeEstimatedTime(this.currentRoute)
         }.bind(this))
@@ -183,40 +183,40 @@ MapWrapper.prototype = {
   clearMarkers: function(){
     var marker1 = this.startmarkers.pop()
     if (marker1) marker1.setMap(null)
-    var marker2 = this.endmarkers.pop()
+      var marker2 = this.endmarkers.pop()
     if (marker2) marker2.setMap(null)
   },
 
-  computeTotalDistance: function (result) {
-    var total = 0
-    var myroute = result.routes[0]
-    for (var i = 0; i < myroute.legs.length; i++) {
-      total += myroute.legs[i].distance.value
-    }
-    localStorage.setItem('journeyDistance', total / 1000)
-    total = total / 1000
+computeTotalDistance: function (result) {
+  var total = 0
+  var myroute = result.routes[0]
+  for (var i = 0; i < myroute.legs.length; i++) {
+    total += myroute.legs[i].distance.value
+  }
+  localStorage.setItem('journeyDistance', total / 1000)
+  total = total / 1000
 
-    document.getElementById('total').innerHTML = 'Distance:' + '<br />' + total + ' km'
-  },
+  document.getElementById('total').innerHTML = 'Distance:' + '<br />' + total + ' km'
+},
 
-  computeEstimatedTime: function (result) {
-    var totalSeconds = 0
-    var myroute = result.routes[0]
-    for (var i = 0; i < myroute.legs.length; i++) {
-      totalSeconds += myroute.legs[i].duration.value
-    }
-    this.totalSeconds = totalSeconds
-    var remainderSeconds = totalSeconds % 60
-    var totalMinutes = (totalSeconds - remainderSeconds) / 60
-    var remainderMinutes = totalMinutes % 60
-    var hours = (totalMinutes - remainderMinutes) / 60
-    document.getElementById('time').innerHTML = '<br />' + 'Journey Time: ' + '<br />' + hours + ' hours' + '<br />' + remainderMinutes + ' minutes'
-  },
+computeEstimatedTime: function (result) {
+  var totalSeconds = 0
+  var myroute = result.routes[0]
+  for (var i = 0; i < myroute.legs.length; i++) {
+    totalSeconds += myroute.legs[i].duration.value
+  }
+  this.totalSeconds = totalSeconds
+  var remainderSeconds = totalSeconds % 60
+  var totalMinutes = (totalSeconds - remainderSeconds) / 60
+  var remainderMinutes = totalMinutes % 60
+  var hours = (totalMinutes - remainderMinutes) / 60
+  document.getElementById('time').innerHTML = '<br />' + 'Journey Time: ' + '<br />' + hours + ' hours' + '<br />' + remainderMinutes + ' minutes'
+},
 
     /// ////////////////////////
 /// /  places nearby code now  //////
 /// ////////////////////////////
-  placesService: function (searchCenterCoords, radius, type) {
+placesService: function (searchCenterCoords, radius, type) {
     var service = new google.maps.places.PlacesService(this.googleMap)// define map
     service.nearbySearch({
       location: searchCenterCoords,
@@ -258,20 +258,31 @@ MapWrapper.prototype = {
   },
 
   updateClock: function () {
-    this.clock.addSeconds(this.animeTimeSeconds[0], this.clock.createAnotherClock())
+    console.log("mapwrap", this.clock)
+    this.clock.pauseTheClock()
+    this.clock.addSeconds(this.animeTimeSeconds[0])
+    // this.clock.addSeconds(this.animeTimeSeconds[0], this.clock.drawClock())
   },
 /// //////////////////////////////////////////////////////////////////////
 /// /////////////        ANIMATION START          ////////////////////////
 /// //////////////////////////////////////////////////////////////////////
 
-  animateRoute: function () {
+animateRoute: function () {
+  this.clock.animationRunning = true
+  this.animationRunning = true
     var userTime = document.querySelector('#time_depart').value // set time
     this.clock.hour = +userTime.substring(0, 2)
     this.clock.minute = +userTime.substring(3)
     this.clock.second = 0
-    /// //////////repress anime clears previous
-    this.animeCoordsArray = []  // ensure no residual frames
 
+    this.clearAnimationFrames()
+    if(this.currentRoute){
+    this.autoRefresh(this.googleMap, this.currentRoute.routes[0].overview_path) 
+  }
+  },
+
+  clearAnimationFrames: function(callback){
+    this.animeCoordsArray = []  // ensure no residual frames
     this.animeTimeSeconds = []
     for (var i = 0; i < this.timeouts.length; i++) {
       clearTimeout(this.timeouts[i])
@@ -282,33 +293,11 @@ MapWrapper.prototype = {
     if (this.animationMarker) {
       this.animationMarker.setMap(null)
     }
-
-    this.autoRefresh(this.googleMap, this.currentRoute.routes[0].overview_path)
   },
 
   autoRefresh: function (map, pathCoords) {
-    if (this.currentRoute.request.travelMode === 'BICYCLING') {
-      var icon = {
-        url: 'http://www.animatedimages.org/data/media/237/animated-bicycle-image-0001.gif',
-        scaledSize: new google.maps.Size(50, 50)
-      }
-      this.animationMarker = new google.maps.Marker({
-        map: this.googleMap,
-        optimized: false, // <-- required for animated gif
-        animation: google.maps.Animation.DROP,
-        icon: icon
-      })
-    } else {
-      var icon = {
-        url: 'http://www.animatedimages.org/data/media/1635/animated-walking-image-0066.gif',
-        scaledSize: new google.maps.Size(50, 50)
-      }
-      this.animationMarker = new google.maps.Marker({
-        map: this.googleMap,
-        optimized: false, // <-- required for animated gif
-        animation: google.maps.Animation.DROP,
-        icon: icon})
-    };
+
+    this.getAppropriateMarker()
 
     this.polyline = new google.maps.Polyline({
       path: [],
@@ -333,31 +322,68 @@ MapWrapper.prototype = {
     }
   },
 
+  getAppropriateMarker(){
+    if (this.currentRoute.request.travelMode === 'BICYCLING') {
+      var icon = {
+        url: 'http://www.animatedimages.org/data/media/237/animated-bicycle-image-0001.gif',
+        scaledSize: new google.maps.Size(50, 50)
+      }
+      this.animationMarker = new google.maps.Marker({
+        map: this.googleMap,
+        optimized: false, // <-- required for animated gif
+        animation: google.maps.Animation.DROP,
+        icon: icon
+      })
+    } else {
+      var icon = {
+        url: 'http://www.animatedimages.org/data/media/1635/animated-walking-image-0066.gif',
+        scaledSize: new google.maps.Size(50, 50)
+      }
+      this.animationMarker = new google.maps.Marker({
+        map: this.googleMap,
+        optimized: false, // <-- required for animated gif
+        animation: google.maps.Animation.DROP,
+        icon: icon})
+    };
+  },
+
   moveMarker: function (map, marker, latlng) {
     marker.setPosition(latlng)
+    // this.googleMap.panTo(latlng)
     var coords = {lat: latlng.lat(), lng: latlng.lng()}
     this.animeCoordsArray.shift()
     this.animeTimeSeconds.shift()
     this.updateClock()
-    // finish anime
     if (this.animeCoordsArray.length === 0) {
-      setTimeout(function () {
-        this.polyline.setMap(null)
-        this.animationMarker.setMap(null)
-      }.bind(this), 1000)
+      this.clearAnimation()
+      this.restartClock()
     }
   },
 
-  pauseAnimation: function () {
-    if (this.animationRunning) {
+  restartClock: function(){
+    this.clock.animationRunning = false
+    this.clock.createAClock()
+  },
+
+
+
+clearAnimation: function(){
+
+  setTimeout(function () {
+    this.polyline.setMap(null)
+    this.animationMarker.setMap(null)
+  }.bind(this), 1000) 
+},
+
+pauseAnimation: function () {
+  if (this.animationRunning) {
       // iterate through array of timeouts and discard them
       for (var i = 0; i < this.timeouts.length; i++) {
         clearTimeout(this.timeouts[i])
-      } this.animationRunning = false
-      this.clock.setAnime(true)
+      } 
+      this.animationRunning = false
     } else {
       this.animationRunning = true
-      this.clock.setAnime(true)
       for (var j = 0; j < this.animeCoordsArray.length; j++) {
         this.timeouts.push(setTimeout(function (coords) {
           this.polyline.getPath().push(coords)

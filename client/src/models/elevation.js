@@ -21,22 +21,19 @@ Elevation.prototype = {
   },
 
 getElevation: function(coords, callbackSetVariable){
-  var result; 
   this.elevator.getElevationForLocations({
       'locations': coords
     }, function(results, status) {
       if (status === 'OK') {
-        // Retrieve the first result
         if (results[0]) {
-          result = results
+          callbackSetVariable(results)
         } else {
-          alert('No results found');
+          alert('No results found')
         }
       } else {
-        alert('Elevation service failed due to: ' + status);
-      }
-      callbackSetVariable(result)
-    }); 
+        alert('Elevation service failed due to: ' + status)
+      } 
+    })
 },
 
 createArrayOfPathLatLng: function(callback){
@@ -56,7 +53,7 @@ useLatLngArrayToGetElevation: function(latLngArray){
         arrayOfElevation.push(obj.elevation)
       })
       localStorage.setItem('elevationsOfCurrentRoute', arrayOfElevation)
-      setTimeout(this.prepareGraphData(), 1000);
+      setTimeout(this.prepareGraphData(), 0);
     }.bind(this))
 }, 
 
